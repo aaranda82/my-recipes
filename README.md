@@ -4,6 +4,8 @@
 
 [Figma](https://www.figma.com/file/MPH82uPpG6ow3Sjlc55zdl/Untitled?node-id=0%3A1)
 
+![DB design](public/DbDesign.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
