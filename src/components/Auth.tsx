@@ -4,7 +4,7 @@ import firebase from "firebase";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "",
+  apiKey: process.env.FIREBASE_AUTH_API_KEY,
   authDomain: "my-recipes-da233.firebaseapp.com",
   databaseURL: "https://my-recipes-da233.firebaseio.com",
   projectId: "my-recipes-da233",
