@@ -4,6 +4,8 @@
 
 [My-Recipes](https://pedantic-kepler-e2ec23.netlify.app)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1981d2dd-6667-44c3-9d30-069b1a73886a/deploy-status)](https://app.netlify.com/sites/pedantic-kepler-e2ec23/deploys)
+
 ## Wireframe
 
 [Figma](https://www.figma.com/file/MPH82uPpG6ow3Sjlc55zdl/Untitled?node-id=0%3A1)
