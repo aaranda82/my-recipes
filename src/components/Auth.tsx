@@ -5,7 +5,6 @@ import firebase from "firebase";
 require("dotenv").config();
 
 // Your web app's Firebase configuration
-console.log(process.env);
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_AUTH_API_KEY,
   authDomain: "my-recipes-da233.firebaseapp.com",
