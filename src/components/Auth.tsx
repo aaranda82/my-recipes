@@ -2,9 +2,12 @@ import React from "react";
 import * as firebaseui from "firebaseui";
 import firebase from "firebase";
 
+require("dotenv").config();
+
 // Your web app's Firebase configuration
+console.log(process.env);
 var firebaseConfig = {
-  apiKey: process.env.FIREBASE_AUTH_API_KEY,
+  apiKey: process.env.REACT_APP_FIREBASE_AUTH_API_KEY,
   authDomain: "my-recipes-da233.firebaseapp.com",
   databaseURL: "https://my-recipes-da233.firebaseio.com",
   projectId: "my-recipes-da233",
