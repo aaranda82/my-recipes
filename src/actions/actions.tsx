@@ -1,10 +1,10 @@
-export const increment = () => {
+export const incrementAction = () => {
   return {
     type: "INCREMENT",
   };
 };
 
-export const decrement = () => {
+export const decrementAction = () => {
   return {
     type: "DECREMENT",
   };

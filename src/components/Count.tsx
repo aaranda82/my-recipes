@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { increment, decrement } from "../actions/actions";
+import { incrementAction, decrementAction } from "../actions/actions";
 const { connect } = require("react-redux");
 
 interface CountProps {
   count: number;
-  increment: any;
-  decrement: any;
+  increment: () => void;
+  decrement: () => void;
 }
 
 class Count extends Component<CountProps> {
-  constructor(props: any) {
+  constructor(props: CountProps) {
     super(props);
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
@@ -23,7 +23,6 @@ class Count extends Component<CountProps> {
   }
 
   render() {
-    console.log(this.props);
     return (
       <>
         <div>{this.props.count}</div>
@@ -34,7 +33,7 @@ class Count extends Component<CountProps> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: { count: number }) => {
   return {
     count: state.count,
   };
@@ -43,10 +42,10 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     increment: () => {
-      dispatch(increment());
+      dispatch(incrementAction());
     },
     decrement: () => {
-      dispatch(decrement());
+      dispatch(decrementAction());
     },
   };
 };
