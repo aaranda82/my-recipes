@@ -6,7 +6,7 @@ require("dotenv").config();
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_AUTH_API_KEY,
+  apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
   authDomain: "my-recipes-da233.firebaseapp.com",
   databaseURL: "https://my-recipes-da233.firebaseio.com",
   projectId: "my-recipes-da233",
@@ -20,7 +20,7 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 var uiConfig = {
-  signInSuccessUrl: "<url-to-redirect-to-on-success>",
+  signInSuccessUrl: "https://alex-aranda.com",
   signInOptions: [
     // Leave the lines as is for the providers you want to offer your users.
     firebase.auth.EmailAuthProvider.PROVIDER_ID,
