@@ -6,6 +6,9 @@ interface CountProps {
   count: number;
   increment: () => void;
   decrement: () => void;
+  displayName: string;
+  email: string;
+  uid: string;
 }
 
 class Count extends Component<CountProps> {
@@ -14,6 +17,7 @@ class Count extends Component<CountProps> {
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
   }
+
   handleIncrement() {
     this.props.increment();
   }
@@ -26,6 +30,8 @@ class Count extends Component<CountProps> {
     return (
       <>
         <div>{this.props.count}</div>
+        <div>{this.props.displayName}</div>
+        <div>{this.props.email}</div>
         <button onClick={this.handleIncrement}>increment</button>
         <button onClick={this.handleDecrement}>decrement</button>
       </>
@@ -33,9 +39,22 @@ class Count extends Component<CountProps> {
   }
 }
 
-const mapStateToProps = (state: { count: number }) => {
+interface mapState {
+  countReducer: {
+    count: number;
+  };
+  userReducer: {
+    displayName: string;
+    email: string;
+    uid: string;
+  };
+}
+const mapStateToProps = (state: mapState) => {
   return {
-    count: state.count,
+    count: state.countReducer.count,
+    displayName: state.userReducer.displayName,
+    email: state.userReducer.email,
+    uid: state.userReducer.uid,
   };
 };
 

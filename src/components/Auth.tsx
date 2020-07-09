@@ -1,47 +1,64 @@
 import React from "react";
 import * as firebaseui from "firebaseui";
 import firebase from "firebase";
+import auth from "../fbAuth";
+import { signInAction } from "../actions/userActions";
+const { connect } = require("react-redux");
 
-require("dotenv").config();
+interface authProps {
+  displayName: string;
+  signIn: (d: string, e: string, u: string) => void;
+}
 
-// Your web app's Firebase configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
-  authDomain: "my-recipes-da233.firebaseapp.com",
-  databaseURL: "https://my-recipes-da233.firebaseio.com",
-  projectId: "my-recipes-da233",
-  storageBucket: "my-recipes-da233.appspot.com",
-  messagingSenderId: "1062905305210",
-  appId: "1:1062905305210:web:e81f2b5d293bedc736c3c3",
-  measurementId: "G-BJ3YHDCKZV",
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+function Auth(props: authProps) {
+  const uiConfig = {
+    callbacks: {
+      signInSuccessWithAuthResult: (authResult: any, redirectUrl: string) => {
+        const { displayName, email, uid } = authResult.user;
+        props.signIn(displayName, email, uid);
+        return true;
+      },
+    },
+    signInSuccessUrl: "http://localhost:3000/count",
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    ],
+  };
 
-var uiConfig = {
-  signInSuccessUrl: "https://alex-aranda.com",
-  signInOptions: [
-    // Leave the lines as is for the providers you want to offer your users.
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-  ],
-  // tosUrl and privacyPolicyUrl accept either url string or a callback
-  // function.
-  // Terms of service url/callback.
-  tosUrl: "<your-tos-url>",
-  // Privacy policy url/callback.
-  privacyPolicyUrl: function () {
-    window.location.assign("<your-privacy-policy-url>");
-  },
-};
+  // Initialize the FirebaseUI Widget using Firebase.
+  const ui =
+    firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
+  // The start method will wait until the DOM is loaded.
+  ui.start("#firebaseui-auth-container", uiConfig);
 
-// Initialize the FirebaseUI Widget using Firebase.
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
-// The start method will wait until the DOM is loaded.
-ui.start("#firebaseui-auth-container", uiConfig);
-
-function Auth() {
   return <div id="firebaseui-auth-container"></div>;
 }
 
-export default Auth;
+interface mapState {
+  countReducer: {
+    count: number;
+  };
+  userReducer: {
+    displayName: string;
+    email: string;
+    uid: string;
+  };
+}
+const mapStateToProps = (state: mapState) => {
+  return {
+    displayName: state.userReducer.displayName,
+    email: state.userReducer.email,
+    uid: state.userReducer.uid,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    signIn: (displayName: string, email: string, uid: string) => {
+      dispatch(signInAction(displayName, email, uid));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
