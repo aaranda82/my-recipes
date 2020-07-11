@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { incrementAction, decrementAction } from "../actions/actions";
+import {
+  countIncrementAction,
+  countDecrementAction,
+} from "../actions/countActions";
 const { connect } = require("react-redux");
 
 interface CountProps {
@@ -27,6 +30,7 @@ class Count extends Component<CountProps> {
   }
 
   render() {
+    debugger;
     return (
       <>
         <div>{this.props.count}</div>
@@ -40,31 +44,35 @@ class Count extends Component<CountProps> {
 }
 
 interface mapState {
-  countReducer: {
-    count: number;
+  viewReducer: {
+    view: string;
   };
   userReducer: {
     displayName: string;
     email: string;
     uid: string;
   };
+  countReducer: {
+    count: number;
+  };
 }
 const mapStateToProps = (state: mapState) => {
   return {
-    count: state.countReducer.count,
+    view: state.viewReducer.view,
     displayName: state.userReducer.displayName,
     email: state.userReducer.email,
     uid: state.userReducer.uid,
+    count: state.countReducer.count,
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
     increment: () => {
-      dispatch(incrementAction());
+      dispatch(countIncrementAction());
     },
     decrement: () => {
-      dispatch(decrementAction());
+      dispatch(countDecrementAction());
     },
   };
 };

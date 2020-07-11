@@ -1,8 +1,7 @@
-const initState: { count: number } = {
-  count: 0,
-};
-
-const countReducer = (state = initState, action: { type: string }) => {
+const countReducer = (
+  state: { count: number } = { count: 0 },
+  action: { type: string }
+) => {
   switch (action.type) {
     case "INCREMENT":
       return { count: state.count + 1 };
