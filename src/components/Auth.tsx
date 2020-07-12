@@ -1,47 +1,78 @@
-import React from "react";
-import * as firebaseui from "firebaseui";
+import React, { Component } from "react";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
+import { signInAction, signOutAction } from "../actions/userActions";
+import { RootState } from "../reducers/rootReducer";
+const { connect } = require("react-redux");
 
-require("dotenv").config();
-
-// Your web app's Firebase configuration
-var firebaseConfig = {
+const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
   authDomain: "my-recipes-da233.firebaseapp.com",
   databaseURL: "https://my-recipes-da233.firebaseio.com",
   projectId: "my-recipes-da233",
-  storageBucket: "my-recipes-da233.appspot.com",
-  messagingSenderId: "1062905305210",
   appId: "1:1062905305210:web:e81f2b5d293bedc736c3c3",
   measurementId: "G-BJ3YHDCKZV",
 };
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+firebase.initializeApp(config);
 
-var uiConfig = {
-  signInSuccessUrl: "https://alex-aranda.com",
-  signInOptions: [
-    // Leave the lines as is for the providers you want to offer your users.
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-  ],
-  // tosUrl and privacyPolicyUrl accept either url string or a callback
-  // function.
-  // Terms of service url/callback.
-  tosUrl: "<your-tos-url>",
-  // Privacy policy url/callback.
-  privacyPolicyUrl: function () {
-    window.location.assign("<your-privacy-policy-url>");
-  },
-};
-
-// Initialize the FirebaseUI Widget using Firebase.
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
-// The start method will wait until the DOM is loaded.
-ui.start("#firebaseui-auth-container", uiConfig);
-
-function Auth() {
-  return <div id="firebaseui-auth-container"></div>;
+interface AuthProps {
+  displayName: string;
+  isSignedIn: boolean;
+  signIn: (d: string | null, e: string | null, u: string | null) => void;
+  signOut: () => void;
 }
 
-export default Auth;
+class Auth extends Component<AuthProps> {
+  uiConfig = {
+    callbacks: {
+      signInSuccessWithAuthResult: () => {
+        return false;
+      },
+    },
+    signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+  };
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.signIn(user.displayName, user.email, user.uid);
+      } else {
+        console.log("no user");
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>My Recipes</h1>
+        <p>Please sign-in:</p>
+        <StyledFirebaseAuth
+          uiConfig={this.uiConfig}
+          firebaseAuth={firebase.auth()}
+        />
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state: RootState) => {
+  return {
+    displayName: state.userReducer.displayName,
+    email: state.userReducer.email,
+    uid: state.userReducer.uid,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    signIn: (displayName: string, email: string, uid: string) => {
+      dispatch(signInAction(displayName, email, uid));
+    },
+    signOut: () => {
+      dispatch(signOutAction());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

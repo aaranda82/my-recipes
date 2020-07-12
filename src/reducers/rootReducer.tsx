@@ -1,16 +1,13 @@
-const initState: { count: number } = {
-  count: 0,
-};
+import { combineReducers } from "redux";
+import userReducer, { UserState } from "./userReducer";
+import countReducer, { CountState } from "./countReducer";
 
-const rootReducer = (state = initState, action: { type: string }) => {
-  switch (action.type) {
-    case "INCREMENT":
-      return { count: state.count + 1 };
-    case "DECREMENT":
-      return { count: state.count - 1 };
-    default:
-      return state;
-  }
-};
+export default combineReducers({
+  userReducer,
+  countReducer,
+});
 
-export default rootReducer;
+export interface RootState {
+  userReducer: UserState;
+  countReducer: CountState;
+}

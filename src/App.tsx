@@ -1,6 +1,5 @@
 import React from "react";
-import Auth from "./components/Auth";
-import Count from "./components/Count";
+import Content from "./components/Content";
 import { store } from "./store";
 
 const { Provider } = require("react-redux");
@@ -8,8 +7,7 @@ const { Provider } = require("react-redux");
 function App() {
   return (
     <Provider store={store}>
-      <Count></Count>
-      <Auth></Auth>
+      <Content />
     </Provider>
   );
 }
