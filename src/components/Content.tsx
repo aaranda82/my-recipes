@@ -3,28 +3,23 @@ import Auth from "./Auth";
 import Count from "./Count";
 const { connect } = require("react-redux");
 
-function Content(props: { view: string }) {
-  console.log(props);
-  switch (props.view) {
-    case "Landing Page":
-      return (
-        <>
-          <div>AUTH CONTENT</div>
-          <Auth />
-        </>
-      );
-    case "Logged In":
-      return (
-        <>
-          <div>COUNT CONTENT</div>
-          <Count />
-        </>
-      );
+function Content(props: { isSignedIn: boolean }) {
+  if (props.isSignedIn) {
+    return (
+      <>
+        <Auth />
+        <Count />
+      </>
+    );
+  } else {
+    return <Auth />;
   }
 }
 
-const mapStateToProps = (state: { viewReducer: { view: string } }) => {
-  return { view: state.viewReducer.view };
+const mapStateToProps = (state: { userReducer: { isSignedIn: boolean } }) => {
+  return {
+    isSignedIn: state.userReducer.isSignedIn,
+  };
 };
 
 export default connect(mapStateToProps)(Content);

@@ -8,3 +8,9 @@ export const signInAction = (
     payload: { displayName, email, uid },
   };
 };
+
+export const signOutAction = () => {
+  return {
+    type: "SIGNOUT",
+  };
+};

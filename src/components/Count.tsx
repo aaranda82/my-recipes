@@ -30,12 +30,10 @@ class Count extends Component<CountProps> {
   }
 
   render() {
-    debugger;
     return (
       <>
+        <h2>Count it!</h2>
         <div>{this.props.count}</div>
-        <div>{this.props.displayName}</div>
-        <div>{this.props.email}</div>
         <button onClick={this.handleIncrement}>increment</button>
         <button onClick={this.handleDecrement}>decrement</button>
       </>
@@ -44,9 +42,6 @@ class Count extends Component<CountProps> {
 }
 
 interface mapState {
-  viewReducer: {
-    view: string;
-  };
   userReducer: {
     displayName: string;
     email: string;
@@ -58,7 +53,6 @@ interface mapState {
 }
 const mapStateToProps = (state: mapState) => {
   return {
-    view: state.viewReducer.view,
     displayName: state.userReducer.displayName,
     email: state.userReducer.email,
     uid: state.userReducer.uid,

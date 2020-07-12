@@ -1,41 +1,84 @@
-import React from "react";
-import * as firebaseui from "firebaseui";
+import React, { Component } from "react";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
-import auth from "../fbAuth";
-import { signInAction } from "../actions/userActions";
-import { loggedInViewAction } from "../actions/viewActions";
+import { signInAction, signOutAction } from "../actions/userActions";
 const { connect } = require("react-redux");
+
+const config = {
+  apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
+  authDomain: "my-recipes-da233.firebaseapp.com",
+  databaseURL: "https://my-recipes-da233.firebaseio.com",
+  projectId: "my-recipes-da233",
+  appId: "1:1062905305210:web:e81f2b5d293bedc736c3c3",
+  measurementId: "G-BJ3YHDCKZV",
+};
+firebase.initializeApp(config);
 
 interface authProps {
   displayName: string;
-  signIn: (d: string, e: string, u: string) => void;
-  setView: () => void;
+  isSignedIn: boolean;
+  signIn: (d: any, e: any, u: any) => void;
+  signOut: () => void;
 }
 
-function Auth(props: authProps) {
-  const uiConfig = {
+class Auth extends Component<authProps> {
+  constructor(props: authProps) {
+    super(props);
+    this.state = { displayName: "", email: "", uid: "", isSignedIn: false };
+  }
+  uiConfig = {
     callbacks: {
-      signInSuccessWithAuthResult: (authResult: any, redirectUrl: string) => {
-        const { displayName, email, uid } = authResult.user;
-        props.signIn(displayName, email, uid);
-        if (uid) {
-          props.setView();
-          console.log("Successfuly signed in");
-        } else {
-          console.log("Please log in");
-        }
+      signInSuccessWithAuthResult: () => {
         return false;
       },
     },
     signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
   };
 
-  // Initialize the FirebaseUI Widget using Firebase.
-  const ui =
-    firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
-  // The start method will wait until the DOM is loaded.
-  ui.start("#firebaseui-auth-container", uiConfig);
-  return <div id="firebaseui-auth-container"></div>;
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.signIn(user.displayName, user.email, user.uid);
+        this.setState({
+          displayName: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          isSignedIn: true,
+        });
+      } else {
+        console.log("no user");
+      }
+    });
+  }
+
+  render() {
+    if (!this.props.isSignedIn) {
+      return (
+        <div>
+          <h1>My Recipes</h1>
+          <p>Please sign-in:</p>
+          <StyledFirebaseAuth
+            uiConfig={this.uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+        </div>
+      );
+    }
+    return (
+      <div>
+        <h1>My App</h1>
+        <p>Welcome {this.props.displayName}! You are now signed-in!</p>
+        <div
+          onClick={() => {
+            firebase.auth().signOut();
+            this.props.signOut();
+          }}
+        >
+          Sign-out
+        </div>
+      </div>
+    );
+  }
 }
 
 interface mapState {
@@ -46,9 +89,7 @@ interface mapState {
     displayName: string;
     email: string;
     uid: string;
-  };
-  viewReducer: {
-    view: string;
+    isSignedIn: boolean;
   };
 }
 const mapStateToProps = (state: mapState) => {
@@ -56,7 +97,7 @@ const mapStateToProps = (state: mapState) => {
     displayName: state.userReducer.displayName,
     email: state.userReducer.email,
     uid: state.userReducer.uid,
-    view: state.viewReducer.view,
+    isSignedIn: state.userReducer.isSignedIn,
   };
 };
 
@@ -65,8 +106,8 @@ const mapDispatchToProps = (dispatch: any) => {
     signIn: (displayName: string, email: string, uid: string) => {
       dispatch(signInAction(displayName, email, uid));
     },
-    setView: () => {
-      dispatch(loggedInViewAction());
+    signOut: () => {
+      dispatch(signOutAction());
     },
   };
 };
