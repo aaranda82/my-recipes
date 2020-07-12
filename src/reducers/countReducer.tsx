@@ -1,5 +1,9 @@
+export interface CountState {
+  count: number;
+}
+
 const countReducer = (
-  state: { count: number } = { count: 0 },
+  state: CountState = { count: 0 },
   action: { type: string }
 ) => {
   switch (action.type) {

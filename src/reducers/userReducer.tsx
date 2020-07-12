@@ -2,14 +2,12 @@ const initialState = {
   displayName: "",
   email: "",
   uid: "",
-  isSignedIn: false,
 };
 
-interface UserState {
+export interface UserState {
   displayName: string;
   email: string;
   uid: string;
-  isSignedIn: boolean;
 }
 
 const userReducer = (
@@ -21,18 +19,17 @@ const userReducer = (
 ) => {
   switch (action.type) {
     case "SIGNIN":
+      const { displayName, email, uid } = action.payload;
       return {
-        displayName: action.payload.displayName,
-        email: action.payload.email,
-        uid: action.payload.uid,
-        isSignedIn: true,
+        displayName,
+        email,
+        uid,
       };
     case "SIGNOUT":
       return {
         displayName: "",
         email: "",
         uid: "",
-        isSignedIn: false,
       };
     default:
       return state;

@@ -3,22 +3,17 @@ import Auth from "./Auth";
 import Count from "./Count";
 const { connect } = require("react-redux");
 
-function Content(props: { isSignedIn: boolean }) {
-  if (props.isSignedIn) {
-    return (
-      <>
-        <Auth />
-        <Count />
-      </>
-    );
+function Content(props: { displayName: string }) {
+  if (props.displayName) {
+    return <Count />;
   } else {
     return <Auth />;
   }
 }
 
-const mapStateToProps = (state: { userReducer: { isSignedIn: boolean } }) => {
+const mapStateToProps = (state: { userReducer: { displayName: boolean } }) => {
   return {
-    isSignedIn: state.userReducer.isSignedIn,
+    displayName: state.userReducer.displayName,
   };
 };
 

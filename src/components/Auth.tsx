@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
 import { signInAction, signOutAction } from "../actions/userActions";
+import { RootState } from "../reducers/rootReducer";
 const { connect } = require("react-redux");
 
 const config = {
@@ -14,18 +15,14 @@ const config = {
 };
 firebase.initializeApp(config);
 
-interface authProps {
+interface AuthProps {
   displayName: string;
   isSignedIn: boolean;
-  signIn: (d: any, e: any, u: any) => void;
+  signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
 }
 
-class Auth extends Component<authProps> {
-  constructor(props: authProps) {
-    super(props);
-    this.state = { displayName: "", email: "", uid: "", isSignedIn: false };
-  }
+class Auth extends Component<AuthProps> {
   uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: () => {
@@ -39,12 +36,6 @@ class Auth extends Component<authProps> {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.props.signIn(user.displayName, user.email, user.uid);
-        this.setState({
-          displayName: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          isSignedIn: true,
-        });
       } else {
         console.log("no user");
       }
@@ -52,52 +43,24 @@ class Auth extends Component<authProps> {
   }
 
   render() {
-    if (!this.props.isSignedIn) {
-      return (
-        <div>
-          <h1>My Recipes</h1>
-          <p>Please sign-in:</p>
-          <StyledFirebaseAuth
-            uiConfig={this.uiConfig}
-            firebaseAuth={firebase.auth()}
-          />
-        </div>
-      );
-    }
     return (
       <div>
-        <h1>My App</h1>
-        <p>Welcome {this.props.displayName}! You are now signed-in!</p>
-        <div
-          onClick={() => {
-            firebase.auth().signOut();
-            this.props.signOut();
-          }}
-        >
-          Sign-out
-        </div>
+        <h1>My Recipes</h1>
+        <p>Please sign-in:</p>
+        <StyledFirebaseAuth
+          uiConfig={this.uiConfig}
+          firebaseAuth={firebase.auth()}
+        />
       </div>
     );
   }
 }
 
-interface mapState {
-  countReducer: {
-    count: number;
-  };
-  userReducer: {
-    displayName: string;
-    email: string;
-    uid: string;
-    isSignedIn: boolean;
-  };
-}
-const mapStateToProps = (state: mapState) => {
+const mapStateToProps = (state: RootState) => {
   return {
     displayName: state.userReducer.displayName,
     email: state.userReducer.email,
     uid: state.userReducer.uid,
-    isSignedIn: state.userReducer.isSignedIn,
   };
 };
 
