@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
+import * as firebaseui from "firebaseui";
+import styled from "styled-components";
 import { signInAction, signOutAction } from "../actions/userActions";
 import { RootState } from "../reducers/rootReducer";
 const { connect } = require("react-redux");
@@ -14,6 +16,10 @@ const config = {
   measurementId: "G-BJ3YHDCKZV",
 };
 firebase.initializeApp(config);
+
+const Container = styled.div`
+  border: 1px solid red;
+`;
 
 interface AuthProps {
   displayName: string;
@@ -29,6 +35,7 @@ class Auth extends Component<AuthProps> {
         return false;
       },
     },
+    credentialHelper: firebaseui.auth.CredentialHelper.NONE,
     signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
   };
 
@@ -44,14 +51,13 @@ class Auth extends Component<AuthProps> {
 
   render() {
     return (
-      <div>
-        <h1>My Recipes</h1>
+      <Container>
         <p>Please sign-in:</p>
         <StyledFirebaseAuth
           uiConfig={this.uiConfig}
           firebaseAuth={firebase.auth()}
         />
-      </div>
+      </Container>
     );
   }
 }
