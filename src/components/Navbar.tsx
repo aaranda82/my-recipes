@@ -1,38 +1,51 @@
 import React, { Component } from "react";
-import firebase from "firebase";
+import NavMenu from "./NavMenu";
 import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
+import { ColorScheme } from "../ColorScheme";
+import Spacer from "./Spacer";
 const { connect } = require("react-redux");
 
+const { blueMunsell, ivory, gunmetal } = ColorScheme;
+
 const Nav = styled.div`
-  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
-  & h1 {
-    flex: 6;
-    margin-left: 1rem;
-  }
-  & div {
-    flex: 1;
-  }
+  flex-wrap: wrap;
+  text-align: center;
 `;
 
-const NavItems = styled.div`
+const LogoWithDN = styled.div`
+  font-family: "Raleway", sans-serif;
+  font-weight: 100;
+  font-size: 3em;
+  color: ${blueMunsell};
+  flex: 6;
+  margin: 20px 0px 20px 20px;
+  text-align: left;
+`;
+
+const Logo = styled.div`
+  font-family: "Raleway", sans-serif;
+  font-weight: 100;
+  font-size: 3em;
+  color: ${blueMunsell};
+  width: 100%;
+  margin: 20px 0px 20px 0px;
+`;
+
+const NavMenuButton = styled.div`
+  font-size: 2em;
+  color: ${blueMunsell};
   display: flex:
   flex-wrap: wrap;
   justify-content: center;
-  & div{
-    text-align: center;
+  margin-right: 20px;
+  transition: all 0.5s ease;
+  &:hover {
+    color: ${gunmetal};
   }
-`;
-
-const SignOutBtn = styled.button`
-  cursor: pointer;
-`;
-
-const Span = styled.span`
-  color: red;
 `;
 
 interface NavProps {
@@ -40,32 +53,45 @@ interface NavProps {
   signOut: () => void;
 }
 
-class Navbar extends Component<NavProps> {
+interface NavState {
+  isMenuOpen: boolean;
+}
+
+class Navbar extends Component<NavProps, NavState> {
   constructor(props: NavProps) {
     super(props);
-    this.handleSignOut = this.handleSignOut.bind(this);
+    this.state = {
+      isMenuOpen: false,
+    };
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
-  handleSignOut() {
-    this.props.signOut();
-    firebase.auth().signOut();
+  handleLogo() {
+    return this.props.displayName ? (
+      <LogoWithDN>My Recipes</LogoWithDN>
+    ) : (
+      <Logo>My Recipes</Logo>
+    );
+  }
+
+  toggleMenu() {
+    this.setState({ isMenuOpen: !this.state.isMenuOpen });
   }
 
   render() {
     return (
-      <Nav>
-        <h1>
-          {" "}
-          <Span>M</Span>Y <Span>R</Span>ECIPES
-        </h1>
-        <NavItems>
-          <div>{this.props.displayName}</div>
-          <div>
-            {this.props.displayName ? (
-              <SignOutBtn onClick={this.handleSignOut}>SIGN OUT</SignOutBtn>
-            ) : null}
-          </div>
-        </NavItems>
+      <Nav id="Nav bar">
+        {this.handleLogo()}
+        {this.props.displayName ? (
+          <NavMenuButton
+            className="fas fa-bars"
+            onClick={this.toggleMenu}
+          ></NavMenuButton>
+        ) : null}
+        <Spacer />
+        {this.state.isMenuOpen ? (
+          <NavMenu toggleMenu={this.toggleMenu} />
+        ) : null}
       </Nav>
     );
   }

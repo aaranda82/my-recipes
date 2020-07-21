@@ -51,8 +51,8 @@ class Auth extends Component<AuthProps> {
 
   render() {
     return (
-      <Container>
-        <p>Please sign-in:</p>
+      <Container id="Auth">
+        <p>Please sign-in or enter your email to sign up:</p>
         <StyledFirebaseAuth
           uiConfig={this.uiConfig}
           firebaseAuth={firebase.auth()}
