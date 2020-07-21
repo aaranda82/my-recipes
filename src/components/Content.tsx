@@ -1,5 +1,5 @@
 import React from "react";
-import Auth from "./Auth";
+import LandingPage from "./LandingPage";
 import Count from "./Count";
 const { connect } = require("react-redux");
 
@@ -7,7 +7,7 @@ function Content(props: { displayName: string }) {
   if (props.displayName) {
     return <Count />;
   } else {
-    return <Auth />;
+    return <LandingPage />;
   }
 }
 
