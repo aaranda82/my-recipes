@@ -4,10 +4,11 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { createGlobalStyle } from "styled-components";
+import { ColorScheme } from "./ColorScheme";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: #fffddd;
+    background-color: ${ColorScheme.ivory};
   }
 `;
 
