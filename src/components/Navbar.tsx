@@ -6,7 +6,7 @@ import { ColorScheme } from "../ColorScheme";
 import Spacer from "./Spacer";
 const { connect } = require("react-redux");
 
-const { blueMunsell, ivory, gunmetal } = ColorScheme;
+const { blueMunsell, gunmetal } = ColorScheme;
 
 const Nav = styled.div`
   display: flex;

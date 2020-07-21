@@ -5,7 +5,10 @@ import * as firebaseui from "firebaseui";
 import styled from "styled-components";
 import { signInAction, signOutAction } from "../actions/userActions";
 import { RootState } from "../reducers/rootReducer";
+import { ColorScheme } from "../ColorScheme";
 const { connect } = require("react-redux");
+
+const { gunmetal } = ColorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -18,7 +21,10 @@ const config = {
 firebase.initializeApp(config);
 
 const Container = styled.div`
-  border: 1px solid red;
+  margin: 50px;
+  font-family: "Raleway", sans-serif;
+  font-size: 2em;
+  color: ${gunmetal};
 `;
 
 interface AuthProps {
@@ -52,7 +58,7 @@ class Auth extends Component<AuthProps> {
   render() {
     return (
       <Container id="Auth">
-        <p>Please sign-in or enter your email to sign up:</p>
+        <p>Please enter email to log in/register</p>
         <StyledFirebaseAuth
           uiConfig={this.uiConfig}
           firebaseAuth={firebase.auth()}
