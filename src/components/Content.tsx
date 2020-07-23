@@ -1,11 +1,11 @@
 import React from "react";
 import LandingPage from "./LandingPage";
-import Count from "./Count";
+import UserLoggedIn from "./UserLoggedIn";
 const { connect } = require("react-redux");
 
 function Content(props: { displayName: string }) {
   if (props.displayName) {
-    return <Count />;
+    return <UserLoggedIn />;
   } else {
     return <LandingPage />;
   }
