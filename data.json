@@ -1,0 +1,271 @@
+[
+  {
+    "recipe": "Scrammbled Eggs",
+    "category": "Breakfast",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "eggs",
+        "quantity": 4,
+        "unit": "-"
+      },
+      {
+        "name": "butter",
+        "quantity": 1,
+        "unit": "tbsp"
+      },
+      {
+        "name": "salt",
+        "quantity": 0.25,
+        "unit": "tsp"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "beat eggs and salt in medium bowl"
+      },
+      {
+        "number": 2,
+        "instruction": "melt butter over medium heat in a medium sized non-stick pan"
+      },
+      {
+        "number": 3,
+        "instruction": "add beaten eggs to pan moving constantly with wooden spoon"
+      },
+      {
+        "number": 4,
+        "instruction": "remove eggs from heat just before they are fully cooked"
+      },
+      {
+        "number": 5,
+        "instruction": "serve"
+      }
+    ]
+  },
+  {
+    "recipe": "BLT",
+    "category": "lunch",
+    "servings": 1,
+    "ingredients": [
+      {
+        "name": "bacon",
+        "quantity": 4,
+        "unit": "strips"
+      },
+      {
+        "name": "lettuce",
+        "quantity": 2,
+        "unit": "pieces"
+      },
+      {
+        "name": "tomato",
+        "quantity": 2,
+        "unit": "slices"
+      },
+      {
+        "name": "sliced bread",
+        "quantity": 2,
+        "unit": "slices"
+      },
+      {
+        "name": "mayonaise",
+        "quantity": 1,
+        "unit": "tbsp"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "cook bacon as desired"
+      },
+      {
+        "number": 2,
+        "instruction": "toast bread lightly"
+      },
+      {
+        "number": 3,
+        "instruction": "add 1/2 tbsp mayonaise to each slice of toasted bread"
+      },
+      {
+        "number": 4,
+        "instruction": "add cooked bacon to one slice of bread, on the side of the mayonaise"
+      },
+      {
+        "number": 5,
+        "instruction": "place lettuce on top of bacon"
+      },
+      {
+        "number": 6,
+        "instruction": "place tomato on top of lettuce"
+      },
+      {
+        "number": 7,
+        "instruction": "place last piece of toasted bread on tomato, mayonaise side down, and serve"
+      }
+    ]
+  },
+  {
+    "recipe": "Baked Teriyaki Chicken",
+    "category": "dinner",
+    "servings": 6,
+    "ingredients": [
+      {
+        "name": "skinless chicken thighs",
+        "quantity": 12,
+        "unit": "-"
+      },
+      {
+        "name": "ground black pepper",
+        "quantity": 0.25,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "ground ginger",
+        "quantity": 0.5,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "minced garlic",
+        "quantity": 1,
+        "unit": "clove"
+      },
+      {
+        "name": "cider vinager",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "soy sauce",
+        "quantity": 0.5,
+        "unit": "cup"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 0.5,
+        "unit": "cup"
+      },
+      {
+        "name": "cold water",
+        "quantity": 1,
+        "unit": "tablespoon"
+      },
+      {
+        "name": "cornstarch",
+        "quantity": 1,
+        "unit": "tablespoon"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "In a small saucepan over low heat, combine the cornstarch, cold water, sugar, soy sauce, vinegar, garlic, ginger and ground black pepper. Let simmer, stirring frequently, until sauce thickens and bubbles."
+      },
+      {
+        "number": 2,
+        "instruction": "Preheat oven to 425 degrees F (220 degrees C)."
+      },
+      {
+        "number": 3,
+        "instruction": "Place chicken pieces in a lightly greased 9x13 inch baking dish. Brush chicken with the sauce. Turn pieces over, and brush again."
+      },
+      {
+        "number": 4,
+        "instruction": "Bake in the preheated oven for 30 minutes. Turn pieces over, and bake for another 30 minutes, until no longer pink and juices run clear. Brush with sauce every 10 minutes during cooking."
+      }
+    ]
+  },
+  {
+    "recipe": "strawberry cheesecake",
+    "category": "dessert",
+    "servings": 12,
+    "ingredients": [
+      {
+        "name": "graham cracker crumbs",
+        "quantity": 1.25,
+        "unit": "cups"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 0.25,
+        "unit": "cups"
+      },
+      {
+        "name": "ground cinnamon",
+        "quantity": 2,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "butter, melted",
+        "quantity": 0.333,
+        "unit": "cups"
+      },
+      {
+        "name": "frozen sweetened sliced strawberries, thawed and drained",
+        "quantity": 20,
+        "unit": "ounces"
+      },
+      {
+        "name": "cornstarch",
+        "quantity": 1,
+        "unit": "tablespoon"
+      },
+      {
+        "name": "cream cheese, softened",
+        "quantity": 24,
+        "unit": "ounces"
+      },
+      {
+        "name": "sweetened condensed milk",
+        "quantity": 14,
+        "unit": "ounces"
+      },
+      {
+        "name": "lemon juice",
+        "quantity": 0.25,
+        "unit": "cups"
+      },
+      {
+        "name": "vanilla extract",
+        "quantity": 0.25,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "large eggs",
+        "quantity": 3,
+        "unit": "-"
+      },
+      {
+        "name": "water",
+        "quantity": 1,
+        "unit": "tablespoon"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "Combine graham cracker crumbs, sugar, cinnamon, and butter in a bowl. Press onto the bottom of an ungreased 9-inch springform pan. Refrigerate for 30 minutes."
+      },
+      {
+        "number": 2,
+        "instruction": "Preheat oven to 300 degrees F (150 degrees C)."
+      },
+      {
+        "number": 3,
+        "instruction": "Place strawberries and cornstarch into a blender. Cover and puree until smooth. Pour strawberry sauce into a saucepan."
+      },
+      {
+        "number": 4,
+        "instruction": "Bring to a boil over high heat. Boil and stir until sauce is thick and shiny, about 2 minutes. Set aside 1/3 cup strawberry sauce; cool. Cover and refrigerate remaining sauce for serving."
+      },
+      {
+        "number": 5,
+        "instruction": "Beat cream cheese in a mixing bowl with an electric mixer until light and fluffy; gradually beat in condensed milk. Mix in lemon juice and vanilla extract, then beat in eggs on low speed until just combined. Pour half of cream cheese mixture over crust; drop half of reserved strawberry sauce by 1/2 teaspoonfuls on cream cheese layer. Carefully spoon remaining cream cheese mixture over sauce; drop remaining strawberry sauce by 1/2 teaspoonfuls on top. Cut through top layer only with a knife to swirl strawberry sauce."
+      },
+      {
+        "number": 6,
+        "instruction": "Bake in preheated oven until center is almost set, 45 to 50 minutes. Cool on a wire rack for 10 minutes. Carefully run a knife around edge of pan to loosen; cool 1 hour longer. Refrigerate overnight. Serve reserved strawberry sauce with cheesecake. If the sauce it too thick, stir in water."
+      }
+    ]
+  }
+]
