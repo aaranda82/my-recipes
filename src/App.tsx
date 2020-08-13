@@ -17,7 +17,7 @@ function App() {
     <Provider store={store}>
       <Navbar />
       <Container>
-        <Content />
+        <Content id="Content" />
       </Container>
     </Provider>
   );
