@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import firebase from "firebase";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import styled from "styled-components";
 import { signInAction, signOutAction } from "../actions/userActions";
@@ -25,6 +26,7 @@ const Container = styled.div`
   font-family: "Raleway", sans-serif;
   font-size: 2em;
   color: ${gunmetal};
+  top: 99px;
 `;
 
 interface AuthProps {
