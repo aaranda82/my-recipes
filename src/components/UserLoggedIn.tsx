@@ -5,8 +5,12 @@ import Breakfast from "../assets/Breakfast.jpg";
 import Lunch from "../assets/Lunch.jpg";
 import Dinner from "../assets/Dinner.jpg";
 import Dessert from "../assets/Dessert.jpg";
+import data from "../data.json";
+import { RootState } from "../reducers/rootReducer";
+import { loadRecipesAction } from "../actions/userRecipeAction";
+const { connect } = require("react-redux");
 
-const { gunmetal } = ColorScheme;
+const { gunmetal, bittersweet, ivory } = ColorScheme;
 
 const UserPage = styled.div`
   width: 80%;
@@ -47,16 +51,33 @@ const Image = styled.div<ImageProps>`
 
 const Recipes = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const Recipe = styled.div`
   border: 1px solid gold;
-  flex: 1;
   text-align: center;
+  width: 20%;
+  margin: 10px;
+  box-shadow: 10px 5px 5px ${gunmetal};
+  background-color: ${ivory};
+  transition: all ease 0.2s;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
-class UserLoggedIn extends Component {
+const RecipeImage = styled.div`
+  height: 200px;
+  background-color: ${bittersweet};
+`;
+
+interface UserLoggedInProps {
+  recipes: RootState["userRecipeReducer"];
+  loadRecipes: (r: RootState["userRecipeReducer"]) => void;
+}
+class UserLoggedIn extends Component<UserLoggedInProps> {
   handleCategory(category: string, image: string) {
     return (
       <Category>
@@ -67,12 +88,21 @@ class UserLoggedIn extends Component {
   }
 
   handleRecipe() {
-    return (
-      <Recipe>
-        <div>Recipe Image</div>
-        <div>Recipe</div>
-      </Recipe>
-    );
+    const allRecipes = this.props.recipes.map((recipeData, index) => {
+      const { recipe, category } = recipeData;
+      return (
+        <Recipe key={index}>
+          <RecipeImage>Recipe Image</RecipeImage>
+          <h4>{recipe}</h4>
+          <p>{category}</p>
+        </Recipe>
+      );
+    });
+    return allRecipes;
+  }
+
+  componentDidMount() {
+    this.props.loadRecipes(data);
   }
 
   render() {
@@ -87,13 +117,24 @@ class UserLoggedIn extends Component {
           {this.handleCategory("All Categories", Dessert)}
         </Categories>
         <div className="title">Recipes</div>
-        <Recipes id="Recipes">
-          {this.handleRecipe()}
-          {this.handleRecipe()}
-        </Recipes>
+        <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
       </UserPage>
     );
   }
 }
 
-export default UserLoggedIn;
+const mapStateToProps = (state: RootState) => {
+  return {
+    recipes: state.userRecipeReducer,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    loadRecipes: (recipes: RootState["userRecipeReducer"]) => {
+      dispatch(loadRecipesAction(recipes));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserLoggedIn);
