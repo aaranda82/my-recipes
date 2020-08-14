@@ -20,13 +20,22 @@ const Menu = styled.div`
   background: ${ivory};
   border: 1px solid ${gunmetal};
   & > div {
-    margin: 40px 0 40px 0;
+    margin: 40px;
     cursor: pointer;
     transition: all 1s ease;
   }
   & > div:hover {
     color: ${budGreen};
   }
+`;
+
+const Shadow = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${gunmetal};
+  opacity: 0.6;
+  top: 99px;
 `;
 
 interface NavProps {
@@ -49,15 +58,18 @@ class NavMenu extends Component<NavProps> {
 
   render() {
     return (
-      <Menu>
-        <div>{this.props.displayName}</div>
-        <Spacer />
-        <div>Favorites</div>
-        <Spacer />
-        <div>Account</div>
-        <Spacer />
-        <div onClick={this.handleSignOut}>Sign Out</div>
-      </Menu>
+      <>
+        <Shadow onClick={this.props.toggleMenu}></Shadow>
+        <Menu>
+          <div>{this.props.displayName}</div>
+          <Spacer />
+          <div>Favorites</div>
+          <Spacer />
+          <div>Account</div>
+          <Spacer />
+          <div onClick={this.handleSignOut}>Sign Out</div>
+        </Menu>
+      </>
     );
   }
 }

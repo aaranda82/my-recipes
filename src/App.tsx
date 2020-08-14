@@ -1,6 +1,7 @@
 import React from "react";
 import Content from "./components/Content";
 import Navbar from "./components/Navbar";
+import BottomNav from "./components/BottomNav";
 import { store } from "./store";
 import styled from "styled-components";
 
@@ -19,6 +20,7 @@ function App() {
       <Container>
         <Content id="Content" />
       </Container>
+      <BottomNav />
     </Provider>
   );
 }

@@ -6,7 +6,7 @@ import { ColorScheme } from "../ColorScheme";
 import Spacer from "./Spacer";
 const { connect } = require("react-redux");
 
-const { blueMunsell, gunmetal } = ColorScheme;
+const { blueMunsell, gunmetal, ivory } = ColorScheme;
 
 const Nav = styled.div`
   display: flex;
@@ -14,6 +14,9 @@ const Nav = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   text-align: center;
+  position: fixed;
+  width: 100%;
+  background-color: ${ivory};
 `;
 
 const LogoWithDN = styled.div`
@@ -80,11 +83,11 @@ class Navbar extends Component<NavProps, NavState> {
 
   render() {
     return (
-      <Nav id="Nav bar">
+      <Nav id="NavBar">
         {this.handleLogo()}
         {this.props.displayName ? (
           <NavMenuButton
-            className="fas fa-bars"
+            className={this.state.isMenuOpen ? "fas fa-times" : "fas fa-bars"}
             onClick={this.toggleMenu}
           ></NavMenuButton>
         ) : null}

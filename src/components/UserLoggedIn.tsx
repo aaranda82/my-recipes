@@ -14,6 +14,7 @@ const { gunmetal, bittersweet, ivory } = ColorScheme;
 
 const UserPage = styled.div`
   width: 80%;
+  padding: 99px 0 0;
   & .title {
     font-family: "Quattrocento", serif;
     font-size: 3em;
@@ -64,7 +65,8 @@ const Recipe = styled.div`
   background-color: ${ivory};
   transition: all ease 0.2s;
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
+    box-shadow: 15px 10px 10px ${gunmetal};
   }
 `;
 

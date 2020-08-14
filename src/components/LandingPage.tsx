@@ -8,6 +8,7 @@ const { gunmetal } = ColorScheme;
 const Container = styled.div`
   text-align: center;
   width: 80%;
+  padding: 99px 0 0;
 `;
 
 const Intro = styled.div`
