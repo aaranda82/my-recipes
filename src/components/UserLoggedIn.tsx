@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
-import Breakfast from "../assets/Breakfast.jpg";
-import Lunch from "../assets/Lunch.jpg";
-import Dinner from "../assets/Dinner.jpg";
-import Dessert from "../assets/Dessert.jpg";
 import data from "../data.json";
 import { RootState } from "../reducers/rootReducer";
 import { loadRecipesAction } from "../actions/userRecipeAction";
 const { connect } = require("react-redux");
 
-const { gunmetal, bittersweet, ivory } = ColorScheme;
+const { gunmetal, bittersweet, ivory, timberwolf } = ColorScheme;
 
 const UserPage = styled.div`
   width: 80%;
@@ -24,11 +20,11 @@ const UserPage = styled.div`
 `;
 const Categories = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 const Category = styled.div`
-  flex: 1;
+  width: 18%;
   text-align: center;
   display: flex;
   align-items: center;
@@ -36,18 +32,17 @@ const Category = styled.div`
   font-size: 1.5em;
   font-family: "Raleway", sans-serif;
   cursor: pointer;
+  transition: all ease 0.2s;
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 15px 10px 10px ${gunmetal};
+  }
 `;
 
-interface ImageProps {
-  image: string;
-}
-
-const Image = styled.div<ImageProps>`
-  width: 80%;
+const Image = styled.div`
+  width: 100%;
   padding-bottom: 40%;
-  background-image: url(${(props) => props.image});
-  background-size: cover;
-  background-position: center;
+  background-color: ${timberwolf};
 `;
 
 const Recipes = styled.div`
@@ -57,11 +52,10 @@ const Recipes = styled.div`
 `;
 
 const Recipe = styled.div`
-  border: 1px solid gold;
+  cursor: pointer;
   text-align: center;
   width: 20%;
   margin: 10px;
-  box-shadow: 10px 5px 5px ${gunmetal};
   background-color: ${ivory};
   transition: all ease 0.2s;
   &:hover {
@@ -80,13 +74,23 @@ interface UserLoggedInProps {
   loadRecipes: (r: RootState["userRecipeReducer"]) => void;
 }
 class UserLoggedIn extends Component<UserLoggedInProps> {
-  handleCategory(category: string, image: string) {
-    return (
-      <Category>
-        <Image image={image} className="image"></Image>
-        {category}
-      </Category>
-    );
+  handleCategory() {
+    const categories: string[] = [
+      "Breakfast",
+      "Lunch",
+      "Dinner",
+      "Dessert",
+      "All Categories",
+    ];
+    const catElements = categories.map((cat, index) => {
+      return (
+        <Category key={index}>
+          <Image className="image"></Image>
+          {cat}
+        </Category>
+      );
+    });
+    return catElements;
   }
 
   handleRecipe() {
@@ -111,13 +115,7 @@ class UserLoggedIn extends Component<UserLoggedInProps> {
     return (
       <UserPage id="UserPage">
         <div className="title">Categories</div>
-        <Categories id="Categories">
-          {this.handleCategory("Breakfast", Breakfast)}
-          {this.handleCategory("Lunch", Lunch)}
-          {this.handleCategory("Dinner", Dinner)}
-          {this.handleCategory("Dessert", Dessert)}
-          {this.handleCategory("All Categories", Dessert)}
-        </Categories>
+        <Categories id="Categories">{this.handleCategory()}</Categories>
         <div className="title">Recipes</div>
         <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
       </UserPage>
