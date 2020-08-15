@@ -4,6 +4,7 @@ import { ColorScheme } from "../ColorScheme";
 import data from "../data.json";
 import { RootState } from "../reducers/rootReducer";
 import { loadRecipesAction } from "../actions/userRecipeAction";
+import RecipeDetail from "./RecipeDetail";
 const { connect } = require("react-redux");
 
 const { gunmetal, bittersweet, ivory, timberwolf } = ColorScheme;
@@ -73,7 +74,27 @@ interface UserLoggedInProps {
   recipes: RootState["userRecipeReducer"];
   loadRecipes: (r: RootState["userRecipeReducer"]) => void;
 }
-class UserLoggedIn extends Component<UserLoggedInProps> {
+class UserLoggedIn extends Component<
+  UserLoggedInProps,
+  {
+    recipe: string;
+    category: string;
+    servings: number;
+    ingredients: { name: string; quantity: number; unit: string }[];
+    instructions: { number: number; instruction: string }[];
+  }
+> {
+  constructor(props: UserLoggedInProps) {
+    super(props);
+    this.state = {
+      recipe: "",
+      category: "",
+      servings: 0,
+      ingredients: [],
+      instructions: [],
+    };
+    this.clearRecipeState = this.clearRecipeState.bind(this);
+  }
   handleCategory() {
     const categories: string[] = [
       "Breakfast",
@@ -95,9 +116,26 @@ class UserLoggedIn extends Component<UserLoggedInProps> {
 
   handleRecipe() {
     const allRecipes = this.props.recipes.map((recipeData, index) => {
-      const { recipe, category } = recipeData;
+      const {
+        recipe,
+        category,
+        ingredients,
+        instructions,
+        servings,
+      } = recipeData;
       return (
-        <Recipe key={index}>
+        <Recipe
+          key={index}
+          onClick={() => {
+            this.setState({
+              recipe,
+              category,
+              ingredients,
+              instructions,
+              servings,
+            });
+          }}
+        >
           <RecipeImage>Recipe Image</RecipeImage>
           <h4>{recipe}</h4>
           <p>{category}</p>
@@ -111,15 +149,27 @@ class UserLoggedIn extends Component<UserLoggedInProps> {
     this.props.loadRecipes(data);
   }
 
+  clearRecipeState() {
+    this.setState({ recipe: "" });
+  }
+
+  handleRender() {
+    if (this.state.recipe) {
+      return <RecipeDetail c={this.clearRecipeState} recipe={this.state} />;
+    } else {
+      return (
+        <UserPage id="UserPage">
+          <div className="title">Categories</div>
+          <Categories id="Categories">{this.handleCategory()}</Categories>
+          <div className="title">Recipes</div>
+          <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
+        </UserPage>
+      );
+    }
+  }
+
   render() {
-    return (
-      <UserPage id="UserPage">
-        <div className="title">Categories</div>
-        <Categories id="Categories">{this.handleCategory()}</Categories>
-        <div className="title">Recipes</div>
-        <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
-      </UserPage>
-    );
+    return this.handleRender();
   }
 }
 
