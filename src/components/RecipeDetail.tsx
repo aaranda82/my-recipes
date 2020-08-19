@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 
-const { blueMunsell, budGreen } = ColorScheme;
+const { blueMunsell, cafeAuLait } = ColorScheme;
 
 const RecipeDetailDiv = styled.div`
   margin-top: 99px;
@@ -25,7 +25,7 @@ const Exit = styled.div`
 const Image = styled.div`
   height: auto;
   width: 40%;
-  background-color: ${budGreen};
+  background-color: ${cafeAuLait};
   @media (max-width: 400px) {
     display: none;
   }
