@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 
-const { blueMunsell, budGreen, bittersweet } = ColorScheme;
+const { blueMunsell, budGreen } = ColorScheme;
 
 const RecipeDetailDiv = styled.div`
   margin-top: 99px;
