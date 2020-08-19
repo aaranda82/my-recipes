@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 
+const { blueMunsell, budGreen, bittersweet } = ColorScheme;
+
 const RecipeDetailDiv = styled.div`
   margin-top: 99px;
   width: 70%;
-  height: 100vh;
   display: flex;
   flex-wrap: wrap;
+  @media (max-width: 400px) {
+    width: 100%;
+  }
 `;
 
 const Exit = styled.div`
@@ -15,37 +19,48 @@ const Exit = styled.div`
   right: 3%;
   font-size: 2em;
   cursor: pointer;
-  color: ${ColorScheme.blueMunsell};
+  color: ${blueMunsell};
 `;
 
 const Image = styled.div`
   height: auto;
   width: 40%;
-  background-color: ${ColorScheme.budGreen};
+  background-color: ${budGreen};
+  @media (max-width: 400px) {
+    display: none;
+  }
 `;
 
 const RecipeHeading = styled.div`
   width: 100%;
-`;
-
-const Recipe = styled.h1`
   text-align: center;
-`;
-
-const Category = styled.div`
-  text-align: center;
-`;
-
-const Servings = styled.div`
-  text-align: center;
+  padding-bottom: 20px;
 `;
 
 const Ingredients = styled.div`
   width: 60%;
+  @media (max-width: 400px) {
+    width: 100%;
+    margin: 20px;
+  }
+`;
+
+const Ingredient = styled.div`
+  margin-left: 10px;
+  @media (max-width: 400px) {
+    margin: 0;
+  }
 `;
 
 const Instructions = styled.div`
   width: 100%;
+  @media (max-width: 400px) {
+    margin: 20px;
+  }
+`;
+
+const Instruction = styled.div`
+  margin-bottom: 10px;
 `;
 
 interface RecipeDetailProps {
@@ -65,15 +80,15 @@ class RecipeDetail extends Component<RecipeDetailProps> {
       (i: { name: string; quantity: number; unit: string }, key: number) => {
         if (i.unit === "-") {
           return (
-            <div key={key}>
+            <Ingredient key={key}>
               {i.quantity} {i.name}
-            </div>
+            </Ingredient>
           );
         } else {
           return (
-            <div key={key}>
+            <Ingredient key={key}>
               {i.quantity} {i.unit} {i.name}
-            </div>
+            </Ingredient>
           );
         }
       }
@@ -85,9 +100,9 @@ class RecipeDetail extends Component<RecipeDetailProps> {
     const instructionsList = this.props.recipe.instructions.map(
       (i: { number: number; instruction: string }, key: number) => {
         return (
-          <div key={key}>
-            {i.number}. {i.instruction}
-          </div>
+          <Instruction key={key}>
+            <strong>{i.number}.</strong> {i.instruction}
+          </Instruction>
         );
       }
     );
@@ -104,9 +119,9 @@ class RecipeDetail extends Component<RecipeDetailProps> {
           onClick={() => this.props.c()}
         />
         <RecipeHeading>
-          <Recipe>{recipe}</Recipe>
-          <Category>{category}</Category>
-          <Servings>Servings: {servings}</Servings>
+          <h1>{recipe}</h1>
+          <div>{category}</div>
+          <div>Servings: {servings}</div>
         </RecipeHeading>
         <Image></Image>
         <Ingredients>{this.handleIngredients()}</Ingredients>

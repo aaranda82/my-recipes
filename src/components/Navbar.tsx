@@ -17,7 +17,7 @@ const Nav = styled.div`
   position: fixed;
   width: 100%;
   background-color: ${ivory};
-  z-index: 1;
+  z-index: 5;
 `;
 
 const LogoWithDN = styled.div`
