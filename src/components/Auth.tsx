@@ -20,6 +20,7 @@ const config = {
   measurementId: "G-BJ3YHDCKZV",
 };
 firebase.initializeApp(config);
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 const Container = styled.div`
   margin: 50px;

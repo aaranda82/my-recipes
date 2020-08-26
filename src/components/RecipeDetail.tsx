@@ -23,7 +23,7 @@ const Exit = styled.div`
 `;
 
 const Image = styled.div`
-  height: auto;
+  min-height: 200px;
   width: 40%;
   background-color: ${cafeAuLait};
   @media (max-width: 400px) {

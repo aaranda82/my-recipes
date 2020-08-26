@@ -5,9 +5,10 @@ import data from "../data.json";
 import { RootState } from "../reducers/rootReducer";
 import { loadRecipesAction } from "../actions/userRecipeAction";
 import RecipeDetail from "./RecipeDetail";
+import Lunch from "../assets/Lunch.jpg";
 const { connect } = require("react-redux");
 
-const { gunmetal, bittersweet, ivory, timberwolf } = ColorScheme;
+const { gunmetal, timberwolf } = ColorScheme;
 
 const UserPage = styled.div`
   width: 80%;
@@ -22,6 +23,15 @@ const UserPage = styled.div`
 const Categories = styled.div`
   display: flex;
   justify-content: space-around;
+  @media (max-width: 500px) {
+    display: none;
+  }
+`;
+
+const CatTitle = styled.div`
+  @media (max-width: 500px) {
+    display: none;
+  }
 `;
 
 const Category = styled.div`
@@ -40,7 +50,7 @@ const Category = styled.div`
   }
 `;
 
-const Image = styled.div`
+const CategoryImage = styled.div`
   width: 100%;
   padding-bottom: 40%;
   background-color: ${timberwolf};
@@ -57,18 +67,31 @@ const Recipe = styled.div`
   text-align: center;
   width: 20%;
   margin: 10px;
-  background-color: ${ivory};
+  background-color: ${timberwolf};
   transition: all ease 0.2s;
   &:hover {
     transform: scale(1.1);
     box-shadow: 15px 10px 10px ${gunmetal};
   }
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
-const RecipeImage = styled.div`
-  height: 200px;
-  background-color: ${bittersweet};
+const RecipeImage = styled.img`
+  height: auto;
+  width: 100%;
+  background-image: url(${Lunch});
+  background-size: cover;
+  background-position: center;
 `;
+
+const RecipeName = styled.div`
+  font-weight: 600;
+  margin: 5px 0;
+`;
+
+const RecipeCategory = styled.div``;
 
 interface UserLoggedInProps {
   recipes: RootState["userRecipeReducer"];
@@ -106,7 +129,7 @@ class UserLoggedIn extends Component<
     const catElements = categories.map((cat, index) => {
       return (
         <Category key={index}>
-          <Image className="image"></Image>
+          <CategoryImage className="categoryImage"></CategoryImage>
           {cat}
         </Category>
       );
@@ -136,9 +159,9 @@ class UserLoggedIn extends Component<
             });
           }}
         >
-          <RecipeImage>Recipe Image</RecipeImage>
-          <h4>{recipe}</h4>
-          <p>{category}</p>
+          <RecipeImage src={Lunch} alt="Lunch" />
+          <RecipeName>{recipe}</RecipeName>
+          <RecipeCategory>{category}</RecipeCategory>
         </Recipe>
       );
     });
@@ -159,7 +182,7 @@ class UserLoggedIn extends Component<
     } else {
       return (
         <UserPage id="UserPage">
-          <div className="title">Categories</div>
+          <CatTitle className="title">Categories</CatTitle>
           <Categories id="Categories">{this.handleCategory()}</Categories>
           <div className="title">Recipes</div>
           <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
