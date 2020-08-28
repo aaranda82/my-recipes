@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NavMenu from "./NavMenu";
+import Menu from "./Menu";
 import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
@@ -14,13 +14,13 @@ const Nav = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   text-align: center;
-  position: fixed;
+  position: sticky;
   width: 100%;
   background-color: ${ivory};
   z-index: 5;
 `;
 
-const LogoWithDN = styled.div`
+const LoggedInLogo = styled.div`
   font-family: "Raleway", sans-serif;
   font-weight: 100;
   font-size: 3em;
@@ -52,6 +52,15 @@ const NavMenuButton = styled.div`
   }
 `;
 
+const Shadow = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${gunmetal};
+  opacity: 0.6;
+  top: 99px;
+`;
+
 interface NavProps {
   displayName: string;
   signOut: () => void;
@@ -61,7 +70,7 @@ interface NavState {
   isMenuOpen: boolean;
 }
 
-class Navbar extends Component<NavProps, NavState> {
+class Header extends Component<NavProps, NavState> {
   constructor(props: NavProps) {
     super(props);
     this.state = {
@@ -72,7 +81,7 @@ class Navbar extends Component<NavProps, NavState> {
 
   handleLogo() {
     return this.props.displayName ? (
-      <LogoWithDN>My Recipes</LogoWithDN>
+      <LoggedInLogo>My Recipes</LoggedInLogo>
     ) : (
       <Logo>My Recipes</Logo>
     );
@@ -82,9 +91,22 @@ class Navbar extends Component<NavProps, NavState> {
     this.setState({ isMenuOpen: !this.state.isMenuOpen });
   }
 
+  renderMenu() {
+    if (this.props.displayName && this.state.isMenuOpen) {
+      return (
+        <>
+          <Shadow onClick={this.toggleMenu}></Shadow>
+          <Menu />
+        </>
+      );
+    } else {
+      return false;
+    }
+  }
+
   render() {
     return (
-      <Nav id="NavBar">
+      <Nav id="Header">
         {this.handleLogo()}
         {this.props.displayName ? (
           <NavMenuButton
@@ -93,9 +115,7 @@ class Navbar extends Component<NavProps, NavState> {
           ></NavMenuButton>
         ) : null}
         <Spacer />
-        {this.state.isMenuOpen ? (
-          <NavMenu toggleMenu={this.toggleMenu} />
-        ) : null}
+        {this.renderMenu()}
       </Nav>
     );
   }
@@ -121,4 +141,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

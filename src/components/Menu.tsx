@@ -4,11 +4,12 @@ import { signOutAction } from "../actions/userActions";
 import firebase from "firebase";
 import { ColorScheme } from "../ColorScheme";
 import Spacer from "./Spacer";
+import { withRouter } from "react-router";
 const { connect } = require("react-redux");
 
 const { ivory, blueMunsell, budGreen, gunmetal } = ColorScheme;
 
-const Menu = styled.div`
+const MenuDiv = styled.div`
   font-size: 2em;
   font-family: "Quattrocento", serif;
   font-weight: 600;
@@ -29,38 +30,29 @@ const Menu = styled.div`
   }
 `;
 
-const Shadow = styled.div`
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  background-color: ${gunmetal};
-  opacity: 0.6;
-  top: 99px;
-`;
-
 interface NavProps {
   displayName: string;
   signOut: () => void;
-  toggleMenu: () => void;
+  toggleMenu: any;
+  history: { push: any };
 }
 
-class NavMenu extends Component<NavProps> {
+class Menu extends Component<NavProps> {
   constructor(props: NavProps) {
     super(props);
     this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   handleSignOut() {
+    this.props.history.push("/login");
     this.props.signOut();
     firebase.auth().signOut();
-    this.props.toggleMenu();
   }
 
   render() {
     return (
       <>
-        <Shadow onClick={this.props.toggleMenu}></Shadow>
-        <Menu>
+        <MenuDiv>
           <div>{this.props.displayName}</div>
           <Spacer />
           <div>Favorites</div>
@@ -68,7 +60,7 @@ class NavMenu extends Component<NavProps> {
           <div>Account</div>
           <Spacer />
           <div onClick={this.handleSignOut}>Sign Out</div>
-        </Menu>
+        </MenuDiv>
       </>
     );
   }
@@ -94,4 +86,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Menu));
