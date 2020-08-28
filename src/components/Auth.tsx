@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { signInAction, signOutAction } from "../actions/userActions";
 import { RootState } from "../reducers/rootReducer";
 import { ColorScheme } from "../ColorScheme";
+import { withRouter } from "react-router";
 const { connect } = require("react-redux");
 
 const { gunmetal } = ColorScheme;
@@ -24,23 +25,24 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 const Container = styled.div`
   margin: 50px;
-  font-family: "Raleway", sans-serif;
-  font-size: 2em;
   color: ${gunmetal};
   top: 99px;
+  text-align: center;
+  font-family: "Raleway", sans-serif;
 `;
-
 interface AuthProps {
   displayName: string;
   isSignedIn: boolean;
   signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
+  history: { push: any };
 }
 
 class Auth extends Component<AuthProps> {
   uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: () => {
+        this.props.history.push("/publicpage");
         return false;
       },
     },
@@ -61,6 +63,7 @@ class Auth extends Component<AuthProps> {
   render() {
     return (
       <Container id="Auth">
+        <h2>A place for all your culinary creations</h2>
         <p>Please enter email to log in/register</p>
         <StyledFirebaseAuth
           uiConfig={this.uiConfig}
@@ -90,4 +93,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));

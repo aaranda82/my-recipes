@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import data from "../data.json";
-import { RootState } from "../reducers/rootReducer";
-import { loadRecipesAction } from "../actions/userRecipeAction";
 import RecipeDetail from "./RecipeDetail";
 import Lunch from "../assets/Lunch.jpg";
-const { connect } = require("react-redux");
 
 const { gunmetal, timberwolf } = ColorScheme;
 
@@ -93,21 +90,18 @@ const RecipeName = styled.div`
 
 const RecipeCategory = styled.div``;
 
-interface UserLoggedInProps {
-  recipes: RootState["userRecipeReducer"];
-  loadRecipes: (r: RootState["userRecipeReducer"]) => void;
+interface IProps {}
+
+interface IState {
+  recipe: string;
+  category: string;
+  servings: number;
+  ingredients: { name: string; quantity: number; unit: string }[];
+  instructions: { number: number; instruction: string }[];
 }
-class UserLoggedIn extends Component<
-  UserLoggedInProps,
-  {
-    recipe: string;
-    category: string;
-    servings: number;
-    ingredients: { name: string; quantity: number; unit: string }[];
-    instructions: { number: number; instruction: string }[];
-  }
-> {
-  constructor(props: UserLoggedInProps) {
+
+class PublicPage extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       recipe: "",
@@ -138,7 +132,7 @@ class UserLoggedIn extends Component<
   }
 
   handleRecipe() {
-    const allRecipes = this.props.recipes.map((recipeData, index) => {
+    const allRecipes = data.map((recipeData, index) => {
       const {
         recipe,
         category,
@@ -168,12 +162,14 @@ class UserLoggedIn extends Component<
     return allRecipes;
   }
 
-  componentDidMount() {
-    this.props.loadRecipes(data);
-  }
-
   clearRecipeState() {
-    this.setState({ recipe: "" });
+    this.setState({
+      recipe: "",
+      category: "",
+      servings: 0,
+      ingredients: [],
+      instructions: [],
+    });
   }
 
   handleRender() {
@@ -196,18 +192,4 @@ class UserLoggedIn extends Component<
   }
 }
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    recipes: state.userRecipeReducer,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    loadRecipes: (recipes: RootState["userRecipeReducer"]) => {
-      dispatch(loadRecipesAction(recipes));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserLoggedIn);
+export default PublicPage;

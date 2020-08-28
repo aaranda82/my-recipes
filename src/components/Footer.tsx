@@ -8,7 +8,7 @@ const Nav = styled.div`
   align-items: center;
 `;
 
-function BottomNav() {
+function Footer() {
   return (
     <Nav>
       Created by
@@ -18,4 +18,4 @@ function BottomNav() {
   );
 }
 
-export default BottomNav;
+export default Footer;
