@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PublicPage from "./components/PublicPage";
 import RecipeDetail from "./components/RecipeDetail";
+import AccountPage from "./components/AccountPage";
 import { store } from "./store";
 import {
   BrowserRouter as Router,
@@ -26,6 +27,7 @@ function App(props: any) {
           </Route>
           <Route path="/login" component={Auth} />
           <Route path="/publicpage" component={PublicPage} />
+          <Route path="/account" component={AccountPage} />
           <Route path="/recipedetail/:id" component={RecipeDetail} />
         </Switch>
         <Footer />

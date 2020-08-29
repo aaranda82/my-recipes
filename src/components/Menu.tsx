@@ -41,6 +41,8 @@ class Menu extends Component<NavProps> {
   constructor(props: NavProps) {
     super(props);
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.handleAccountRoute = this.handleAccountRoute.bind(this);
+    this.handlePublicPageRoute = this.handlePublicPageRoute.bind(this);
   }
 
   handleSignOut() {
@@ -49,15 +51,23 @@ class Menu extends Component<NavProps> {
     firebase.auth().signOut();
   }
 
+  handleAccountRoute() {
+    this.props.history.push("/account");
+  }
+
+  handlePublicPageRoute() {
+    this.props.history.push("/publicpage");
+  }
+
   render() {
     return (
       <>
         <MenuDiv>
-          <div>{this.props.displayName}</div>
+          <div onClick={this.handlePublicPageRoute}>Public Page</div>
           <Spacer />
-          <div>Favorites</div>
+          <div>{this.props.displayName}'s Favorites</div>
           <Spacer />
-          <div>Account</div>
+          <div onClick={this.handleAccountRoute}>Account</div>
           <Spacer />
           <div onClick={this.handleSignOut}>Sign Out</div>
         </MenuDiv>
