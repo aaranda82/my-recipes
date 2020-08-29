@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import { Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router";
+import data from "../data.json";
 
 const { blueMunsell, cafeAuLait } = ColorScheme;
 
 const RecipeDetailDiv = styled.div`
-  margin-top: 99px;
   width: 70%;
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
   @media (max-width: 400px) {
@@ -15,8 +18,10 @@ const RecipeDetailDiv = styled.div`
 `;
 
 const Exit = styled.div`
-  position: absolute;
+  z-index: 6;
+  position: fixed;
   right: 3%;
+  top: 5%;
   font-size: 2em;
   cursor: pointer;
   color: ${blueMunsell};
@@ -54,6 +59,7 @@ const Ingredient = styled.div`
 
 const Instructions = styled.div`
   width: 100%;
+  margin-top: 20px;
   @media (max-width: 400px) {
     margin: 20px;
   }
@@ -63,9 +69,10 @@ const Instruction = styled.div`
   margin-bottom: 10px;
 `;
 
-interface RecipeDetailProps {
+interface IProps extends RouteComponentProps<{ id: string }> {
   c: () => void;
   recipe: {
+    recipeId: number;
     recipe: string;
     category: string;
     servings: number;
@@ -73,10 +80,30 @@ interface RecipeDetailProps {
     instructions: { number: number; instruction: string }[];
   };
 }
+interface IState {
+  recipeId: number;
+  recipe: string;
+  category: string;
+  servings: number;
+  ingredients: { name: string; quantity: number; unit: string }[];
+  instructions: { number: number; instruction: string }[];
+}
 
-class RecipeDetail extends Component<RecipeDetailProps> {
+class RecipeDetail extends Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      recipeId: 0,
+      recipe: "",
+      category: "",
+      servings: 0,
+      ingredients: [],
+      instructions: [],
+    };
+  }
+
   handleIngredients() {
-    const ingredientsList = this.props.recipe.ingredients.map(
+    const ingredientsList = this.state.ingredients.map(
       (i: { name: string; quantity: number; unit: string }, key: number) => {
         if (i.unit === "-") {
           return (
@@ -97,7 +124,7 @@ class RecipeDetail extends Component<RecipeDetailProps> {
   }
 
   handleInstructions() {
-    const instructionsList = this.props.recipe.instructions.map(
+    const instructionsList = this.state.instructions.map(
       (i: { number: number; instruction: string }, key: number) => {
         return (
           <Instruction key={key}>
@@ -109,19 +136,45 @@ class RecipeDetail extends Component<RecipeDetailProps> {
     return instructionsList;
   }
 
+  componentDidMount() {
+    //get id from router params
+    const { id } = this.props.match.params;
+    const idArr = id.split("");
+    let parsedId = parseFloat(idArr[1]);
+    // filter through recipes to match recipeId to params
+    const recipeArr = data.filter((r: IState) => {
+      return r.recipeId === parsedId;
+    });
+    console.log(recipeArr[0]);
+    const {
+      recipeId,
+      recipe,
+      category,
+      servings,
+      ingredients,
+      instructions,
+    } = recipeArr[0];
+    // save matching recipe to state
+    this.setState({
+      recipeId,
+      recipe,
+      category,
+      servings,
+      ingredients,
+      instructions,
+    });
+  }
+
   render() {
-    const { recipe, category, servings } = this.props.recipe;
     return (
       <RecipeDetailDiv>
-        <Exit
-          id="Exit"
-          className="fas fa-times"
-          onClick={() => this.props.c()}
-        />
+        <Link to={"/publicpage"}>
+          <Exit id="Exit" className="fas fa-times" />
+        </Link>
         <RecipeHeading>
-          <h1>{recipe}</h1>
-          <div>{category}</div>
-          <div>Servings: {servings}</div>
+          <h1>{this.state.recipe}</h1>
+          <div>{this.state.category}</div>
+          <div>Servings: {this.state.servings}</div>
         </RecipeHeading>
         <Image></Image>
         <Ingredients>{this.handleIngredients()}</Ingredients>
@@ -131,4 +184,4 @@ class RecipeDetail extends Component<RecipeDetailProps> {
   }
 }
 
-export default RecipeDetail;
+export default withRouter(RecipeDetail);

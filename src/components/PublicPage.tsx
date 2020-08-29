@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import data from "../data.json";
-import RecipeDetail from "./RecipeDetail";
 import Lunch from "../assets/Lunch.jpg";
+import { Link } from "react-router-dom";
 
 const { gunmetal, timberwolf } = ColorScheme;
 
-const UserPage = styled.div`
+const PublicPageDiv = styled.div`
   width: 80%;
-  padding: 99px 0 0;
+  margin: auto;
   & .title {
     font-family: "Quattrocento", serif;
     font-size: 3em;
@@ -18,6 +18,7 @@ const UserPage = styled.div`
   }
 `;
 const Categories = styled.div`
+  width: 100%;
   display: flex;
   justify-content: space-around;
   @media (max-width: 500px) {
@@ -26,6 +27,7 @@ const Categories = styled.div`
 `;
 
 const CatTitle = styled.div`
+  width: 100%;
   @media (max-width: 500px) {
     display: none;
   }
@@ -59,6 +61,10 @@ const Recipes = styled.div`
   flex-wrap: wrap;
 `;
 
+const Recipestitle = styled.div`
+  width: 100%;
+`;
+
 const Recipe = styled.div`
   cursor: pointer;
   text-align: center;
@@ -88,107 +94,88 @@ const RecipeName = styled.div`
   margin: 5px 0;
 `;
 
-const RecipeCategory = styled.div``;
-
-interface IProps {}
-
 interface IState {
-  recipe: string;
   category: string;
-  servings: number;
-  ingredients: { name: string; quantity: number; unit: string }[];
-  instructions: { number: number; instruction: string }[];
 }
 
-class PublicPage extends Component<IProps, IState> {
-  constructor(props: IProps) {
+class PublicPage extends Component<{}, IState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
-      recipe: "",
-      category: "",
-      servings: 0,
-      ingredients: [],
-      instructions: [],
+      category: "ALL",
     };
-    this.clearRecipeState = this.clearRecipeState.bind(this);
   }
-  handleCategory() {
-    const categories: string[] = [
-      "Breakfast",
-      "Lunch",
-      "Dinner",
-      "Dessert",
-      "All Categories",
-    ];
+
+  changeCategory(category: string) {
+    this.setState({ category });
+  }
+
+  renderCategories() {
+    const categories: string[] = [];
+    for (let x = 0; x < data.length; x++) {
+      let cat = data[x].category;
+      if (!categories.includes(cat)) {
+        categories.push(cat);
+      }
+    }
     const catElements = categories.map((cat, index) => {
       return (
-        <Category key={index}>
+        <Category key={index} onClick={() => this.changeCategory(cat)}>
           <CategoryImage className="categoryImage"></CategoryImage>
-          {cat}
+          <div>{cat}</div>
         </Category>
       );
     });
+    catElements.push(
+      <Category key={200} onClick={() => this.changeCategory("ALL")}>
+        <CategoryImage className="categoryImage"></CategoryImage>
+        <div>ALL</div>
+      </Category>
+    );
     return catElements;
   }
 
   handleRecipe() {
-    const allRecipes = data.map((recipeData, index) => {
-      const {
-        recipe,
-        category,
-        ingredients,
-        instructions,
-        servings,
-      } = recipeData;
+    let recipesByCat: {
+      recipeId: number;
+      recipe: string;
+      category: string;
+      servings: number;
+      ingredients: { name: string; quantity: number; unit: string }[];
+      instructions: { number: number; instruction: string }[];
+    }[] = [];
+    if (this.state.category === "ALL") {
+      recipesByCat = data;
+    } else {
+      recipesByCat = data.filter((r) => r.category === this.state.category);
+    }
+    const allRecipes = recipesByCat.map((recipeData, index) => {
+      const { recipeId, recipe, category } = recipeData;
       return (
-        <Recipe
-          key={index}
-          onClick={() => {
-            this.setState({
-              recipe,
-              category,
-              ingredients,
-              instructions,
-              servings,
-            });
-          }}
-        >
-          <RecipeImage src={Lunch} alt="Lunch" />
-          <RecipeName>{recipe}</RecipeName>
-          <RecipeCategory>{category}</RecipeCategory>
+        <Recipe key={index}>
+          <Link
+            to={`/recipedetail/:${recipeId}`}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <RecipeImage src={Lunch} alt="Lunch" />
+            <RecipeName>{recipe}</RecipeName>
+            <div>{category}</div>
+          </Link>
         </Recipe>
       );
     });
     return allRecipes;
   }
 
-  clearRecipeState() {
-    this.setState({
-      recipe: "",
-      category: "",
-      servings: 0,
-      ingredients: [],
-      instructions: [],
-    });
-  }
-
-  handleRender() {
-    if (this.state.recipe) {
-      return <RecipeDetail c={this.clearRecipeState} recipe={this.state} />;
-    } else {
-      return (
-        <UserPage id="UserPage">
-          <CatTitle className="title">Categories</CatTitle>
-          <Categories id="Categories">{this.handleCategory()}</Categories>
-          <div className="title">Recipes</div>
-          <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
-        </UserPage>
-      );
-    }
-  }
-
   render() {
-    return this.handleRender();
+    return (
+      <PublicPageDiv id="PublicPage">
+        <CatTitle className="title">Categories</CatTitle>
+        <Categories id="Categories">{this.renderCategories()}</Categories>
+        <Recipestitle className="title">Recipes</Recipestitle>
+        <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
+      </PublicPageDiv>
+    );
   }
 }
 
