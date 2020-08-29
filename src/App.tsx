@@ -3,10 +3,11 @@ import Auth from "./components/Auth";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PublicPage from "./components/PublicPage";
+import RecipeDetail from "./components/RecipeDetail";
 import { store } from "./store";
 import {
   BrowserRouter as Router,
-  // Switch,
+  Switch,
   Route,
   Redirect,
   withRouter,
@@ -19,11 +20,14 @@ function App(props: any) {
     <Provider store={store}>
       <Router>
         <Header />
-        <Route exact path="/">
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/login" component={Auth} />
-        <Route path="/publicpage" component={PublicPage} />
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+          <Route path="/login" component={Auth} />
+          <Route path="/publicpage" component={PublicPage} />
+          <Route path="/recipedetail/:id" component={RecipeDetail} />
+        </Switch>
         <Footer />
       </Router>
     </Provider>
