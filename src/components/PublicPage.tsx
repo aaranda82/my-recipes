@@ -17,7 +17,12 @@ const PublicPageDiv = styled.div`
     color: ${gunmetal};
   }
 `;
-const Categories = styled.div`
+
+const CategoryViewer = styled.div`
+  background-color: ${timberwolf};
+`;
+
+const CategoriesContent = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -33,8 +38,9 @@ const CatTitle = styled.div`
   }
 `;
 
-const Category = styled.div`
-  width: 18%;
+const Category = styled.a`
+  width: 150px;
+  margin: 0 20px;
   text-align: center;
   display: flex;
   align-items: center;
@@ -95,25 +101,25 @@ const RecipeName = styled.div`
 `;
 
 interface IState {
-  category: string;
+  categoryToShow: string;
 }
 
 class PublicPage extends Component<{}, IState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      category: "ALL",
+      categoryToShow: "ALL",
     };
   }
 
-  changeCategory(category: string) {
-    this.setState({ category });
+  changeCategory(categoryToShow: string) {
+    this.setState({ categoryToShow });
   }
 
   renderCategories() {
-    const categories: string[] = [];
+    const categories: string[] = ["ALL"];
     for (let x = 0; x < data.length; x++) {
-      let cat = data[x].category;
+      let cat = data[x].category.toUpperCase();
       if (!categories.includes(cat)) {
         categories.push(cat);
       }
@@ -126,12 +132,6 @@ class PublicPage extends Component<{}, IState> {
         </Category>
       );
     });
-    catElements.push(
-      <Category key={200} onClick={() => this.changeCategory("ALL")}>
-        <CategoryImage className="categoryImage"></CategoryImage>
-        <div>ALL</div>
-      </Category>
-    );
     return catElements;
   }
 
@@ -144,13 +144,15 @@ class PublicPage extends Component<{}, IState> {
       ingredients: { name: string; quantity: number; unit: string }[];
       instructions: { number: number; instruction: string }[];
     }[] = [];
-    if (this.state.category === "ALL") {
+    if (this.state.categoryToShow === "ALL") {
       recipesByCat = data;
     } else {
-      recipesByCat = data.filter((r) => r.category === this.state.category);
+      recipesByCat = data.filter(
+        (r) => r.category === this.state.categoryToShow
+      );
     }
     const allRecipes = recipesByCat.map((recipeData, index) => {
-      const { recipeId, recipe, category } = recipeData;
+      const { recipeId, recipe } = recipeData;
       return (
         <Recipe key={index}>
           <Link
@@ -159,7 +161,6 @@ class PublicPage extends Component<{}, IState> {
           >
             <RecipeImage src={Lunch} alt="Lunch" />
             <RecipeName>{recipe}</RecipeName>
-            <div>{category}</div>
           </Link>
         </Recipe>
       );
@@ -171,7 +172,11 @@ class PublicPage extends Component<{}, IState> {
     return (
       <PublicPageDiv id="PublicPage">
         <CatTitle className="title">Categories</CatTitle>
-        <Categories id="Categories">{this.renderCategories()}</Categories>
+        <CategoryViewer>
+          <CategoriesContent id="Categories">
+            {this.renderCategories()}
+          </CategoriesContent>
+        </CategoryViewer>
         <Recipestitle className="title">Recipes</Recipestitle>
         <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
       </PublicPageDiv>

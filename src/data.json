@@ -544,5 +544,207 @@
         "instruction": "Bake in preheated oven until center is almost set, 45 to 50 minutes. Cool on a wire rack for 10 minutes. Carefully run a knife around edge of pan to loosen; cool 1 hour longer. Refrigerate overnight. Serve reserved strawberry sauce with cheesecake. If the sauce it too thick, stir in water."
       }
     ]
+  },
+  {
+    "recipeId": 9,
+    "recipe": "Fresh Southern Peach Cobbler",
+    "category": "Sweet",
+    "servings": 4,
+    "ingredients": [
+      {
+        "name": "medium fresh peaches - peeled, pitted and sliced into thin wedges (approx 4 per lbs) ",
+        "quantity": 8,
+        "unit": "-"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "brown sugar",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "ground cinnamon",
+        "quantity": 0.25,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "ground nutmeng",
+        "quantity": 0.125,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "fresh lemon juice",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "cornstarch",
+        "quantity": 2,
+        "unit": "teaspoons"
+      },
+      {
+        "name": "all purpose flour",
+        "quantity": 1,
+        "unit": "cup"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "baking powder",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "salt",
+        "quantity": 0.5,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "unsalted butter, chilled and cut into small pieces",
+        "quantity": 6,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "boiling water",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 3,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "ground cinnamon",
+        "quantity": 1,
+        "unit": "teaspoon"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "Preheat oven to 425 degrees F (220 degrees C)."
+      },
+      {
+        "number": 2,
+        "instruction": "In a large bowl, combine peaches, 1/4 cup white sugar, 1/4 cup brown sugar, 1/4 teaspoon cinnamon, nutmeg, lemon juice, and cornstarch. Toss to coat evenly, and pour into a 2 quart baking dish. Bake in preheated oven for 10 minutes."
+      },
+      {
+        "number": 3,
+        "instruction": "Meanwhile, in a large bowl, combine flour, 1/4 cup white sugar, 1/4 cup brown sugar, baking powder, and salt. Blend in butter with your fingertips, or a pastry blender, until mixture resembles coarse meal. Stir in water until just combined."
+      },
+      {
+        "number": 4,
+        "instruction": "Remove peaches from oven, and drop spoonfuls of topping over them. Sprinkle entire cobbler with the sugar and cinnamon mixture. Bake until topping is golden, about 30 minutes."
+      }
+    ]
+  },
+  {
+    "recipeId": 10,
+    "recipe": "Fresh Southern Peach Cobbler",
+    "category": "treat",
+    "servings": 4,
+    "ingredients": [
+      {
+        "name": "medium fresh peaches - peeled, pitted and sliced into thin wedges (approx 4 per lbs) ",
+        "quantity": 8,
+        "unit": "-"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "brown sugar",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "ground cinnamon",
+        "quantity": 0.25,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "ground nutmeng",
+        "quantity": 0.125,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "fresh lemon juice",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "cornstarch",
+        "quantity": 2,
+        "unit": "teaspoons"
+      },
+      {
+        "name": "all purpose flour",
+        "quantity": 1,
+        "unit": "cup"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "baking powder",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "salt",
+        "quantity": 0.5,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "unsalted butter, chilled and cut into small pieces",
+        "quantity": 6,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "boiling water",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "white sugar",
+        "quantity": 3,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "ground cinnamon",
+        "quantity": 1,
+        "unit": "teaspoon"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "Preheat oven to 425 degrees F (220 degrees C)."
+      },
+      {
+        "number": 2,
+        "instruction": "In a large bowl, combine peaches, 1/4 cup white sugar, 1/4 cup brown sugar, 1/4 teaspoon cinnamon, nutmeg, lemon juice, and cornstarch. Toss to coat evenly, and pour into a 2 quart baking dish. Bake in preheated oven for 10 minutes."
+      },
+      {
+        "number": 3,
+        "instruction": "Meanwhile, in a large bowl, combine flour, 1/4 cup white sugar, 1/4 cup brown sugar, baking powder, and salt. Blend in butter with your fingertips, or a pastry blender, until mixture resembles coarse meal. Stir in water until just combined."
+      },
+      {
+        "number": 4,
+        "instruction": "Remove peaches from oven, and drop spoonfuls of topping over them. Sprinkle entire cobbler with the sugar and cinnamon mixture. Bake until topping is golden, about 30 minutes."
+      }
+    ]
   }
 ]
