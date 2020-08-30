@@ -5,11 +5,12 @@ import data from "../data.json";
 import Lunch from "../assets/Lunch.jpg";
 import { Link } from "react-router-dom";
 
-const { gunmetal, timberwolf } = ColorScheme;
+const { gunmetal, timberwolf, blueMunsell } = ColorScheme;
 
 const PublicPageDiv = styled.div`
-  width: 80%;
+  width: 95%;
   margin: auto;
+  display: flex;
   & .title {
     font-family: "Quattrocento", serif;
     font-size: 3em;
@@ -18,13 +19,8 @@ const PublicPageDiv = styled.div`
   }
 `;
 
-const CategoryViewer = styled.div`
-  background-color: ${timberwolf};
-`;
-
-const CategoriesContent = styled.div`
-  width: 100%;
-  display: flex;
+const Categories = styled.div`
+  width: 20%;
   justify-content: space-around;
   @media (max-width: 500px) {
     display: none;
@@ -33,19 +29,14 @@ const CategoriesContent = styled.div`
 
 const CatTitle = styled.div`
   width: 100%;
+  border-bottom: 1px solid black;
   @media (max-width: 500px) {
     display: none;
   }
 `;
 
 const Category = styled.a`
-  width: 150px;
   margin: 0 20px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  font-size: 1.5em;
   font-family: "Raleway", sans-serif;
   cursor: pointer;
   transition: all ease 0.2s;
@@ -55,26 +46,18 @@ const Category = styled.a`
   }
 `;
 
-const CategoryImage = styled.div`
-  width: 100%;
-  padding-bottom: 40%;
-  background-color: ${timberwolf};
-`;
-
 const Recipes = styled.div`
+  margin-top: 20px;
+  width: 80%;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
-`;
-
-const Recipestitle = styled.div`
-  width: 100%;
 `;
 
 const Recipe = styled.div`
   cursor: pointer;
   text-align: center;
   width: 20%;
+  height: fit-content;
   margin: 10px;
   background-color: ${timberwolf};
   transition: all ease 0.2s;
@@ -97,7 +80,7 @@ const RecipeImage = styled.img`
 
 const RecipeName = styled.div`
   font-weight: 600;
-  margin: 5px 0;
+  margin: 5px;
 `;
 
 interface IState {
@@ -119,16 +102,20 @@ class PublicPage extends Component<{}, IState> {
   renderCategories() {
     const categories: string[] = ["ALL"];
     for (let x = 0; x < data.length; x++) {
-      let cat = data[x].category.toUpperCase();
+      let cat = data[x].category;
       if (!categories.includes(cat)) {
         categories.push(cat);
       }
     }
     const catElements = categories.map((cat, index) => {
+      let color = this.state.categoryToShow === cat ? blueMunsell : undefined;
       return (
-        <Category key={index} onClick={() => this.changeCategory(cat)}>
-          <CategoryImage className="categoryImage"></CategoryImage>
-          <div>{cat}</div>
+        <Category
+          id="category"
+          key={index}
+          onClick={() => this.changeCategory(cat)}
+        >
+          <div style={{ color: color }}>{cat}</div>
         </Category>
       );
     });
@@ -171,13 +158,10 @@ class PublicPage extends Component<{}, IState> {
   render() {
     return (
       <PublicPageDiv id="PublicPage">
-        <CatTitle className="title">Categories</CatTitle>
-        <CategoryViewer>
-          <CategoriesContent id="Categories">
-            {this.renderCategories()}
-          </CategoriesContent>
-        </CategoryViewer>
-        <Recipestitle className="title">Recipes</Recipestitle>
+        <Categories id="Categories">
+          <CatTitle className="title">Categories</CatTitle>
+          {this.renderCategories()}
+        </Categories>
         <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
       </PublicPageDiv>
     );

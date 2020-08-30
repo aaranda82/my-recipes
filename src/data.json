@@ -2,7 +2,7 @@
   {
     "recipeId": 1,
     "recipe": "Scrammbled Eggs",
-    "category": "Breakfast",
+    "category": "BREAKFAST",
     "servings": 2,
     "ingredients": [
       {
@@ -47,7 +47,7 @@
   {
     "recipeId": 2,
     "recipe": "BLT",
-    "category": "lunch",
+    "category": "LUNCH",
     "servings": 1,
     "ingredients": [
       {
@@ -110,7 +110,7 @@
   {
     "recipeId": 3,
     "recipe": "Baked Teriyaki Chicken",
-    "category": "dinner",
+    "category": "DINNER",
     "servings": 6,
     "ingredients": [
       {
@@ -181,7 +181,7 @@
   {
     "recipeId": 4,
     "recipe": "strawberry cheesecake",
-    "category": "dessert",
+    "category": "DESSERT",
     "servings": 12,
     "ingredients": [
       {
@@ -275,7 +275,7 @@
   {
     "recipeId": 5,
     "recipe": "Scrammbled Eggs",
-    "category": "Breakfast",
+    "category": "BREAKFAST",
     "servings": 2,
     "ingredients": [
       {
@@ -320,7 +320,7 @@
   {
     "recipeId": 6,
     "recipe": "BLT",
-    "category": "lunch",
+    "category": "LUNCH",
     "servings": 1,
     "ingredients": [
       {
@@ -383,7 +383,7 @@
   {
     "recipeId": 7,
     "recipe": "Baked Teriyaki Chicken",
-    "category": "dinner",
+    "category": "DINNER",
     "servings": 6,
     "ingredients": [
       {
@@ -454,7 +454,7 @@
   {
     "recipeId": 8,
     "recipe": "strawberry cheesecake",
-    "category": "dessert",
+    "category": "DESSERT",
     "servings": 12,
     "ingredients": [
       {
@@ -548,7 +548,7 @@
   {
     "recipeId": 9,
     "recipe": "Fresh Southern Peach Cobbler",
-    "category": "Sweet",
+    "category": "SWEET",
     "servings": 4,
     "ingredients": [
       {
@@ -649,7 +649,7 @@
   {
     "recipeId": 10,
     "recipe": "Fresh Southern Peach Cobbler",
-    "category": "treat",
+    "category": "TREAT",
     "servings": 4,
     "ingredients": [
       {
