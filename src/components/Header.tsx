@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
 import Spacer from "./Spacer";
+import { Link } from "react-router-dom";
 const { connect } = require("react-redux");
 
 const { blueMunsell, gunmetal, ivory } = ColorScheme;
@@ -24,7 +25,6 @@ const LoggedInLogo = styled.div`
   font-family: "Raleway", sans-serif;
   font-weight: 100;
   font-size: 3em;
-  color: ${blueMunsell};
   flex: 6;
   margin: 20px 0px 20px 20px;
   text-align: left;
@@ -34,7 +34,6 @@ const Logo = styled.div`
   font-family: "Raleway", sans-serif;
   font-weight: 100;
   font-size: 3em;
-  color: ${blueMunsell};
   width: 100%;
   margin: 20px 0px 20px 0px;
 `;
@@ -81,9 +80,23 @@ class Header extends Component<NavProps, NavState> {
 
   handleLogo() {
     return this.props.displayName ? (
-      <LoggedInLogo>My Recipes</LoggedInLogo>
+      <LoggedInLogo>
+        <Link
+          to={"/publicpage"}
+          style={{ textDecoration: "none", color: blueMunsell }}
+        >
+          My Recipes
+        </Link>
+      </LoggedInLogo>
     ) : (
-      <Logo>My Recipes</Logo>
+      <Logo>
+        <Link
+          to={"/login"}
+          style={{ textDecoration: "none", color: blueMunsell }}
+        >
+          My Recipes
+        </Link>
+      </Logo>
     );
   }
 
@@ -96,7 +109,7 @@ class Header extends Component<NavProps, NavState> {
       return (
         <>
           <Shadow onClick={this.toggleMenu}></Shadow>
-          <Menu />
+          <Menu toggleMenu={this.toggleMenu} />
         </>
       );
     } else {

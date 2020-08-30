@@ -18,13 +18,12 @@ const RecipeDetailDiv = styled.div`
 `;
 
 const Exit = styled.div`
+  width: 10%
   z-index: 6;
-  position: fixed;
-  right: 3%;
-  top: 5%;
+  position: sticky;
+  top: 20px;
   font-size: 2em;
   cursor: pointer;
-  color: ${blueMunsell};
 `;
 
 const Image = styled.div`
@@ -37,7 +36,7 @@ const Image = styled.div`
 `;
 
 const RecipeHeading = styled.div`
-  width: 100%;
+  width: 95%;
   text-align: center;
   padding-bottom: 20px;
 `;
@@ -139,7 +138,7 @@ class RecipeDetail extends Component<IProps, IState> {
   componentDidMount() {
     //get id from router params
     const { id } = this.props.match.params;
-    const idArr = id.split("");
+    const idArr = id.split(":");
     let parsedId = parseFloat(idArr[1]);
     // filter through recipes to match recipeId to params
     const recipeArr = data.filter((r: IState) => {
@@ -168,14 +167,19 @@ class RecipeDetail extends Component<IProps, IState> {
   render() {
     return (
       <RecipeDetailDiv>
-        <Link to={"/publicpage"}>
-          <Exit id="Exit" className="fas fa-times" />
-        </Link>
         <RecipeHeading>
           <h1>{this.state.recipe}</h1>
           <div>{this.state.category}</div>
           <div>Servings: {this.state.servings}</div>
         </RecipeHeading>
+        <Exit id="Exit">
+          <Link
+            to={"/publicpage"}
+            style={{ textDecoration: "none", color: blueMunsell }}
+          >
+            <i className="fas fa-times"></i>
+          </Link>
+        </Exit>
         <Image></Image>
         <Ingredients>{this.handleIngredients()}</Ingredients>
         <Instructions>{this.handleInstructions()}</Instructions>

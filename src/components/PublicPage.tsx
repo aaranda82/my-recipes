@@ -5,11 +5,12 @@ import data from "../data.json";
 import Lunch from "../assets/Lunch.jpg";
 import { Link } from "react-router-dom";
 
-const { gunmetal, timberwolf } = ColorScheme;
+const { gunmetal, timberwolf, blueMunsell } = ColorScheme;
 
 const PublicPageDiv = styled.div`
-  width: 80%;
+  width: 95%;
   margin: auto;
+  display: flex;
   & .title {
     font-family: "Quattrocento", serif;
     font-size: 3em;
@@ -17,9 +18,9 @@ const PublicPageDiv = styled.div`
     color: ${gunmetal};
   }
 `;
+
 const Categories = styled.div`
-  width: 100%;
-  display: flex;
+  width: 20%;
   justify-content: space-around;
   @media (max-width: 500px) {
     display: none;
@@ -28,18 +29,14 @@ const Categories = styled.div`
 
 const CatTitle = styled.div`
   width: 100%;
+  border-bottom: 1px solid black;
   @media (max-width: 500px) {
     display: none;
   }
 `;
 
-const Category = styled.div`
-  width: 18%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  font-size: 1.5em;
+const Category = styled.a`
+  margin: 0 20px;
   font-family: "Raleway", sans-serif;
   cursor: pointer;
   transition: all ease 0.2s;
@@ -49,26 +46,18 @@ const Category = styled.div`
   }
 `;
 
-const CategoryImage = styled.div`
-  width: 100%;
-  padding-bottom: 40%;
-  background-color: ${timberwolf};
-`;
-
 const Recipes = styled.div`
+  margin-top: 20px;
+  width: 80%;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
-`;
-
-const Recipestitle = styled.div`
-  width: 100%;
 `;
 
 const Recipe = styled.div`
   cursor: pointer;
   text-align: center;
   width: 20%;
+  height: fit-content;
   margin: 10px;
   background-color: ${timberwolf};
   transition: all ease 0.2s;
@@ -91,27 +80,27 @@ const RecipeImage = styled.img`
 
 const RecipeName = styled.div`
   font-weight: 600;
-  margin: 5px 0;
+  margin: 5px;
 `;
 
 interface IState {
-  category: string;
+  categoryToShow: string;
 }
 
 class PublicPage extends Component<{}, IState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      category: "ALL",
+      categoryToShow: "ALL",
     };
   }
 
-  changeCategory(category: string) {
-    this.setState({ category });
+  changeCategory(categoryToShow: string) {
+    this.setState({ categoryToShow });
   }
 
   renderCategories() {
-    const categories: string[] = [];
+    const categories: string[] = ["ALL"];
     for (let x = 0; x < data.length; x++) {
       let cat = data[x].category;
       if (!categories.includes(cat)) {
@@ -119,19 +108,17 @@ class PublicPage extends Component<{}, IState> {
       }
     }
     const catElements = categories.map((cat, index) => {
+      let color = this.state.categoryToShow === cat ? blueMunsell : undefined;
       return (
-        <Category key={index} onClick={() => this.changeCategory(cat)}>
-          <CategoryImage className="categoryImage"></CategoryImage>
-          <div>{cat}</div>
+        <Category
+          id="category"
+          key={index}
+          onClick={() => this.changeCategory(cat)}
+        >
+          <div style={{ color: color }}>{cat}</div>
         </Category>
       );
     });
-    catElements.push(
-      <Category key={200} onClick={() => this.changeCategory("ALL")}>
-        <CategoryImage className="categoryImage"></CategoryImage>
-        <div>ALL</div>
-      </Category>
-    );
     return catElements;
   }
 
@@ -144,13 +131,15 @@ class PublicPage extends Component<{}, IState> {
       ingredients: { name: string; quantity: number; unit: string }[];
       instructions: { number: number; instruction: string }[];
     }[] = [];
-    if (this.state.category === "ALL") {
+    if (this.state.categoryToShow === "ALL") {
       recipesByCat = data;
     } else {
-      recipesByCat = data.filter((r) => r.category === this.state.category);
+      recipesByCat = data.filter(
+        (r) => r.category === this.state.categoryToShow
+      );
     }
     const allRecipes = recipesByCat.map((recipeData, index) => {
-      const { recipeId, recipe, category } = recipeData;
+      const { recipeId, recipe } = recipeData;
       return (
         <Recipe key={index}>
           <Link
@@ -159,7 +148,6 @@ class PublicPage extends Component<{}, IState> {
           >
             <RecipeImage src={Lunch} alt="Lunch" />
             <RecipeName>{recipe}</RecipeName>
-            <div>{category}</div>
           </Link>
         </Recipe>
       );
@@ -170,9 +158,10 @@ class PublicPage extends Component<{}, IState> {
   render() {
     return (
       <PublicPageDiv id="PublicPage">
-        <CatTitle className="title">Categories</CatTitle>
-        <Categories id="Categories">{this.renderCategories()}</Categories>
-        <Recipestitle className="title">Recipes</Recipestitle>
+        <Categories id="Categories">
+          <CatTitle className="title">Categories</CatTitle>
+          {this.renderCategories()}
+        </Categories>
         <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
       </PublicPageDiv>
     );

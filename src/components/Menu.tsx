@@ -4,7 +4,7 @@ import { signOutAction } from "../actions/userActions";
 import firebase from "firebase";
 import { ColorScheme } from "../ColorScheme";
 import Spacer from "./Spacer";
-import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 const { connect } = require("react-redux");
 
 const { ivory, blueMunsell, budGreen, gunmetal } = ColorScheme;
@@ -33,7 +33,7 @@ const MenuDiv = styled.div`
 interface NavProps {
   displayName: string;
   signOut: () => void;
-  toggleMenu: any;
+  toggleMenu: () => void;
   history: { push: any };
 }
 
@@ -41,35 +41,40 @@ class Menu extends Component<NavProps> {
   constructor(props: NavProps) {
     super(props);
     this.handleSignOut = this.handleSignOut.bind(this);
-    this.handleAccountRoute = this.handleAccountRoute.bind(this);
-    this.handlePublicPageRoute = this.handlePublicPageRoute.bind(this);
   }
 
   handleSignOut() {
-    this.props.history.push("/login");
+    this.props.toggleMenu();
     this.props.signOut();
     firebase.auth().signOut();
-  }
-
-  handleAccountRoute() {
-    this.props.history.push("/account");
-  }
-
-  handlePublicPageRoute() {
-    this.props.history.push("/publicpage");
   }
 
   render() {
     return (
       <>
         <MenuDiv>
-          <div onClick={this.handlePublicPageRoute}>Public Page</div>
+          <Link
+            to={"/publicpage"}
+            style={{ textDecoration: "none", color: blueMunsell }}
+          >
+            <div onClick={this.props.toggleMenu}>Public Page</div>
+          </Link>
           <Spacer />
           <div>{this.props.displayName}'s Favorites</div>
           <Spacer />
-          <div onClick={this.handleAccountRoute}>Account</div>
+          <Link
+            to={"/account"}
+            style={{ textDecoration: "none", color: blueMunsell }}
+          >
+            <div onClick={this.props.toggleMenu}>Account</div>
+          </Link>
           <Spacer />
-          <div onClick={this.handleSignOut}>Sign Out</div>
+          <Link
+            to={"/login"}
+            style={{ textDecoration: "none", color: blueMunsell }}
+          >
+            <div onClick={this.handleSignOut}>Sign Out</div>
+          </Link>
         </MenuDiv>
       </>
     );
@@ -96,4 +101,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Menu));
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
