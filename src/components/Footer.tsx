@@ -13,7 +13,13 @@ function Footer() {
     <Nav>
       Created by
       <br></br>
-      <a href="https:/alex-aranda.com"> Alex Aranda</a>
+      <a
+        href="https:/alex-aranda.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Alex Aranda
+      </a>
     </Nav>
   );
 }
