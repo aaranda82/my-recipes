@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
-import data from "../data.json";
-import Lunch from "../assets/Lunch.jpg";
-import { Link } from "react-router-dom";
+import recipeData from "../data-recipes.json";
+import RecipeCard from "./RecipeCard";
 
-const { gunmetal, timberwolf, blueMunsell } = ColorScheme;
+const { gunmetal, blueMunsell } = ColorScheme;
 
 const PublicPageDiv = styled.div`
   width: 95%;
@@ -13,14 +12,14 @@ const PublicPageDiv = styled.div`
   display: flex;
   & .title {
     font-family: "Quattrocento", serif;
-    font-size: 3em;
+    font-size: 25px;
     margin: 50px 0 15px 0;
     color: ${gunmetal};
   }
 `;
 
 const Categories = styled.div`
-  width: 20%;
+  width: 15%;
   justify-content: space-around;
   @media (max-width: 500px) {
     display: none;
@@ -48,40 +47,44 @@ const Category = styled.a`
 
 const Recipes = styled.div`
   margin-top: 20px;
-  width: 80%;
+  width: 85%;
   display: flex;
   flex-wrap: wrap;
-`;
-
-const Recipe = styled.div`
-  cursor: pointer;
-  text-align: center;
-  width: 20%;
-  height: fit-content;
-  margin: 10px;
-  background-color: ${timberwolf};
-  transition: all ease 0.2s;
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 15px 10px 10px ${gunmetal};
-  }
   @media (max-width: 500px) {
     width: 100%;
   }
 `;
 
-const RecipeImage = styled.img`
-  height: auto;
-  width: 100%;
-  background-image: url(${Lunch});
-  background-size: cover;
-  background-position: center;
-`;
+// const RecipeCard = styled.div`
+//   flex: 1 22%;
+//   cursor: pointer;
+//   text-align: center;
+//   margin: 10px;
+//   background-color: ${timberwolf};
+//   transition: all ease 0.2s;
+//   &:hover {
+//     transform: scale(1.1);
+//     box-shadow: 15px 10px 10px ${gunmetal};
+//   }
+//   @media (max-width: 500px) {
+//     width: 100%;
+//     flex: none;
+//     margin: 0 0 10px 0;
+//   }
+// `;
 
-const RecipeName = styled.div`
-  font-weight: 600;
-  margin: 5px;
-`;
+// const RecipeImage = styled.img`
+//   height: auto;
+//   width: 100%;
+//   background-image: url(${Lunch});
+//   background-size: cover;
+//   background-position: center;
+// `;
+
+// const RecipeName = styled.div`
+//   font-weight: 600;
+//   margin: 5px;
+// `;
 
 interface IState {
   categoryToShow: string;
@@ -101,8 +104,8 @@ class PublicPage extends Component<{}, IState> {
 
   renderCategories() {
     const categories: string[] = ["ALL"];
-    for (let x = 0; x < data.length; x++) {
-      let cat = data[x].category;
+    for (let x = 0; x < recipeData.length; x++) {
+      let cat = recipeData[x].category;
       if (!categories.includes(cat)) {
         categories.push(cat);
       }
@@ -132,25 +135,15 @@ class PublicPage extends Component<{}, IState> {
       instructions: { number: number; instruction: string }[];
     }[] = [];
     if (this.state.categoryToShow === "ALL") {
-      recipesByCat = data;
+      recipesByCat = recipeData;
     } else {
-      recipesByCat = data.filter(
+      recipesByCat = recipeData.filter(
         (r) => r.category === this.state.categoryToShow
       );
     }
     const allRecipes = recipesByCat.map((recipeData, index) => {
       const { recipeId, recipe } = recipeData;
-      return (
-        <Recipe key={index}>
-          <Link
-            to={`/recipedetail/:${recipeId}`}
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <RecipeImage src={Lunch} alt="Lunch" />
-            <RecipeName>{recipe}</RecipeName>
-          </Link>
-        </Recipe>
-      );
+      return RecipeCard(recipe, recipeId, index, "public");
     });
     return allRecipes;
   }

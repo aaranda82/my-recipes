@@ -746,5 +746,173 @@
         "instruction": "Remove peaches from oven, and drop spoonfuls of topping over them. Sprinkle entire cobbler with the sugar and cinnamon mixture. Bake until topping is golden, about 30 minutes."
       }
     ]
+  },
+  {
+    "recipeId": 11,
+    "recipe": "chicken tikka masala",
+    "category": "INDIAN",
+    "servings": 0,
+    "ingredients": [
+      {
+        "name": "boneless and skinless chicken thighs cut into bite-sized pieces",
+        "quantity": 28,
+        "unit": "oz"
+      },
+      {
+        "name": "plain yogurt",
+        "quantity": 1,
+        "unit": "cup"
+      },
+      {
+        "name": "minced garlic",
+        "quantity": 1.5,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "ginger",
+        "quantity": 1,
+        "unit": "tablespoon"
+      },
+      {
+        "name": "garam masala",
+        "quantity": 2,
+        "unit": "teaspoons"
+      },
+      {
+        "name": "turmeric",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "groun cumin",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "Kashmiri chili (or 1/2 teaspoon ground red chili powder)",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "salt",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "vegetable/canola oil",
+        "quantity": 2,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "butter",
+        "quantity": 2,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "small onions, finely chopped",
+        "quantity": 2,
+        "unit": "-"
+      },
+      {
+        "name": "garlic finely grated",
+        "quantity": 1.5,
+        "unit": "tablespoons"
+      },
+      {
+        "name": "ginger finely grated",
+        "quantity": 1,
+        "unit": "tablespoon"
+      },
+      {
+        "name": "garam masala",
+        "quantity": 1.5,
+        "unit": "teaspoons"
+      },
+      {
+        "name": "ground cumin",
+        "quantity": 1.5,
+        "unit": "teaspoons"
+      },
+      {
+        "name": "turmeric powder",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "ground coriander",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "tomato puree (tomato sauce/Passata)",
+        "quantity": 14,
+        "unit": "oz"
+      },
+      {
+        "name": "Kashmiri chili (optional for colour and flavour)",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "ground red chili powder (adjust to your taste preference)",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "salt",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "heavy or thickened cream (use evaporated milk for lower calories)",
+        "quantity": 1.25,
+        "unit": "cups"
+      },
+      {
+        "name": "brown sugar",
+        "quantity": 1,
+        "unit": "teaspoon"
+      },
+      {
+        "name": "water if needed",
+        "quantity": 0.25,
+        "unit": "cup"
+      },
+      {
+        "name": "Fresh cilantro or coriander to garnish",
+        "quantity": 4,
+        "unit": "tablespoons"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "In a bowl, combine chicken with all of the ingredients for the chicken marinade; let marinate for 10 minutes to an hour (or overnight if time allows)."
+      },
+      {
+        "number": 2,
+        "instruction": "Heat oil in a large skillet or pot over medium-high heat. When sizzling, add chicken pieces in batches of two or three, making sure not to crowd the pan. Fry until browned for only 3 minutes on each side. Set aside and keep warm. (You will finish cooking the chicken in the sauce.)"
+      },
+      {
+        "number": 3,
+        "instruction": "Melt the butter in the same pan. Fry the onions until soft (about 3 minutes) while scraping up any browned bits stuck on the bottom of the pan."
+      },
+      {
+        "number": 4,
+        "instruction": "Add garlic and ginger and sauté for 1 minute until fragrant, then add garam masala, cumin, turmeric and coriander. Fry for about 20 seconds until fragrant, while stirring occasionally."
+      },
+      {
+        "number": 5,
+        "instruction": "Pour in the tomato puree, chili powders and salt. Let simmer for about 10-15 minutes, stirring occasionally until sauce thickens and becomes a deep brown red colour."
+      },
+      {
+        "number": 6,
+        "instruction": "Stir the cream and sugar through the sauce. Add the chicken and its juices back into the pan and cook for an additional 8-10 minutes until chicken is cooked through and the sauce is thick and bubbling. Pour in the water to thin out the sauce, if needed."
+      },
+      {
+        "number": 7,
+        "instruction": "Garnish with cilantro (coriander) and serve with hot garlic butter rice and fresh homemade Naan bread!"
+      }
+    ]
   }
 ]

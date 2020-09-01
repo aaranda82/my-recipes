@@ -32,6 +32,7 @@ const MenuDiv = styled.div`
 
 interface NavProps {
   displayName: string;
+  uid: string;
   signOut: () => void;
   toggleMenu: () => void;
   history: { push: any };
@@ -60,7 +61,16 @@ class Menu extends Component<NavProps> {
             <div onClick={this.props.toggleMenu}>Public Page</div>
           </Link>
           <Spacer />
-          <div>{this.props.displayName}'s Favorites</div>
+
+          <Link
+            to={`/userpage/${this.props.uid}`}
+            style={{ textDecoration: "none", color: blueMunsell }}
+          >
+            <div onClick={this.props.toggleMenu}>
+              {this.props.displayName}'s Favorites
+            </div>
+          </Link>
+
           <Spacer />
           <Link
             to={"/account"}
@@ -84,12 +94,14 @@ class Menu extends Component<NavProps> {
 interface mapState {
   userReducer: {
     displayName: string;
+    uid: string;
   };
 }
 
 const mapStateToProps = (state: mapState) => {
   return {
     displayName: state.userReducer.displayName,
+    uid: state.userReducer.uid,
   };
 };
 

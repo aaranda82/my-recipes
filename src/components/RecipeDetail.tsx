@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
-import data from "../data.json";
+import recipeData from "../data-recipes.json";
 
 const { blueMunsell, cafeAuLait } = ColorScheme;
 
@@ -141,7 +141,7 @@ class RecipeDetail extends Component<IProps, IState> {
     const idArr = id.split(":");
     let parsedId = parseFloat(idArr[1]);
     // filter through recipes to match recipeId to params
-    const recipeArr = data.filter((r: IState) => {
+    const recipeArr = recipeData.filter((r: IState) => {
       return r.recipeId === parsedId;
     });
     console.log(recipeArr[0]);
