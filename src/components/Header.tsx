@@ -9,7 +9,7 @@ const { connect } = require("react-redux");
 
 const { blueMunsell, gunmetal, ivory } = ColorScheme;
 
-const Nav = styled.div`
+const Nav = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;

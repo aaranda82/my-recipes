@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import recipeData from "../data-recipes.json";
-import RecipeCard from "./RecipeCard";
-
+import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
+import Category from "./Category";
+import { withRouter, RouteComponentProps } from "react-router";
 const { gunmetal, blueMunsell } = ColorScheme;
 
 const PublicPageDiv = styled.div`
@@ -19,6 +20,7 @@ const PublicPageDiv = styled.div`
 `;
 
 const Categories = styled.div`
+  min-width: 110px;
   width: 15%;
   justify-content: space-around;
   @media (max-width: 500px) {
@@ -34,17 +36,6 @@ const CatTitle = styled.div`
   }
 `;
 
-const Category = styled.a`
-  margin: 0 20px;
-  font-family: "Raleway", sans-serif;
-  cursor: pointer;
-  transition: all ease 0.2s;
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 15px 10px 10px ${gunmetal};
-  }
-`;
-
 const Recipes = styled.div`
   margin-top: 20px;
   width: 85%;
@@ -55,47 +46,20 @@ const Recipes = styled.div`
   }
 `;
 
-// const RecipeCard = styled.div`
-//   flex: 1 22%;
-//   cursor: pointer;
-//   text-align: center;
-//   margin: 10px;
-//   background-color: ${timberwolf};
-//   transition: all ease 0.2s;
-//   &:hover {
-//     transform: scale(1.1);
-//     box-shadow: 15px 10px 10px ${gunmetal};
-//   }
-//   @media (max-width: 500px) {
-//     width: 100%;
-//     flex: none;
-//     margin: 0 0 10px 0;
-//   }
-// `;
-
-// const RecipeImage = styled.img`
-//   height: auto;
-//   width: 100%;
-//   background-image: url(${Lunch});
-//   background-size: cover;
-//   background-position: center;
-// `;
-
-// const RecipeName = styled.div`
-//   font-weight: 600;
-//   margin: 5px;
-// `;
-
 interface IState {
   categoryToShow: string;
 }
 
-class PublicPage extends Component<{}, IState> {
-  constructor(props: {}) {
+class PublicPage extends Component<
+  RouteComponentProps<{ id: string }>,
+  IState
+> {
+  constructor(props: RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
       categoryToShow: "ALL",
     };
+    this.changeCategory = this.changeCategory.bind(this);
   }
 
   changeCategory(categoryToShow: string) {
@@ -112,20 +76,12 @@ class PublicPage extends Component<{}, IState> {
     }
     const catElements = categories.map((cat, index) => {
       let color = this.state.categoryToShow === cat ? blueMunsell : undefined;
-      return (
-        <Category
-          id="category"
-          key={index}
-          onClick={() => this.changeCategory(cat)}
-        >
-          <div style={{ color: color }}>{cat}</div>
-        </Category>
-      );
+      return Category(index, this.changeCategory, color, cat);
     });
     return catElements;
   }
 
-  handleRecipe() {
+  handlePublicRecipes() {
     let recipesByCat: {
       recipeId: number;
       recipe: string;
@@ -145,7 +101,28 @@ class PublicPage extends Component<{}, IState> {
       const { recipeId, recipe } = recipeData;
       return RecipeCard(recipe, recipeId, index, "public");
     });
+    if (allRecipes.length < 4) {
+      do {
+        let key = allRecipes.length;
+        allRecipes.push(BlankRecipeCard(key));
+      } while (allRecipes.length <= 5);
+    }
+    if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
+      do {
+        let key = allRecipes.length;
+        allRecipes.push(BlankRecipeCard(key));
+      } while (allRecipes.length % 4 !== 0);
+    }
     return allRecipes;
+  }
+
+  handleUserRecipes() {
+    return (
+      <>
+        <div>Created</div>
+        <div>Favorites</div>
+      </>
+    );
   }
 
   render() {
@@ -155,10 +132,14 @@ class PublicPage extends Component<{}, IState> {
           <CatTitle className="title">Categories</CatTitle>
           {this.renderCategories()}
         </Categories>
-        <Recipes id="Recipes">{this.handleRecipe()}</Recipes>
+        <Recipes id="Recipes">
+          {this.props.match.params.id
+            ? this.handleUserRecipes()
+            : this.handlePublicRecipes()}
+        </Recipes>
       </PublicPageDiv>
     );
   }
 }
 
-export default PublicPage;
+export default withRouter(PublicPage);
