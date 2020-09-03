@@ -4,6 +4,7 @@ import { ColorScheme } from "../ColorScheme";
 import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
+import userData from "../data-users.json";
 
 const { blueMunsell, cafeAuLait } = ColorScheme;
 
@@ -36,23 +37,19 @@ const Image = styled.div`
 `;
 
 const RecipeHeading = styled.div`
-  width: 95%;
+  width: 50%;
   text-align: center;
   padding-bottom: 20px;
-`;
-
-const Ingredients = styled.div`
-  width: 60%;
-  @media (max-width: 400px) {
-    width: 100%;
-    margin: 20px;
+  @media (max-width: 500px) {
+    width: 90%;
   }
 `;
 
-const Ingredient = styled.div`
-  margin-left: 10px;
+const Ingredients = styled.div`
+  width: 100%;
   @media (max-width: 400px) {
-    margin: 0;
+    width: 100%;
+    margin: 20px;
   }
 `;
 
@@ -81,6 +78,7 @@ interface IProps extends RouteComponentProps<{ id: string }> {
 }
 interface IState {
   recipeId: number;
+  createdBy: string;
   recipe: string;
   category: string;
   servings: number;
@@ -93,28 +91,30 @@ class RecipeDetail extends Component<IProps, IState> {
     super(props);
     this.state = {
       recipeId: 0,
+      createdBy: "",
       recipe: "",
       category: "",
       servings: 0,
       ingredients: [],
       instructions: [],
     };
+    this.handleAuthor = this.handleAuthor.bind(this);
   }
 
   handleIngredients() {
     const ingredientsList = this.state.ingredients.map(
-      (i: { name: string; quantity: number; unit: string }, key: number) => {
+      (i: { name: string; quantity: number; unit: string }, index: number) => {
         if (i.unit === "-") {
           return (
-            <Ingredient key={key}>
+            <div key={index}>
               {i.quantity} {i.name}
-            </Ingredient>
+            </div>
           );
         } else {
           return (
-            <Ingredient key={key}>
+            <div key={index}>
               {i.quantity} {i.unit} {i.name}
-            </Ingredient>
+            </div>
           );
         }
       }
@@ -135,27 +135,33 @@ class RecipeDetail extends Component<IProps, IState> {
     return instructionsList;
   }
 
+  handleAuthor() {
+    if (this.state.createdBy) {
+      console.log(this.state.createdBy);
+      let user = userData.filter((u) => u.uid === this.state.createdBy);
+      return user[0].userName;
+    }
+  }
+
   componentDidMount() {
-    //get id from router params
     const { id } = this.props.match.params;
     const idArr = id.split(":");
     let parsedId = parseFloat(idArr[1]);
-    // filter through recipes to match recipeId to params
     const recipeArr = recipeData.filter((r: IState) => {
       return r.recipeId === parsedId;
     });
-    console.log(recipeArr[0]);
     const {
       recipeId,
+      createdBy,
       recipe,
       category,
       servings,
       ingredients,
       instructions,
     } = recipeArr[0];
-    // save matching recipe to state
     this.setState({
       recipeId,
+      createdBy,
       recipe,
       category,
       servings,
@@ -167,10 +173,12 @@ class RecipeDetail extends Component<IProps, IState> {
   render() {
     return (
       <RecipeDetailDiv>
+        <Image></Image>
         <RecipeHeading>
           <h1>{this.state.recipe}</h1>
           <div>{this.state.category}</div>
           <div>Servings: {this.state.servings}</div>
+          <div>Author: {this.handleAuthor()}</div>
         </RecipeHeading>
         <Exit id="Exit">
           <Link
@@ -180,7 +188,6 @@ class RecipeDetail extends Component<IProps, IState> {
             <i className="fas fa-times"></i>
           </Link>
         </Exit>
-        <Image></Image>
         <Ingredients>{this.handleIngredients()}</Ingredients>
         <Instructions>{this.handleInstructions()}</Instructions>
       </RecipeDetailDiv>

@@ -5,18 +5,13 @@ import recipeData from "../data-recipes.json";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
-const { gunmetal, blueMunsell } = ColorScheme;
+import Spacer from "./Spacer";
+const { gunmetal, blueMunsell, snow } = ColorScheme;
 
 const PublicPageDiv = styled.div`
   width: 95%;
   margin: auto;
   display: flex;
-  & .title {
-    font-family: "Quattrocento", serif;
-    font-size: 25px;
-    margin: 50px 0 15px 0;
-    color: ${gunmetal};
-  }
 `;
 
 const Categories = styled.div`
@@ -29,10 +24,36 @@ const Categories = styled.div`
 `;
 
 const CatTitle = styled.div`
+  font-family: "Quattrocento", serif;
+  font-size: 25px;
+  margin: 50px 0 15px 0;
+  color: ${gunmetal};
   width: 100%;
-  border-bottom: 1px solid black;
+  text-align: center;
   @media (max-width: 500px) {
     display: none;
+  }
+`;
+
+const SectionContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5px 0;
+  background-color: ${snow};
+`;
+
+const SectionTitle = styled.div`
+  width: 98%;
+  text-align: center;
+  font-family: "Quattrocento", serif;
+  font-size: 25px;
+  color: ${gunmetal};
+  @media (max-width: 875px) {
+    width: 90%;
+  }
+  @media (max-width: 500px) {
+    width: 96%;
   }
 `;
 
@@ -48,6 +69,8 @@ const Recipes = styled.div`
 
 interface IState {
   categoryToShow: string;
+  showCreated: boolean;
+  showFavorites: boolean;
 }
 
 class PublicPage extends Component<
@@ -58,6 +81,8 @@ class PublicPage extends Component<
     super(props);
     this.state = {
       categoryToShow: "ALL",
+      showCreated: false,
+      showFavorites: false,
     };
     this.changeCategory = this.changeCategory.bind(this);
   }
@@ -81,9 +106,10 @@ class PublicPage extends Component<
     return catElements;
   }
 
-  handlePublicRecipes() {
+  handlePublicRecipes(p?: string) {
     let recipesByCat: {
       recipeId: number;
+      createdBy: string;
       recipe: string;
       category: string;
       servings: number;
@@ -92,35 +118,66 @@ class PublicPage extends Component<
     }[] = [];
     if (this.state.categoryToShow === "ALL") {
       recipesByCat = recipeData;
+      if (p === "created") {
+        recipesByCat = recipeData.filter(
+          (r) => r.createdBy === this.props.match.params.id
+        );
+      }
+      // if props === "favorites" then filter out recipes by favorites
     } else {
       recipesByCat = recipeData.filter(
         (r) => r.category === this.state.categoryToShow
       );
     }
+
     const allRecipes = recipesByCat.map((recipeData, index) => {
-      const { recipeId, recipe } = recipeData;
-      return RecipeCard(recipe, recipeId, index, "public");
+      const { recipeId, recipe, createdBy } = recipeData;
+      return RecipeCard(recipe, recipeId, createdBy, index, "public");
     });
-    if (allRecipes.length < 4) {
-      do {
-        let key = allRecipes.length;
-        allRecipes.push(BlankRecipeCard(key));
-      } while (allRecipes.length <= 5);
-    }
-    if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
+
+    if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
+      console.log("is divisible by 4");
+      return false;
+    } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
+      console.log("greater than 4");
       do {
         let key = allRecipes.length;
         allRecipes.push(BlankRecipeCard(key));
       } while (allRecipes.length % 4 !== 0);
+    } else if (allRecipes.length < 4) {
+      console.log("less than 4");
+      do {
+        let key = allRecipes.length;
+        allRecipes.push(BlankRecipeCard(key));
+      } while (allRecipes.length <= 3);
+      console.log(p, allRecipes);
     }
+
     return allRecipes;
   }
 
   handleUserRecipes() {
     return (
       <>
-        <div>Created</div>
-        <div>Favorites</div>
+        <SectionContainer>
+          <SectionTitle>Created</SectionTitle>
+          <i
+            className={
+              this.state.showCreated
+                ? "fas fa-chevron-up"
+                : "fas fa-chevron-down"
+            }
+            onClick={() =>
+              this.setState({ showCreated: !this.state.showCreated })
+            }
+            style={{ transition: "all ease 0.5s" }}
+          />
+          {this.state.showCreated ? this.handlePublicRecipes("created") : null}
+        </SectionContainer>
+        <SectionContainer>
+          <SectionTitle>Favorites</SectionTitle>
+          <i className="fas fa-chevron-down" />
+        </SectionContainer>
       </>
     );
   }
@@ -129,13 +186,16 @@ class PublicPage extends Component<
     return (
       <PublicPageDiv id="PublicPage">
         <Categories id="Categories">
-          <CatTitle className="title">Categories</CatTitle>
+          <CatTitle>Categories</CatTitle>
+          <Spacer />
           {this.renderCategories()}
         </Categories>
         <Recipes id="Recipes">
-          {this.props.match.params.id
-            ? this.handleUserRecipes()
-            : this.handlePublicRecipes()}
+          {this.props.match.params.id ? this.handleUserRecipes() : null}
+          <SectionContainer>
+            <SectionTitle>All Recipes</SectionTitle>
+            {this.handlePublicRecipes()}
+          </SectionContainer>
         </Recipes>
       </PublicPageDiv>
     );

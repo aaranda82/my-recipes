@@ -1,18 +1,22 @@
 [
   {
     "uid": "2xN7cLoe6uRd5EkfzbeB5fGDJf43",
+    "userName": "User1",
     "favorites": []
   },
   {
     "uid": "3U4VMiM58daimRXvvINMQa06IzB3",
+    "userName": "User2",
     "favorites": []
   },
   {
     "uid": "ghYmsu4erFe9CFlYIVLd0x8P9nw2",
+    "userName": "User3",
     "favorites": []
   },
   {
     "uid": "usN6qlzDeNbRQhIPIr1tZWM10n82",
+    "userName": "User4",
     "favorites": []
   }
 ]

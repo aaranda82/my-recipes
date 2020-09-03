@@ -40,14 +40,13 @@ const RecipeName = styled.div`
 
 const SaveButton = styled.button`
   padding: 5px 10px 5px 10px;
-  border-color: ${gunmetal};
+  border: 2px solid ${gunmetal};
   border-radius: 20px;
   background-color: ${timberwolf};
   color: ${gunmetal};
   margin: 10px;
   cursor: pointer;
   &:hover {
-    border-color: none;
     background-color: ${gunmetal};
     color: ${timberwolf};
   }
@@ -56,6 +55,7 @@ const SaveButton = styled.button`
 function RecipeCard(
   recipe: string,
   recipeId: number,
+  createdBy: string,
   index: number,
   view: string
 ) {
@@ -69,7 +69,7 @@ function RecipeCard(
         <RecipeName>{recipe}</RecipeName>
         {view === "public" ? (
           <SaveButton>
-            <i className="fas fa-heart" style={{ marginRight: "5px" }} />
+            <i className="fas fa-star" style={{ marginRight: "5px" }} />
             Save
           </SaveButton>
         ) : null}
