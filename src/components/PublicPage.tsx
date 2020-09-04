@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import recipeData from "../data-recipes.json";
+import userData from "../data-users.json";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
@@ -67,6 +68,16 @@ const Recipes = styled.div`
   }
 `;
 
+interface Recipe {
+  recipeId: number;
+  createdBy: string;
+  recipe: string;
+  category: string;
+  servings: number;
+  ingredients: { name: string; quantity: number; unit: string }[];
+  instructions: { number: number; instruction: string }[];
+}
+
 interface IState {
   categoryToShow: string;
   showCreated: boolean;
@@ -106,54 +117,67 @@ class PublicPage extends Component<
     return catElements;
   }
 
-  handlePublicRecipes(p?: string) {
-    let recipesByCat: {
-      recipeId: number;
-      createdBy: string;
-      recipe: string;
-      category: string;
-      servings: number;
-      ingredients: { name: string; quantity: number; unit: string }[];
-      instructions: { number: number; instruction: string }[];
-    }[] = [];
-    if (this.state.categoryToShow === "ALL") {
-      recipesByCat = recipeData;
-      if (p === "created") {
-        recipesByCat = recipeData.filter(
-          (r) => r.createdBy === this.props.match.params.id
-        );
-      }
-      // if props === "favorites" then filter out recipes by favorites
-    } else {
-      recipesByCat = recipeData.filter(
-        (r) => r.category === this.state.categoryToShow
-      );
-    }
-
-    const allRecipes = recipesByCat.map((recipeData, index) => {
-      const { recipeId, recipe, createdBy } = recipeData;
-      return RecipeCard(recipe, recipeId, createdBy, index, "public");
-    });
-
+  handleRecipeArrayLength(allRecipes: JSX.Element[]) {
     if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
-      console.log("is divisible by 4");
       return false;
     } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
-      console.log("greater than 4");
       do {
         let key = allRecipes.length;
         allRecipes.push(BlankRecipeCard(key));
       } while (allRecipes.length % 4 !== 0);
     } else if (allRecipes.length < 4) {
-      console.log("less than 4");
       do {
         let key = allRecipes.length;
         allRecipes.push(BlankRecipeCard(key));
       } while (allRecipes.length <= 3);
-      console.log(p, allRecipes);
     }
-
     return allRecipes;
+  }
+
+  filterRecipesByCat() {
+    let recipesByCat: Recipe[] = [];
+    if (this.state.categoryToShow === "ALL") {
+      recipesByCat = recipeData;
+    } else {
+      recipesByCat = recipeData.filter(
+        (r) => r.category === this.state.categoryToShow
+      );
+    }
+    return recipesByCat;
+  }
+
+  handlePublicRecipes() {
+    const allRecipes = this.filterRecipesByCat().map((recipeData, index) => {
+      const { recipeId, recipe, createdBy } = recipeData;
+      return RecipeCard(recipe, recipeId, createdBy, index, "public");
+    });
+
+    return this.handleRecipeArrayLength(allRecipes);
+  }
+
+  renderUserRecipes(t: string) {
+    const recipesByCat = this.filterRecipesByCat();
+    let recipes: Recipe[] = [];
+    if (t === "created") {
+      recipes = recipesByCat.filter(
+        (r) => r.createdBy === this.props.match.params.id
+      );
+    } else if (t === "favorites") {
+      const user = userData.filter((u) => u.uid === this.props.match.params.id);
+      const userFavs = user[0].favorites;
+      for (let x = 0; x < userFavs.length; x++) {
+        for (let y = 0; y < recipesByCat.length; y++) {
+          if (recipesByCat[y].recipeId === userFavs[x]) {
+            recipes.push(recipesByCat[y]);
+          }
+        }
+      }
+    }
+    const userRecipes = recipes.map((recipeData, index) => {
+      const { recipeId, recipe, createdBy } = recipeData;
+      return RecipeCard(recipe, recipeId, createdBy, index, "user");
+    });
+    return this.handleRecipeArrayLength(userRecipes);
   }
 
   handleUserRecipes() {
@@ -172,11 +196,24 @@ class PublicPage extends Component<
             }
             style={{ transition: "all ease 0.5s" }}
           />
-          {this.state.showCreated ? this.handlePublicRecipes("created") : null}
+          {this.state.showCreated ? this.renderUserRecipes("created") : null}
         </SectionContainer>
         <SectionContainer>
           <SectionTitle>Favorites</SectionTitle>
-          <i className="fas fa-chevron-down" />
+          <i
+            className={
+              this.state.showFavorites
+                ? "fas fa-chevron-up"
+                : "fas fa-chevron-down"
+            }
+            onClick={() =>
+              this.setState({ showFavorites: !this.state.showFavorites })
+            }
+            style={{ transition: "all ease 0.5s" }}
+          />
+          {this.state.showFavorites
+            ? this.renderUserRecipes("favorites")
+            : null}
         </SectionContainer>
       </>
     );

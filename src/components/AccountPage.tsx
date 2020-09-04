@@ -2,13 +2,12 @@ import React from "react";
 import { RootState } from "../reducers/rootReducer";
 const { connect } = require("react-redux");
 
-function AccountPage(props: { displayName: string; email: string }) {
-  console.log(props);
+function AccountPage(displayName: string, email: string) {
   return (
     <>
       <h1>ACCOUNT PAGE</h1>
-      <h2>{props.displayName}</h2>
-      <p>{props.email}</p>
+      <h2>{displayName}</h2>
+      <p>{email}</p>
     </>
   );
 }

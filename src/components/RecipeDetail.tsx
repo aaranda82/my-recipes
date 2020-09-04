@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
+import { RootState } from "../reducers/rootReducer";
+const { connect } = require("react-redux");
 
 const { blueMunsell, cafeAuLait } = ColorScheme;
 
@@ -75,6 +77,8 @@ interface IProps extends RouteComponentProps<{ id: string }> {
     ingredients: { name: string; quantity: number; unit: string }[];
     instructions: { number: number; instruction: string }[];
   };
+  displayName: string;
+  uid: string;
 }
 interface IState {
   recipeId: number;
@@ -137,7 +141,6 @@ class RecipeDetail extends Component<IProps, IState> {
 
   handleAuthor() {
     if (this.state.createdBy) {
-      console.log(this.state.createdBy);
       let user = userData.filter((u) => u.uid === this.state.createdBy);
       return user[0].userName;
     }
@@ -182,7 +185,11 @@ class RecipeDetail extends Component<IProps, IState> {
         </RecipeHeading>
         <Exit id="Exit">
           <Link
-            to={"/publicpage"}
+            to={
+              this.props.displayName
+                ? `/userpage/${this.props.uid}`
+                : "/publicpage"
+            }
             style={{ textDecoration: "none", color: blueMunsell }}
           >
             <i className="fas fa-times"></i>
@@ -195,4 +202,11 @@ class RecipeDetail extends Component<IProps, IState> {
   }
 }
 
-export default withRouter(RecipeDetail);
+const mapStateToProps = (state: RootState) => {
+  return {
+    displayName: state.userReducer.displayName,
+    uid: state.userReducer.uid,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(RecipeDetail));
