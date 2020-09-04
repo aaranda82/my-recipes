@@ -7,7 +7,7 @@ import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
 import Spacer from "./Spacer";
-const { gunmetal, blueMunsell, snow } = ColorScheme;
+const { gunmetal, blueMunsell, timberwolf } = ColorScheme;
 
 const PublicPageDiv = styled.div`
   width: 95%;
@@ -45,15 +45,16 @@ const SectionContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin: 10px 0;
-  background-color: ${snow};
+  background-color: ${timberwolf};
   box-shadow: 5px 5px ${blueMunsell};
+  border-radius: 10px;
   @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     box-shadow: none;
   }
 `;
 
 const SectionTitle = styled.div`
-  width: 98%;
+  width: 96%;
   text-align: center;
   font-family: "Quattrocento", serif;
   font-size: 25px;
@@ -62,7 +63,7 @@ const SectionTitle = styled.div`
     width: 90%;
   }
   @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
-    width: 96%;
+    width: 92%;
   }
 `;
 
@@ -74,6 +75,10 @@ const Recipes = styled.div`
   @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     width: 100%;
   }
+`;
+
+const Icon = styled.i`
+  margin: 5px;
 `;
 
 interface Recipe {
@@ -198,7 +203,7 @@ class AllRecipesPage extends Component<
       <>
         <SectionContainer>
           <SectionTitle>Created</SectionTitle>
-          <i
+          <Icon
             className={
               this.state.showCreated
                 ? "fas fa-chevron-up"
@@ -207,13 +212,12 @@ class AllRecipesPage extends Component<
             onClick={() =>
               this.setState({ showCreated: !this.state.showCreated })
             }
-            style={{ transition: "all ease 0.5s" }}
           />
           {this.state.showCreated ? this.renderUserRecipes("created") : null}
         </SectionContainer>
         <SectionContainer>
           <SectionTitle>Favorites</SectionTitle>
-          <i
+          <Icon
             className={
               this.state.showFavorites
                 ? "fas fa-chevron-up"
