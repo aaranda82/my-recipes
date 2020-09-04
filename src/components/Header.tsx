@@ -141,10 +141,13 @@ class Header extends Component<NavProps, NavState> {
 
   renderAuth() {
     if (this.state.showAuth) {
+      const authProps = {
+        toggleState: this.toggleState,
+      };
       return (
         <>
           <Shadow onClick={() => this.toggleState("showAuth")}></Shadow>
-          <Auth onClick={this.toggleState} />
+          <Auth {...authProps} />
         </>
       );
     } else {
