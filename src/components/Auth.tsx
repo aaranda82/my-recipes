@@ -32,6 +32,7 @@ const Container = styled.div`
 `;
 interface AuthProps {
   displayName: string;
+  uid: string;
   isSignedIn: boolean;
   signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
@@ -42,7 +43,8 @@ class Auth extends Component<AuthProps> {
   uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: () => {
-        this.props.history.push("/publicpage");
+        this.props.history.push("/");
+        console.log(this.props.uid);
         return false;
       },
     },

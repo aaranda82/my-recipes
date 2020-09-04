@@ -40,8 +40,9 @@ const SectionContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  margin: 5px 0;
+  margin: 10px 0;
   background-color: ${snow};
+  box-shadow: 2px 2px ${blueMunsell};
 `;
 
 const SectionTitle = styled.div`
@@ -84,7 +85,7 @@ interface IState {
   showFavorites: boolean;
 }
 
-class PublicPage extends Component<
+class AllRecipesPage extends Component<
   RouteComponentProps<{ id: string }>,
   IState
 > {
@@ -239,4 +240,4 @@ class PublicPage extends Component<
   }
 }
 
-export default withRouter(PublicPage);
+export default withRouter(AllRecipesPage);

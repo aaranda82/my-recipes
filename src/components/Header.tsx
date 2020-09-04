@@ -81,19 +81,13 @@ class Header extends Component<NavProps, NavState> {
   handleLogo() {
     return this.props.displayName ? (
       <LoggedInLogo>
-        <Link
-          to={"/publicpage"}
-          style={{ textDecoration: "none", color: blueMunsell }}
-        >
+        <Link to={"/"} style={{ textDecoration: "none", color: blueMunsell }}>
           My Recipes
         </Link>
       </LoggedInLogo>
     ) : (
       <Logo>
-        <Link
-          to={"/login"}
-          style={{ textDecoration: "none", color: blueMunsell }}
-        >
+        <Link to={"/"} style={{ textDecoration: "none", color: blueMunsell }}>
           My Recipes
         </Link>
       </Logo>
