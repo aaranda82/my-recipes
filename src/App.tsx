@@ -2,11 +2,10 @@ import React from "react";
 import Auth from "./components/Auth";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import PublicPage from "./components/PublicPage";
+import AllRecipesPage from "./components/AllRecipesPage";
 import RecipeDetail from "./components/RecipeDetail";
 import AccountPage from "./components/AccountPage";
-import UserPage from "./components/UserPage";
-import { store } from "./store";
+import { RootState } from "./reducers/rootReducer";
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,28 +13,35 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
+const { connect } = require("react-redux");
 
-const { Provider } = require("react-redux");
-
-function App(props: any) {
+function App(props: { uid: string }) {
   return (
-    <Provider store={store}>
-      <Router>
-        <Header />
+    <Router>
+      <Header />
+      <main>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/login" />
+            {props.uid ? <Redirect to={`/userpage/${props.uid}`} /> : <Auth />}
           </Route>
           <Route path="/login" component={Auth} />
-          <Route path="/publicpage" component={PublicPage} />
+          <Route path="/publicpage" component={AllRecipesPage} />
           <Route path="/account" component={AccountPage} />
           <Route path="/recipedetail/:id" component={RecipeDetail} />
-          <Route path="/userpage/:id" component={UserPage} />
+          <Route path="/userpage/:id" component={AllRecipesPage} />
         </Switch>
-        <Footer />
-      </Router>
-    </Provider>
+      </main>
+      <Footer />
+    </Router>
   );
 }
 
-export default withRouter(App);
+const mapStateToProps = (state: RootState) => {
+  return {
+    displayName: state.userReducer.displayName,
+    email: state.userReducer.email,
+    uid: state.userReducer.uid,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(App));

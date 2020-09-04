@@ -7,13 +7,14 @@ import Lunch from "../assets/Lunch.jpg";
 const { gunmetal, timberwolf } = ColorScheme;
 
 const RecipeContainer = styled.div`
-  flex: 1 22%;
+  flex: 1 1 22%;
   cursor: pointer;
   text-align: center;
   margin: 10px;
   background-color: ${timberwolf};
-  transition: all ease 0.2s;
+  height: auto;
   &:hover {
+    transition: all ease 0.2s;
     transform: scale(1.1);
     box-shadow: 15px 10px 10px ${gunmetal};
   }
@@ -37,9 +38,24 @@ const RecipeName = styled.div`
   margin: 5px;
 `;
 
+const SaveButton = styled.button`
+  padding: 5px 10px 5px 10px;
+  border: 2px solid ${gunmetal};
+  border-radius: 20px;
+  background-color: ${timberwolf};
+  color: ${gunmetal};
+  margin: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${gunmetal};
+    color: ${timberwolf};
+  }
+`;
+
 function RecipeCard(
   recipe: string,
   recipeId: number,
+  createdBy: string,
   index: number,
   view: string
 ) {
@@ -51,8 +67,28 @@ function RecipeCard(
       >
         <RecipeImage src={Lunch} alt="Lunch" />
         <RecipeName>{recipe}</RecipeName>
-        {view === "public" ? <i className="fas fa-heart" /> : null}
+        {view === "public" ? (
+          <SaveButton>
+            <i className="fas fa-star" style={{ marginRight: "5px" }} />
+            Save
+          </SaveButton>
+        ) : null}
       </Link>
+    </RecipeContainer>
+  );
+}
+
+export function BlankRecipeCard(index: number) {
+  return (
+    <RecipeContainer
+      key={index}
+      style={{
+        visibility: "hidden",
+        transition: "none",
+      }}
+    >
+      <RecipeImage src={Lunch} alt="Lunch" />
+      <RecipeName></RecipeName>
     </RecipeContainer>
   );
 }

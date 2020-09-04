@@ -1,15 +1,40 @@
 import React from "react";
 import { RootState } from "../reducers/rootReducer";
+import styled from "styled-components";
+import { ColorScheme } from "../ColorScheme";
 const { connect } = require("react-redux");
+
+const AccountContainer = styled.div`
+  color: ${ColorScheme.gunmetal};
+  text-align: center;
+`;
+
+const InfoContainer = styled.div`
+  width: fit-content;
+  margin: auto;
+  text-align: left;
+`;
+
+const DisplayName = styled.h2`
+  width: 100%;
+  margin: 20px auto;
+`;
+
+const Email = styled.p`
+  width: 100%;
+  margin: auto;
+`;
 
 function AccountPage(props: { displayName: string; email: string }) {
   console.log(props);
   return (
-    <>
+    <AccountContainer>
       <h1>ACCOUNT PAGE</h1>
-      <h2>{props.displayName}</h2>
-      <p>{props.email}</p>
-    </>
+      <InfoContainer>
+        <DisplayName>{props.displayName}</DisplayName>
+        <Email>{props.email}</Email>
+      </InfoContainer>
+    </AccountContainer>
   );
 }
 
