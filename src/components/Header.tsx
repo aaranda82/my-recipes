@@ -5,6 +5,7 @@ import { signOutAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
 import Spacer from "./Spacer";
 import { Link } from "react-router-dom";
+import Auth from "./Auth";
 const { connect } = require("react-redux");
 
 const { blueMunsell, gunmetal, ivory } = ColorScheme;
@@ -34,7 +35,7 @@ const Logo = styled.div`
   font-family: "Raleway", sans-serif;
   font-weight: 100;
   font-size: 3em;
-  width: 100%;
+  width: 90%;
   margin: 20px 0px 20px 0px;
 `;
 
@@ -60,22 +61,45 @@ const Shadow = styled.div`
   top: 99px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+`;
+
+const LogInButton = styled.button`
+  border: none;
+  background-color: ${blueMunsell};
+  opacity: 0.6;
+  color: ${ivory};
+  padding: 10px 20px;
+  &:hover {
+    opacity: 1;
+  }
+  &:active {
+    transform: scale(1.2);
+  }
+`;
+
 interface NavProps {
   displayName: string;
   signOut: () => void;
 }
 
 interface NavState {
-  isMenuOpen: boolean;
+  showMenu: boolean;
+  showAuth: boolean;
 }
 
 class Header extends Component<NavProps, NavState> {
   constructor(props: NavProps) {
     super(props);
     this.state = {
-      isMenuOpen: false,
+      showMenu: false,
+      showAuth: false,
     };
-    this.toggleMenu = this.toggleMenu.bind(this);
+    this.toggleState = this.toggleState.bind(this);
   }
 
   handleLogo() {
@@ -94,16 +118,33 @@ class Header extends Component<NavProps, NavState> {
     );
   }
 
-  toggleMenu() {
-    this.setState({ isMenuOpen: !this.state.isMenuOpen });
+  toggleState(s: string) {
+    if (s === "showMenu") {
+      this.setState({ showMenu: !this.state.showMenu });
+    } else if (s === "showAuth") {
+      this.setState({ showAuth: !this.state.showAuth });
+    }
   }
 
   renderMenu() {
-    if (this.props.displayName && this.state.isMenuOpen) {
+    if (this.props.displayName && this.state.showMenu) {
       return (
         <>
-          <Shadow onClick={this.toggleMenu}></Shadow>
-          <Menu toggleMenu={this.toggleMenu} />
+          <Shadow onClick={() => this.toggleState("showMenu")}></Shadow>
+          <Menu toggleState={this.toggleState} />
+        </>
+      );
+    } else {
+      return false;
+    }
+  }
+
+  renderAuth() {
+    if (this.state.showAuth) {
+      return (
+        <>
+          <Shadow onClick={() => this.toggleState("showAuth")}></Shadow>
+          <Auth onClick={this.toggleState} />
         </>
       );
     } else {
@@ -117,12 +158,19 @@ class Header extends Component<NavProps, NavState> {
         {this.handleLogo()}
         {this.props.displayName ? (
           <NavMenuButton
-            className={this.state.isMenuOpen ? "fas fa-times" : "fas fa-bars"}
-            onClick={this.toggleMenu}
+            className={this.state.showMenu ? "fas fa-times" : "fas fa-bars"}
+            onClick={() => this.toggleState("showMenu")}
           ></NavMenuButton>
-        ) : null}
+        ) : (
+          <ButtonContainer>
+            <LogInButton onClick={() => this.toggleState("showAuth")}>
+              {this.state.showAuth ? "CANCEL" : "LOG IN"}
+            </LogInButton>
+          </ButtonContainer>
+        )}
         <Spacer />
         {this.renderMenu()}
+        {this.renderAuth()}
       </Nav>
     );
   }

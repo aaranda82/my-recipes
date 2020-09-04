@@ -22,7 +22,11 @@ function App(props: { uid: string }) {
       <main>
         <Switch>
           <Route exact path="/">
-            {props.uid ? <Redirect to={`/userpage/${props.uid}`} /> : <Auth />}
+            {props.uid ? (
+              <Redirect to={`/userpage/${props.uid}`} />
+            ) : (
+              <AllRecipesPage />
+            )}
           </Route>
           <Route path="/login" component={Auth} />
           <Route path="/publicpage" component={AllRecipesPage} />

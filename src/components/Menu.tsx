@@ -34,7 +34,7 @@ interface NavProps {
   displayName: string;
   uid: string;
   signOut: () => void;
-  toggleMenu: () => void;
+  toggleState: (s: string) => void;
   history: { push: any };
 }
 
@@ -45,7 +45,7 @@ class Menu extends Component<NavProps> {
   }
 
   handleSignOut() {
-    this.props.toggleMenu();
+    this.props.toggleState("showMenu");
     this.props.signOut();
     firebase.auth().signOut();
   }
@@ -58,7 +58,9 @@ class Menu extends Component<NavProps> {
             to={"/publicpage"}
             style={{ textDecoration: "none", color: blueMunsell }}
           >
-            <div onClick={this.props.toggleMenu}>Public Page</div>
+            <div onClick={() => this.props.toggleState("showMenu")}>
+              Public Page
+            </div>
           </Link>
           <Spacer />
 
@@ -66,7 +68,7 @@ class Menu extends Component<NavProps> {
             to={`/userpage/${this.props.uid}`}
             style={{ textDecoration: "none", color: blueMunsell }}
           >
-            <div onClick={this.props.toggleMenu}>
+            <div onClick={() => this.props.toggleState("showMenu")}>
               {this.props.displayName}'s Favorites
             </div>
           </Link>
@@ -76,13 +78,12 @@ class Menu extends Component<NavProps> {
             to={"/account"}
             style={{ textDecoration: "none", color: blueMunsell }}
           >
-            <div onClick={this.props.toggleMenu}>Account</div>
+            <div onClick={() => this.props.toggleState("showMenu")}>
+              Account
+            </div>
           </Link>
           <Spacer />
-          <Link
-            to={"/login"}
-            style={{ textDecoration: "none", color: blueMunsell }}
-          >
+          <Link to={"/"} style={{ textDecoration: "none", color: blueMunsell }}>
             <div onClick={this.handleSignOut}>Sign Out</div>
           </Link>
         </MenuDiv>
