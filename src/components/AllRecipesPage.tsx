@@ -13,13 +13,16 @@ const PublicPageDiv = styled.div`
   width: 95%;
   margin: auto;
   display: flex;
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+    width: 100%;
+  }
 `;
 
 const Categories = styled.div`
   min-width: 110px;
   width: 15%;
   justify-content: space-around;
-  @media (max-width: 500px) {
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     display: none;
   }
 `;
@@ -31,7 +34,7 @@ const CatTitle = styled.div`
   color: ${gunmetal};
   width: 100%;
   text-align: center;
-  @media (max-width: 500px) {
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     display: none;
   }
 `;
@@ -40,9 +43,13 @@ const SectionContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   margin: 10px 0;
   background-color: ${snow};
-  box-shadow: 2px 2px ${blueMunsell};
+  box-shadow: 5px 5px ${blueMunsell};
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+    box-shadow: none;
+  }
 `;
 
 const SectionTitle = styled.div`
@@ -54,7 +61,7 @@ const SectionTitle = styled.div`
   @media (max-width: 875px) {
     width: 90%;
   }
-  @media (max-width: 500px) {
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     width: 96%;
   }
 `;
@@ -64,7 +71,7 @@ const Recipes = styled.div`
   width: 85%;
   display: flex;
   flex-wrap: wrap;
-  @media (max-width: 500px) {
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     width: 100%;
   }
 `;
@@ -119,20 +126,25 @@ class AllRecipesPage extends Component<
   }
 
   handleRecipeArrayLength(allRecipes: JSX.Element[]) {
-    if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
-      return false;
-    } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
-      do {
-        let key = allRecipes.length;
-        allRecipes.push(BlankRecipeCard(key));
-      } while (allRecipes.length % 4 !== 0);
-    } else if (allRecipes.length < 4) {
-      do {
-        let key = allRecipes.length;
-        allRecipes.push(BlankRecipeCard(key));
-      } while (allRecipes.length <= 3);
+    console.log("1", process.env.REACT_APP_MOBILE_MAX_WIDTH);
+    if (window.screen.width < 500) {
+      return allRecipes;
+    } else {
+      if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
+        return false;
+      } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
+        do {
+          let key = allRecipes.length;
+          allRecipes.push(BlankRecipeCard(key));
+        } while (allRecipes.length % 4 !== 0);
+      } else if (allRecipes.length < 4) {
+        do {
+          let key = allRecipes.length;
+          allRecipes.push(BlankRecipeCard(key));
+        } while (allRecipes.length <= 3);
+      }
+      return allRecipes;
     }
-    return allRecipes;
   }
 
   filterRecipesByCat() {

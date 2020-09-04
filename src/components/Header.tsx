@@ -10,22 +10,25 @@ const { connect } = require("react-redux");
 
 const { blueMunsell, gunmetal, ivory } = ColorScheme;
 
-const Nav = styled.header`
+// fix Header on scroll
+
+const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   text-align: center;
-  position: sticky;
   width: 100%;
   background-color: ${ivory};
   z-index: 5;
+  position: sticky;
+  top: 0;
 `;
 
 const LoggedInLogo = styled.div`
   font-family: "Raleway", sans-serif;
   font-weight: 100;
-  font-size: 3em;
+  font-size: 2em;
   flex: 6;
   margin: 20px 0px 20px 20px;
   text-align: left;
@@ -35,8 +38,13 @@ const Logo = styled.div`
   font-family: "Raleway", sans-serif;
   font-weight: 100;
   font-size: 3em;
-  width: 90%;
+  width: 85%;
   margin: 20px 0px 20px 0px;
+  color: ${blueMunsell};
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+    width: 70%;
+    font-size: 2em;
+  }
 `;
 
 const NavMenuButton = styled.div`
@@ -53,19 +61,19 @@ const NavMenuButton = styled.div`
 `;
 
 const Shadow = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color: ${gunmetal};
-  opacity: 0.6;
   top: 99px;
+  background-color: ${ivory};
+  opacity: 0.4;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) width: 30%;
 `;
 
 const LogInButton = styled.button`
@@ -110,11 +118,7 @@ class Header extends Component<NavProps, NavState> {
         </Link>
       </LoggedInLogo>
     ) : (
-      <Logo>
-        <Link to={"/"} style={{ textDecoration: "none", color: blueMunsell }}>
-          My Recipes
-        </Link>
-      </Logo>
+      <Logo>My Recipes</Logo>
     );
   }
 
@@ -157,7 +161,7 @@ class Header extends Component<NavProps, NavState> {
 
   render() {
     return (
-      <Nav id="Header">
+      <HeaderContainer id="Header">
         {this.handleLogo()}
         {this.props.displayName ? (
           <NavMenuButton
@@ -174,7 +178,7 @@ class Header extends Component<NavProps, NavState> {
         <Spacer />
         {this.renderMenu()}
         {this.renderAuth()}
-      </Nav>
+      </HeaderContainer>
     );
   }
 }
