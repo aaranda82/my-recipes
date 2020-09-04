@@ -10,7 +10,7 @@ import { ColorScheme } from "../ColorScheme";
 import { withRouter } from "react-router";
 const { connect } = require("react-redux");
 
-const { gunmetal } = ColorScheme;
+const { gunmetal, snow } = ColorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -24,11 +24,16 @@ firebase.initializeApp(config);
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 const Container = styled.div`
-  margin: 50px;
+  position: absolute;
+  top: 25vh;
+  background-color: ${snow};
   color: ${gunmetal};
-  top: 99px;
   text-align: center;
   font-family: "Raleway", sans-serif;
+  padding: 50px;
+  & h3 {
+    padding-top: 0;
+  }
 `;
 interface AuthProps {
   displayName: string;
@@ -37,14 +42,15 @@ interface AuthProps {
   signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
   history: { push: any };
+  toggleState: (s: string) => void;
 }
 
 class Auth extends Component<AuthProps> {
   uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: () => {
+        this.props.toggleState("showAuth");
         this.props.history.push("/");
-        console.log(this.props.uid);
         return false;
       },
     },
@@ -65,8 +71,7 @@ class Auth extends Component<AuthProps> {
   render() {
     return (
       <Container id="Auth">
-        <h2>A place for all your culinary creations</h2>
-        <p>Please enter email to log in/register</p>
+        <h3>Please enter email to log in/register</h3>
         <StyledFirebaseAuth
           uiConfig={this.uiConfig}
           firebaseAuth={firebase.auth()}
