@@ -7,19 +7,22 @@ import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
 import Spacer from "./Spacer";
-const { gunmetal, blueMunsell, snow } = ColorScheme;
+const { gunmetal, blueMunsell, timberwolf } = ColorScheme;
 
 const PublicPageDiv = styled.div`
   width: 95%;
   margin: auto;
   display: flex;
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+    width: 100%;
+  }
 `;
 
 const Categories = styled.div`
   min-width: 110px;
   width: 15%;
   justify-content: space-around;
-  @media (max-width: 500px) {
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     display: none;
   }
 `;
@@ -31,7 +34,7 @@ const CatTitle = styled.div`
   color: ${gunmetal};
   width: 100%;
   text-align: center;
-  @media (max-width: 500px) {
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     display: none;
   }
 `;
@@ -40,13 +43,18 @@ const SectionContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   margin: 10px 0;
-  background-color: ${snow};
-  box-shadow: 2px 2px ${blueMunsell};
+  background-color: ${timberwolf};
+  box-shadow: 5px 5px ${blueMunsell};
+  border-radius: 10px;
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+    box-shadow: none;
+  }
 `;
 
 const SectionTitle = styled.div`
-  width: 98%;
+  width: 96%;
   text-align: center;
   font-family: "Quattrocento", serif;
   font-size: 25px;
@@ -54,8 +62,8 @@ const SectionTitle = styled.div`
   @media (max-width: 875px) {
     width: 90%;
   }
-  @media (max-width: 500px) {
-    width: 96%;
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+    width: 92%;
   }
 `;
 
@@ -64,9 +72,13 @@ const Recipes = styled.div`
   width: 85%;
   display: flex;
   flex-wrap: wrap;
-  @media (max-width: 500px) {
+  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     width: 100%;
   }
+`;
+
+const Icon = styled.i`
+  margin: 5px;
 `;
 
 interface Recipe {
@@ -119,20 +131,25 @@ class AllRecipesPage extends Component<
   }
 
   handleRecipeArrayLength(allRecipes: JSX.Element[]) {
-    if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
-      return false;
-    } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
-      do {
-        let key = allRecipes.length;
-        allRecipes.push(BlankRecipeCard(key));
-      } while (allRecipes.length % 4 !== 0);
-    } else if (allRecipes.length < 4) {
-      do {
-        let key = allRecipes.length;
-        allRecipes.push(BlankRecipeCard(key));
-      } while (allRecipes.length <= 3);
+    console.log("1", process.env.REACT_APP_MOBILE_MAX_WIDTH);
+    if (window.screen.width < 500) {
+      return allRecipes;
+    } else {
+      if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
+        return false;
+      } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
+        do {
+          let key = allRecipes.length;
+          allRecipes.push(BlankRecipeCard(key));
+        } while (allRecipes.length % 4 !== 0);
+      } else if (allRecipes.length < 4) {
+        do {
+          let key = allRecipes.length;
+          allRecipes.push(BlankRecipeCard(key));
+        } while (allRecipes.length <= 3);
+      }
+      return allRecipes;
     }
-    return allRecipes;
   }
 
   filterRecipesByCat() {
@@ -186,7 +203,7 @@ class AllRecipesPage extends Component<
       <>
         <SectionContainer>
           <SectionTitle>Created</SectionTitle>
-          <i
+          <Icon
             className={
               this.state.showCreated
                 ? "fas fa-chevron-up"
@@ -195,13 +212,12 @@ class AllRecipesPage extends Component<
             onClick={() =>
               this.setState({ showCreated: !this.state.showCreated })
             }
-            style={{ transition: "all ease 0.5s" }}
           />
           {this.state.showCreated ? this.renderUserRecipes("created") : null}
         </SectionContainer>
         <SectionContainer>
           <SectionTitle>Favorites</SectionTitle>
-          <i
+          <Icon
             className={
               this.state.showFavorites
                 ? "fas fa-chevron-up"
