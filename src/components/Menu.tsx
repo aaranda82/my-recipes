@@ -9,13 +9,13 @@ const { connect } = require("react-redux");
 
 const { ivory, blueMunsell, budGreen, gunmetal } = ColorScheme;
 
-const MenuDiv = styled.div`
+const MContainer = styled.div`
   font-size: 2em;
   font-family: "Quattrocento", serif;
   font-weight: 600;
   color: ${blueMunsell};
   position: absolute;
-  top: 99px;
+  top: 80px;
   right: 0;
   padding: 20px 70px 20px 70px;
   background: ${ivory};
@@ -53,7 +53,7 @@ class Menu extends Component<NavProps> {
   render() {
     return (
       <>
-        <MenuDiv>
+        <MContainer>
           <Link
             to={"/publicpage"}
             style={{ textDecoration: "none", color: blueMunsell }}
@@ -86,7 +86,7 @@ class Menu extends Component<NavProps> {
           <Link to={"/"} style={{ textDecoration: "none", color: blueMunsell }}>
             <div onClick={this.handleSignOut}>Sign Out</div>
           </Link>
-        </MenuDiv>
+        </MContainer>
       </>
     );
   }

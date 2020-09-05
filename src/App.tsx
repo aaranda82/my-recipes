@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import AllRecipesPage from "./components/AllRecipesPage";
 import RecipeDetail from "./components/RecipeDetail";
 import AccountPage from "./components/AccountPage";
+import CreateRecipe from "./components/CreateRecipe";
 import { RootState } from "./reducers/rootReducer";
 import {
   BrowserRouter as Router,
@@ -33,6 +34,7 @@ function App(props: { uid: string }) {
           <Route path="/account" component={AccountPage} />
           <Route path="/recipedetail/:id" component={RecipeDetail} />
           <Route path="/userpage/:id" component={AllRecipesPage} />
+          <Route path="/createrecipe" component={CreateRecipe} />
         </Switch>
       </main>
       <Footer />

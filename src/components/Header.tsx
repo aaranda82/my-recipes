@@ -64,7 +64,8 @@ const Shadow = styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
-  top: 99px;
+  top: ${(props: { displayName: string }) =>
+    props.displayName ? "80px" : "99px"};
   background-color: ${ivory};
   opacity: 0.4;
 `;
@@ -134,7 +135,10 @@ class Header extends Component<NavProps, NavState> {
     if (this.props.displayName && this.state.showMenu) {
       return (
         <>
-          <Shadow onClick={() => this.toggleState("showMenu")}></Shadow>
+          <Shadow
+            displayName={this.props.displayName}
+            onClick={() => this.toggleState("showMenu")}
+          ></Shadow>
           <Menu toggleState={this.toggleState} />
         </>
       );
@@ -150,7 +154,10 @@ class Header extends Component<NavProps, NavState> {
       };
       return (
         <>
-          <Shadow onClick={() => this.toggleState("showAuth")}></Shadow>
+          <Shadow
+            displayName={this.props.displayName}
+            onClick={() => this.toggleState("showAuth")}
+          ></Shadow>
           <Auth {...authProps} />
         </>
       );
