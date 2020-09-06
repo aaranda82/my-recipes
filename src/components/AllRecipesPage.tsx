@@ -131,7 +131,6 @@ class AllRecipesPage extends Component<
   }
 
   handleRecipeArrayLength(allRecipes: JSX.Element[]) {
-    console.log("1", process.env.REACT_APP_MOBILE_MAX_WIDTH);
     if (window.screen.width < 500) {
       return allRecipes;
     } else {

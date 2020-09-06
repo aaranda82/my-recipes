@@ -8,85 +8,113 @@ import { Link } from "react-router-dom";
 import Auth from "./Auth";
 const { connect } = require("react-redux");
 
-const { blueMunsell, gunmetal, ivory } = ColorScheme;
+const { blueMunsell, ivory } = ColorScheme;
+const MAX_WIDTH = process.env.REACT_APP_MOBILE_MAX_WIDTH;
 
-// fix Header on scroll
-
-const HeaderContainer = styled.header`
+interface LIProps {
+  loggedIn: string | null;
+}
+const HeaderContainer = styled.header<LIProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   text-align: center;
   width: 100%;
-  background-color: ${ivory};
+  background-color: ${(props) => (props.loggedIn ? blueMunsell : ivory)};
   z-index: 5;
   position: sticky;
   top: 0;
+  height: auto;
 `;
 
-const LoggedInLogo = styled.div`
+const NewLogo = styled.div<LIProps>`
+  width: 70%;
+  margin: ${(props) => (props.loggedIn ? "20px 0" : "20px 0px 20px 0px")};
   font-family: "Raleway", sans-serif;
-  font-weight: 100;
-  font-size: 2em;
-  flex: 6;
-  margin: 20px 0px 20px 20px;
-  text-align: left;
-`;
-
-const Logo = styled.div`
-  font-family: "Raleway", sans-serif;
-  font-weight: 100;
-  font-size: 3em;
-  width: 85%;
-  margin: 20px 0px 20px 0px;
-  color: ${blueMunsell};
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
-    width: 70%;
-    font-size: 2em;
+  text-align: ${(props) => (props.loggedIn ? "left" : "center")};
+  font-size: ${(props) => (props.loggedIn ? "20px" : "30px")};
+  color: ${(props) => (props.loggedIn ? ivory : blueMunsell)};
+  & > a {
+    color: ${(props) => (props.loggedIn ? ivory : blueMunsell)};
+    text-decoration: none;
+    margin-left: 20px;
+  }
+  @media (max-width: ${MAX_WIDTH}) {
+    font-size: 20px;
   }
 `;
 
-const NavMenuButton = styled.div`
+const NavMenuButton = styled.i`
   font-size: 2em;
-  color: ${blueMunsell};
-  display: flex:
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-right: 20px;
-  transition: all 0.5s ease;
+  color: ${ivory};
+  opacity: 0.6;
+  width: 15%;
   &:hover {
-    color: ${gunmetal};
+    opacity: 1;
   }
 `;
 
-const Shadow = styled.div`
+const Shadow = styled.div<LIProps>`
   position: fixed;
   width: 100vw;
   height: 100vh;
-  top: 99px;
+  top: ${(props) => (props.loggedIn ? "63px" : "77px")};
   background-color: ${ivory};
   opacity: 0.4;
 `;
 
-const ButtonContainer = styled.div`
+const LogoSpacer = styled.div`
+  width: 15%;
+  @media (max-width: ${MAX_WIDTH}px) {
+    display: none;
+  } ;
+`;
+
+interface BCProps {
+  w: string;
+}
+
+const ButtonContainer = styled.div<BCProps>`
+  width: ${(props) => props.w};
   display: flex;
   justify-content: center;
   align-items: center;
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) width: 30%;
+  @media (max-width: ${MAX_WIDTH}px) {
+    width: 30%;
+  } ;
 `;
 
 const LogInButton = styled.button`
   border: none;
   background-color: ${blueMunsell};
-  opacity: 0.6;
   color: ${ivory};
   padding: 10px 20px;
+  opacity: 0.6;
   &:hover {
     opacity: 1;
   }
   &:active {
     transform: scale(1.2);
+  }
+`;
+
+const AddRecipeButton = styled.button`
+  border: 5px solid ${ivory};
+  background-color: ${blueMunsell};
+  padding: 10px 20px;
+  outline: none;
+  color: ${ivory};
+  opacity: 0.6;
+  &:hover {
+    opacity: 1;
+  }
+  &:active {
+    transform: scale(1.2);
+  }
+  & > a {
+    text-decoration: none;
+    color: ${ivory};
   }
 `;
 
@@ -112,13 +140,11 @@ class Header extends Component<NavProps, NavState> {
 
   handleLogo() {
     return this.props.displayName ? (
-      <LoggedInLogo>
-        <Link to={"/"} style={{ textDecoration: "none", color: blueMunsell }}>
-          My Recipes
-        </Link>
-      </LoggedInLogo>
+      <NewLogo loggedIn={this.props.displayName}>
+        <Link to={"/"}>My Recipes</Link>
+      </NewLogo>
     ) : (
-      <Logo>My Recipes</Logo>
+      <NewLogo loggedIn={this.props.displayName}>My Recipes</NewLogo>
     );
   }
 
@@ -130,11 +156,14 @@ class Header extends Component<NavProps, NavState> {
     }
   }
 
-  renderMenu() {
-    if (this.props.displayName && this.state.showMenu) {
+  handleMenuModal() {
+    if (this.state.showMenu) {
       return (
         <>
-          <Shadow onClick={() => this.toggleState("showMenu")}></Shadow>
+          <Shadow
+            loggedIn={this.props.displayName}
+            onClick={() => this.toggleState("showMenu")}
+          ></Shadow>
           <Menu toggleState={this.toggleState} />
         </>
       );
@@ -143,14 +172,17 @@ class Header extends Component<NavProps, NavState> {
     }
   }
 
-  renderAuth() {
+  handleAuthModal() {
     if (this.state.showAuth) {
       const authProps = {
         toggleState: this.toggleState,
       };
       return (
         <>
-          <Shadow onClick={() => this.toggleState("showAuth")}></Shadow>
+          <Shadow
+            loggedIn={this.props.displayName}
+            onClick={() => this.toggleState("showAuth")}
+          ></Shadow>
           <Auth {...authProps} />
         </>
       );
@@ -161,23 +193,38 @@ class Header extends Component<NavProps, NavState> {
 
   render() {
     return (
-      <HeaderContainer id="Header">
+      <HeaderContainer
+        id="Header"
+        loggedIn={this.props.displayName ? "loggedIn" : null}
+      >
+        {this.props.displayName ? null : <LogoSpacer></LogoSpacer>}
         {this.handleLogo()}
         {this.props.displayName ? (
-          <NavMenuButton
-            className={this.state.showMenu ? "fas fa-times" : "fas fa-bars"}
-            onClick={() => this.toggleState("showMenu")}
-          ></NavMenuButton>
+          <>
+            <ButtonContainer w="20%">
+              <AddRecipeButton>
+                <Link to={"/createrecipe"}>ADD RECIPE</Link>
+              </AddRecipeButton>
+            </ButtonContainer>
+            <ButtonContainer w="10%">
+              <NavMenuButton
+                className={this.state.showMenu ? "fas fa-times" : "fas fa-bars"}
+                onClick={() => this.toggleState("showMenu")}
+              ></NavMenuButton>
+            </ButtonContainer>
+          </>
         ) : (
-          <ButtonContainer>
-            <LogInButton onClick={() => this.toggleState("showAuth")}>
-              {this.state.showAuth ? "CANCEL" : "LOG IN"}
-            </LogInButton>
-          </ButtonContainer>
+          <>
+            <ButtonContainer w="15%">
+              <LogInButton onClick={() => this.toggleState("showAuth")}>
+                {this.state.showAuth ? "CANCEL" : "LOG IN"}
+              </LogInButton>
+            </ButtonContainer>
+            <Spacer />
+          </>
         )}
-        <Spacer />
-        {this.renderMenu()}
-        {this.renderAuth()}
+        {this.handleMenuModal()}
+        {this.handleAuthModal()}
       </HeaderContainer>
     );
   }
