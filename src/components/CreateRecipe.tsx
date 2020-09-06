@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 
-const { bittersweet, ivory, gunmetal } = ColorScheme;
+const { bittersweet, ivory, gunmetal, timberwolf } = ColorScheme;
 
 const CRContainer = styled.div`
   width: 80%;
@@ -15,13 +15,14 @@ const RInfoContainer = styled.div`
   flex-wrap: wrap:
   justify-content: center;
   align-items: center;
-`;
+  `;
 
 const InfoSection = styled.div`
   width: 50%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  background-color: ${timberwolf};
 `;
 
 const Label = styled.label`

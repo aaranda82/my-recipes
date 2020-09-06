@@ -7,7 +7,7 @@ import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
 import Spacer from "./Spacer";
-const { gunmetal, blueMunsell, timberwolf, ivory } = ColorScheme;
+const { gunmetal, blueMunsell, timberwolf } = ColorScheme;
 
 const PublicPageDiv = styled.div`
   width: 95%;
@@ -79,25 +79,6 @@ const Recipes = styled.div`
 
 const Icon = styled.i`
   margin: 5px;
-`;
-
-const AddRecipeButton = styled.button`
-  border: 5px solid ${blueMunsell};
-  border-radius: 50px;
-  background-color: ${ivory};
-  color: ${blueMunsell};
-  position: fixed;
-  right: 5%;
-  bottom: 2%;
-  padding: 10px 20px;
-  z-index: 5;
-  height: 75px;
-  width: 75px;
-  outline: none;
-  &:active {
-    transform: scale(1.2);
-    box-shadow: 0 0 10px 5px ${timberwolf};
-  }
 `;
 
 interface Recipe {
@@ -257,13 +238,6 @@ class AllRecipesPage extends Component<
   render() {
     return (
       <PublicPageDiv id="PublicPage">
-        {this.props.match.params.id ? (
-          <AddRecipeButton
-            onClick={() => this.props.history.push("/createrecipe")}
-          >
-            ADD
-          </AddRecipeButton>
-        ) : null}
         <Categories id="Categories">
           <CatTitle>Categories</CatTitle>
           <Spacer />

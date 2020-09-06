@@ -15,7 +15,7 @@ const MContainer = styled.div`
   font-weight: 600;
   color: ${blueMunsell};
   position: absolute;
-  top: 80px;
+  top: 63px;
   right: 0;
   padding: 20px 70px 20px 70px;
   background: ${ivory};
