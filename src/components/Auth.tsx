@@ -10,7 +10,7 @@ import { ColorScheme } from "../ColorScheme";
 import { withRouter } from "react-router";
 const { connect } = require("react-redux");
 
-const { gunmetal, snow, blueMunsell } = ColorScheme;
+const { gunmetal, ivory, blueMunsell } = ColorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -28,7 +28,7 @@ const Container = styled.div`
   box-shadow: 5px 5px ${blueMunsell};
   position: fixed;
   top: 25vh;
-  background-color: ${snow};
+  background-color: ${ivory};
   color: ${gunmetal};
   text-align: center;
   font-family: "Raleway", sans-serif;

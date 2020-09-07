@@ -12,7 +12,7 @@ const Nav = styled.footer`
 const Anchor = styled.a`
   padding-left: 5px;
   text-decoration: none;
-  color: ${ColorScheme.budGreen};
+  color: ${ColorScheme.redOrange};
 `;
 
 function Footer() {

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import Lunch from "../assets/Lunch.jpg";
 
-const { gunmetal, ivory } = ColorScheme;
+const { ivory, blueMunsell } = ColorScheme;
 
 const RContainer = styled.div`
   flex: 1 1 22%;
@@ -12,12 +12,8 @@ const RContainer = styled.div`
   margin: 10px;
   background-color: ${ivory};
   height: auto;
-  border-radius: 10px;
-  &:hover {
-    transition: all ease 0.2s;
-    transform: scale(1.1);
-    box-shadow: 15px 10px 10px ${gunmetal};
-  }
+  border: 1px solid lightgrey;
+
   @media (max-width: 875px) {
     flex: 1 1 20%;
   }
@@ -34,7 +30,6 @@ const RImage = styled.img`
   background-image: url(${Lunch});
   background-size: cover;
   background-position: center;
-  border-radius: 10px;
   @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     width: 40%;
   }
@@ -44,31 +39,40 @@ const RInfoContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  font-family: Raleway, sans-serif;
   @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
     width: 60%;
   }
 `;
 
-const RName = styled.div`
+interface RNProps {
+  view: string;
+}
+
+const RName = styled.div<RNProps>`
   width: 100%;
-  font-weight: 600;
-  margin: 10px 0 10px 10px;
+  margin: ${(props) => (props.view !== "public" ? "20px 0" : "10px 0")};
+  text-align: center;
 `;
 
 const RButtonContainer = styled.div`
   width: 100%;
-  margin: 0 0 10px 10px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 `;
 
 const SaveButton = styled.button`
   padding: 5px 10px 5px 10px;
-  border: 2px solid ${gunmetal};
+  border: 2px solid ${blueMunsell};
   border-radius: 20px;
   background-color: ${ivory};
-  color: ${gunmetal};
+  color: ${blueMunsell};
   cursor: pointer;
+  font-family: Raleway, sans-serif;
+  font-weight: 400;
   &:hover {
-    background-color: ${gunmetal};
+    background-color: ${blueMunsell};
     color: ${ivory};
   }
 `;
@@ -93,7 +97,7 @@ function RecipeCard(
       >
         <RImage src={Lunch} alt="Lunch" />
         <RInfoContainer>
-          <RName>{recipe}</RName>
+          <RName view={view}>{recipe}</RName>
           {view === "public" ? (
             <RButtonContainer>
               <SaveButton>
@@ -118,7 +122,7 @@ export function BlankRecipeCard(index: number) {
       }}
     >
       <RImage src={Lunch} alt="Lunch" />
-      <RName></RName>
+      <RName view="blank"></RName>
     </RContainer>
   );
 }

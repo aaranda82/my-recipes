@@ -7,7 +7,7 @@ import Spacer from "./Spacer";
 import { Link } from "react-router-dom";
 const { connect } = require("react-redux");
 
-const { ivory, blueMunsell, budGreen, gunmetal } = ColorScheme;
+const { ivory, blueMunsell, redOrange, gunmetal } = ColorScheme;
 
 const MContainer = styled.div`
   font-size: 2em;
@@ -26,7 +26,7 @@ const MContainer = styled.div`
     transition: all 1s ease;
   }
   & > div:hover {
-    color: ${budGreen};
+    color: ${redOrange};
   }
 `;
 

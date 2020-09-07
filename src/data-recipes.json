@@ -2,7 +2,7 @@
   {
     "recipeId": 1,
     "createdBy": "2xN7cLoe6uRd5EkfzbeB5fGDJf43",
-    "recipe": "Scrammbled Eggs",
+    "name": "Scrammbled Eggs",
     "category": "BREAKFAST",
     "servings": 2,
     "ingredients": [
@@ -48,7 +48,7 @@
   {
     "recipeId": 2,
     "createdBy": "2xN7cLoe6uRd5EkfzbeB5fGDJf43",
-    "recipe": "BLT",
+    "name": "BLT",
     "category": "LUNCH",
     "servings": 1,
     "ingredients": [
@@ -112,7 +112,7 @@
   {
     "recipeId": 3,
     "createdBy": "usN6qlzDeNbRQhIPIr1tZWM10n82",
-    "recipe": "Baked Teriyaki Chicken",
+    "name": "Baked Teriyaki Chicken",
     "category": "DINNER",
     "servings": 6,
     "ingredients": [
@@ -184,7 +184,7 @@
   {
     "recipeId": 4,
     "createdBy": "usN6qlzDeNbRQhIPIr1tZWM10n82",
-    "recipe": "strawberry cheesecake",
+    "name": "strawberry cheesecake",
     "category": "DESSERT",
     "servings": 12,
     "ingredients": [
@@ -279,7 +279,7 @@
   {
     "recipeId": 5,
     "createdBy": "2xN7cLoe6uRd5EkfzbeB5fGDJf43",
-    "recipe": "Scrammbled Eggs",
+    "name": "Scrammbled Eggs",
     "category": "BREAKFAST",
     "servings": 2,
     "ingredients": [
@@ -325,7 +325,7 @@
   {
     "recipeId": 6,
     "createdBy": "ghYmsu4erFe9CFlYIVLd0x8P9nw2",
-    "recipe": "BLT",
+    "name": "BLT",
     "category": "LUNCH",
     "servings": 1,
     "ingredients": [
@@ -389,7 +389,7 @@
   {
     "recipeId": 7,
     "createdBy": "ghYmsu4erFe9CFlYIVLd0x8P9nw2",
-    "recipe": "Baked Teriyaki Chicken",
+    "name": "Baked Teriyaki Chicken",
     "category": "DINNER",
     "servings": 6,
     "ingredients": [
@@ -461,7 +461,7 @@
   {
     "recipeId": 8,
     "createdBy": "3U4VMiM58daimRXvvINMQa06IzB3",
-    "recipe": "strawberry cheesecake",
+    "name": "strawberry cheesecake",
     "category": "DESSERT",
     "servings": 12,
     "ingredients": [
@@ -556,7 +556,7 @@
   {
     "recipeId": 9,
     "createdBy": "3U4VMiM58daimRXvvINMQa06IzB3",
-    "recipe": "Fresh Southern Peach Cobbler",
+    "name": "Fresh Southern Peach Cobbler",
     "category": "SWEET",
     "servings": 4,
     "ingredients": [
@@ -658,7 +658,7 @@
   {
     "recipeId": 10,
     "createdBy": "2xN7cLoe6uRd5EkfzbeB5fGDJf43",
-    "recipe": "Fresh Southern Peach Cobbler",
+    "name": "Fresh Southern Peach Cobbler",
     "category": "TREAT",
     "servings": 4,
     "ingredients": [
@@ -760,7 +760,7 @@
   {
     "recipeId": 11,
     "createdBy": "2xN7cLoe6uRd5EkfzbeB5fGDJf43",
-    "recipe": "chicken tikka masala",
+    "name": "chicken tikka masala",
     "category": "INDIAN",
     "servings": 0,
     "ingredients": [
