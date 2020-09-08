@@ -1,42 +1,40 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
-import Spacer from "./Spacer";
-const { gunmetal, blueMunsell } = ColorScheme;
-
-const MAX_WIDTH = process.env.REACT_APP_MOBILE_MAX_WIDTH;
+const { gunmetal, blueMunsell, ivory } = ColorScheme;
+const { secondaryFont, mobileMaxWidth } = Styles;
 
 const PublicPageDiv = styled.div`
   width: 95%;
   margin: auto;
   display: flex;
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 100%;
   }
 `;
-
 const Categories = styled.div`
   min-width: 110px;
   width: 15%;
   justify-content: space-around;
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     display: none;
   }
 `;
 
 const CatTitle = styled.div`
-  font-family: "Quattrocento", serif;
+  font-family: ${secondaryFont};
   font-size: 30px;
-  margin: 15px 0 15px 0;
+  margin-top: 15px;
   color: ${gunmetal};
   width: 100%;
   text-align: center;
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     display: none;
   }
 `;
@@ -49,6 +47,7 @@ const RVSCont = styled.div`
 
 interface RVSProps {
   bgColor: string | null;
+  textColor: string | null;
 }
 
 const RViewSelector = styled.div<RVSProps>`
@@ -57,11 +56,12 @@ const RViewSelector = styled.div<RVSProps>`
   border: 1px solid lightgrey;
   text-align: center;
   padding: 10px;
-  font-family: quattrocento, serif;
+  font-family: ${secondaryFont};
   margin-top: 10px;
   cursor: pointer;
+  color: ${(props) => props.textColor};
   background-color: ${(props) => props.bgColor};
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     font-size: 10px;
   } ;
 `;
@@ -72,7 +72,7 @@ const SectionContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin: 5px 0;
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     box-shadow: none;
   }
 `;
@@ -82,7 +82,7 @@ const Recipes = styled.div`
   width: 85%;
   display: flex;
   flex-wrap: wrap;
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 100%;
   }
 `;
@@ -93,7 +93,7 @@ interface Recipe {
   name: string;
   category: string;
   servings: number;
-  ingredients: { name: string; quantity: number; unit: string }[];
+  ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
 }
 
@@ -128,8 +128,8 @@ class AllRecipesPage extends Component<
       }
     }
     const catElements = categories.map((cat, index) => {
-      let color = this.state.categoryToShow === cat ? blueMunsell : undefined;
-      return Category(index, this.changeCategory, color, cat);
+      let selected = this.state.categoryToShow === cat ? true : false;
+      return Category(index, this.changeCategory, selected, cat);
     });
     return catElements;
   }
@@ -216,7 +216,6 @@ class AllRecipesPage extends Component<
       <PublicPageDiv id="PublicPage">
         <Categories id="Categories">
           <CatTitle>Categories</CatTitle>
-          <Spacer />
           {this.renderCategories()}
         </Categories>
         <Recipes id="Recipes">
@@ -228,6 +227,7 @@ class AllRecipesPage extends Component<
                   bgColor={
                     this.state.recipesToShow === "ALL" ? blueMunsell : null
                   }
+                  textColor={this.state.recipesToShow === "ALL" ? ivory : null}
                 >
                   ALL RECIPES
                 </RViewSelector>
@@ -238,6 +238,9 @@ class AllRecipesPage extends Component<
                       ? blueMunsell
                       : null
                   }
+                  textColor={
+                    this.state.recipesToShow === "FAVORITES" ? ivory : null
+                  }
                 >
                   FAVORITES
                 </RViewSelector>
@@ -245,6 +248,9 @@ class AllRecipesPage extends Component<
                   onClick={() => this.setState({ recipesToShow: "PERSONAL" })}
                   bgColor={
                     this.state.recipesToShow === "PERSONAL" ? blueMunsell : null
+                  }
+                  textColor={
+                    this.state.recipesToShow === "PERSONAL" ? ivory : null
                   }
                 >
                   PERSONAL RECIPES

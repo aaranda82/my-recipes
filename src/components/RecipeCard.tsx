@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
 
-const { ivory, blueMunsell } = ColorScheme;
+const { ivory, gunmetal, redOrange } = ColorScheme;
+const { mobileMaxWidth, primaryFont } = Styles;
 
 const RContainer = styled.div`
   flex: 1 1 22%;
@@ -17,7 +19,7 @@ const RContainer = styled.div`
   @media (max-width: 875px) {
     flex: 1 1 20%;
   }
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 90%;
     flex: none;
     margin: 0 0 10px 0;
@@ -30,7 +32,7 @@ const RImage = styled.img`
   background-image: url(${Lunch});
   background-size: cover;
   background-position: center;
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 40%;
   }
 `;
@@ -39,8 +41,8 @@ const RInfoContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  font-family: Raleway, sans-serif;
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+  font-family: ${primaryFont};
+  @media (max-width: ${mobileMaxWidth}) {
     width: 60%;
   }
 `;
@@ -64,15 +66,24 @@ const RButtonContainer = styled.div`
 
 const SaveButton = styled.button`
   padding: 5px 10px 5px 10px;
-  border: 2px solid ${blueMunsell};
+  border: 2px solid ${gunmetal};
   border-radius: 20px;
   background-color: ${ivory};
-  color: ${blueMunsell};
+  color: ${gunmetal};
   cursor: pointer;
-  font-family: Raleway, sans-serif;
+  font-family: ${primaryFont};
   font-weight: 400;
   &:hover {
-    background-color: ${blueMunsell};
+    border: 2px solid ${redOrange};
+    background-color: ${redOrange};
+    color: ${ivory};
+  }
+`;
+
+const Icon = styled.i`
+  margin-right: 5px;
+  color: ${redOrange};
+  ${SaveButton}:hover > & {
     color: ${ivory};
   }
 `;
@@ -101,7 +112,7 @@ function RecipeCard(
           {view === "public" ? (
             <RButtonContainer>
               <SaveButton>
-                <i className="fas fa-star" style={{ marginRight: "5px" }} />
+                <Icon className="fas fa-star" />
                 Save
               </SaveButton>
             </RButtonContainer>

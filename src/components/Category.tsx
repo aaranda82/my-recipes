@@ -1,32 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import Spacer from "./Spacer";
 
-const CategoryButton = styled.a`
-  margin: 0 20px;
+const { blueMunsell } = ColorScheme;
+interface CBProps {
+  selected: boolean;
+}
+const CategoryButton = styled.div<CBProps>`
+  margin: 5px 20px 0;
   font-family: "Raleway", sans-serif;
   cursor: pointer;
   transition: all ease 0.2s;
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 15px 10px 10px ${ColorScheme.gunmetal};
+    color: ${blueMunsell};
   }
 `;
 
 const Category = (
   index: number,
   changeCategory: (categoryToShow: string) => void,
-  color: string | undefined,
+  selected: boolean,
   cat: string
 ) => {
   return (
-    <CategoryButton
-      id="category"
-      key={index}
-      onClick={() => changeCategory(cat)}
-    >
-      <div style={{ color: color }}>{cat}</div>
-    </CategoryButton>
+    <React.Fragment key={index}>
+      <CategoryButton
+        id="category"
+        onClick={() => changeCategory(cat)}
+        selected={selected}
+      >
+        {cat}
+      </CategoryButton>
+      {selected ? <Spacer /> : null}
+    </React.Fragment>
   );
 };
 

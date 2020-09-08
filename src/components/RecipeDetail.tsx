@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
@@ -8,9 +9,11 @@ import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 const { connect } = require("react-redux");
 
-const { blueMunsell, brownSugar } = ColorScheme;
+const { blueMunsell, brownSugar, redOrange } = ColorScheme;
+const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
+  font-family: ${primaryFont};
   width: 70%;
   margin: auto;
   display: flex;
@@ -39,6 +42,7 @@ const Image = styled.div`
 `;
 
 const RecipeHeading = styled.div`
+  font-family: ${secondaryFont};
   width: 50%;
   text-align: center;
   padding-bottom: 20px;
@@ -86,7 +90,7 @@ interface IState {
   name: string;
   category: string;
   servings: number;
-  ingredients: { name: string; quantity: number; unit: string }[];
+  ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
 }
 
@@ -107,7 +111,7 @@ class RecipeDetail extends Component<IProps, IState> {
 
   handleIngredients() {
     const ingredientsList = this.state.ingredients.map(
-      (i: { name: string; quantity: number; unit: string }, index: number) => {
+      (i: { name: string; quantity: string; unit: string }, index: number) => {
         return (
           <div key={index}>
             {i.quantity} {i.unit === "-" ? null : i.unit} {i.name}
@@ -184,7 +188,7 @@ class RecipeDetail extends Component<IProps, IState> {
             }
             style={{ textDecoration: "none", color: blueMunsell }}
           >
-            <i className="fas fa-times"></i>
+            <i style={{ color: redOrange }} className="fas fa-times"></i>
           </Link>
         </Exit>
         <Ingredients>{this.handleIngredients()}</Ingredients>

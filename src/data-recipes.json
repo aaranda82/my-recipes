@@ -8,17 +8,17 @@
     "ingredients": [
       {
         "name": "eggs",
-        "quantity": 4,
+        "quantity": "4",
         "unit": "-"
       },
       {
         "name": "butter",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tbsp"
       },
       {
         "name": "salt",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "tsp"
       }
     ],
@@ -54,27 +54,27 @@
     "ingredients": [
       {
         "name": "bacon",
-        "quantity": 4,
+        "quantity": "4",
         "unit": "strips"
       },
       {
         "name": "lettuce",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "pieces"
       },
       {
         "name": "tomato",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "slices"
       },
       {
         "name": "sliced bread",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "slices"
       },
       {
         "name": "mayonaise",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tbsp"
       }
     ],
@@ -118,47 +118,47 @@
     "ingredients": [
       {
         "name": "skinless chicken thighs",
-        "quantity": 12,
+        "quantity": "12",
         "unit": "-"
       },
       {
         "name": "ground black pepper",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "teaspoon"
       },
       {
         "name": "ground ginger",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "teaspoon"
       },
       {
         "name": "minced garlic",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "clove"
       },
       {
         "name": "cider vinager",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "soy sauce",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "cup"
       },
       {
         "name": "white sugar",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "cup"
       },
       {
         "name": "cold water",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       },
       {
         "name": "cornstarch",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       }
     ],
@@ -190,62 +190,62 @@
     "ingredients": [
       {
         "name": "graham cracker crumbs",
-        "quantity": 1.25,
+        "quantity": "1 1/4",
         "unit": "cups"
       },
       {
         "name": "white sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cups"
       },
       {
         "name": "ground cinnamon",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "teaspoon"
       },
       {
         "name": "butter, melted",
-        "quantity": 0.333,
+        "quantity": "1/3",
         "unit": "cups"
       },
       {
         "name": "frozen sweetened sliced strawberries, thawed and drained",
-        "quantity": 20,
+        "quantity": "20",
         "unit": "ounces"
       },
       {
         "name": "cornstarch",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       },
       {
         "name": "cream cheese, softened",
-        "quantity": 24,
+        "quantity": "24",
         "unit": "ounces"
       },
       {
         "name": "sweetened condensed milk",
-        "quantity": 14,
+        "quantity": "14",
         "unit": "ounces"
       },
       {
         "name": "lemon juice",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cups"
       },
       {
         "name": "vanilla extract",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "teaspoon"
       },
       {
         "name": "large eggs",
-        "quantity": 3,
+        "quantity": "3",
         "unit": "-"
       },
       {
         "name": "water",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       }
     ],
@@ -285,17 +285,17 @@
     "ingredients": [
       {
         "name": "eggs",
-        "quantity": 4,
+        "quantity": "4",
         "unit": "-"
       },
       {
         "name": "butter",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tbsp"
       },
       {
         "name": "salt",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "tsp"
       }
     ],
@@ -331,27 +331,27 @@
     "ingredients": [
       {
         "name": "bacon",
-        "quantity": 4,
+        "quantity": "4",
         "unit": "strips"
       },
       {
         "name": "lettuce",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "pieces"
       },
       {
         "name": "tomato",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "slices"
       },
       {
         "name": "sliced bread",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "slices"
       },
       {
         "name": "mayonaise",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tbsp"
       }
     ],
@@ -395,47 +395,47 @@
     "ingredients": [
       {
         "name": "skinless chicken thighs",
-        "quantity": 12,
+        "quantity": "12",
         "unit": "-"
       },
       {
         "name": "ground black pepper",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "teaspoon"
       },
       {
         "name": "ground ginger",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "teaspoon"
       },
       {
         "name": "minced garlic",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "clove"
       },
       {
         "name": "cider vinager",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "soy sauce",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "cup"
       },
       {
         "name": "white sugar",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "cup"
       },
       {
         "name": "cold water",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       },
       {
         "name": "cornstarch",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       }
     ],
@@ -467,62 +467,62 @@
     "ingredients": [
       {
         "name": "graham cracker crumbs",
-        "quantity": 1.25,
+        "quantity": "1 1/4",
         "unit": "cups"
       },
       {
         "name": "white sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cups"
       },
       {
         "name": "ground cinnamon",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "teaspoon"
       },
       {
         "name": "butter, melted",
-        "quantity": 0.333,
+        "quantity": "1/3",
         "unit": "cups"
       },
       {
         "name": "frozen sweetened sliced strawberries, thawed and drained",
-        "quantity": 20,
+        "quantity": "20",
         "unit": "ounces"
       },
       {
         "name": "cornstarch",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       },
       {
         "name": "cream cheese, softened",
-        "quantity": 24,
+        "quantity": "24",
         "unit": "ounces"
       },
       {
         "name": "sweetened condensed milk",
-        "quantity": 14,
+        "quantity": "14",
         "unit": "ounces"
       },
       {
         "name": "lemon juice",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cups"
       },
       {
         "name": "vanilla extract",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "teaspoon"
       },
       {
         "name": "large eggs",
-        "quantity": 3,
+        "quantity": "3",
         "unit": "-"
       },
       {
         "name": "water",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       }
     ],
@@ -562,77 +562,77 @@
     "ingredients": [
       {
         "name": "medium fresh peaches - peeled, pitted and sliced into thin wedges (approx 4 per lbs) ",
-        "quantity": 8,
+        "quantity": "8",
         "unit": "-"
       },
       {
         "name": "white sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "brown sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "ground cinnamon",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "teaspoon"
       },
       {
         "name": "ground nutmeng",
-        "quantity": 0.125,
+        "quantity": "1/8",
         "unit": "teaspoon"
       },
       {
         "name": "fresh lemon juice",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "cornstarch",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "teaspoons"
       },
       {
         "name": "all purpose flour",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "cup"
       },
       {
         "name": "white sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "baking powder",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "salt",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "teaspoon"
       },
       {
         "name": "unsalted butter, chilled and cut into small pieces",
-        "quantity": 6,
+        "quantity": "6",
         "unit": "tablespoons"
       },
       {
         "name": "boiling water",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "white sugar",
-        "quantity": 3,
+        "quantity": "3",
         "unit": "tablespoons"
       },
       {
         "name": "ground cinnamon",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       }
     ],
@@ -664,77 +664,77 @@
     "ingredients": [
       {
         "name": "medium fresh peaches - peeled, pitted and sliced into thin wedges (approx 4 per lbs) ",
-        "quantity": 8,
+        "quantity": "8",
         "unit": "-"
       },
       {
         "name": "white sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "brown sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "ground cinnamon",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "teaspoon"
       },
       {
         "name": "ground nutmeng",
-        "quantity": 0.125,
+        "quantity": "1/8",
         "unit": "teaspoon"
       },
       {
         "name": "fresh lemon juice",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "cornstarch",
-        "quantity": 2,
+        "quantity": "2",
         "unit": "teaspoons"
       },
       {
         "name": "all purpose flour",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "cup"
       },
       {
         "name": "white sugar",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "baking powder",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "salt",
-        "quantity": 0.5,
+        "quantity": "1/2",
         "unit": "teaspoon"
       },
       {
         "name": "unsalted butter, chilled and cut into small pieces",
-        "quantity": 6,
+        "quantity": "6",
         "unit": "tablespoons"
       },
       {
         "name": "boiling water",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "white sugar",
-        "quantity": 3,
+        "quantity": "3",
         "unit": "tablespoons"
       },
       {
         "name": "ground cinnamon",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       }
     ],
@@ -766,132 +766,132 @@
     "ingredients": [
       {
         "name": "boneless and skinless chicken thighs cut into bite-sized pieces",
-        "quantity": 28,
+        "quantity": "28",
         "unit": "oz"
       },
       {
         "name": "plain yogurt",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "cup"
       },
       {
         "name": "minced garlic",
-        "quantity": 1.5,
+        "quantity": "1 1/2",
         "unit": "tablespoons"
       },
       {
         "name": "ginger",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       },
       {
         "name": "garam masala",
-        "quantity": 2,
+        "quantity": "1 1/2",
         "unit": "teaspoons"
       },
       {
         "name": "turmeric",
-        "quantity": 1,
+        "quantity": "1 1/2",
         "unit": "teaspoon"
       },
       {
         "name": "groun cumin",
-        "quantity": 1,
+        "quantity": "1 1/2",
         "unit": "teaspoon"
       },
       {
         "name": "Kashmiri chili (or 1/2 teaspoon ground red chili powder)",
-        "quantity": 1,
+        "quantity": "1 1/2",
         "unit": "teaspoon"
       },
       {
         "name": "salt",
-        "quantity": 1,
+        "quantity": "1 1/2",
         "unit": "teaspoon"
       },
       {
         "name": "vegetable/canola oil",
-        "quantity": 2,
+        "quantity": "1 1/2",
         "unit": "tablespoons"
       },
       {
         "name": "butter",
-        "quantity": 2,
+        "quantity": "1 1/2",
         "unit": "tablespoons"
       },
       {
         "name": "small onions, finely chopped",
-        "quantity": 2,
+        "quantity": "1 1/2",
         "unit": "-"
       },
       {
         "name": "garlic finely grated",
-        "quantity": 1.5,
+        "quantity": "1 1/2",
         "unit": "tablespoons"
       },
       {
         "name": "ginger finely grated",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "tablespoon"
       },
       {
         "name": "garam masala",
-        "quantity": 1.5,
+        "quantity": "1 1/2",
         "unit": "teaspoons"
       },
       {
         "name": "ground cumin",
-        "quantity": 1.5,
+        "quantity": "1 1/2",
         "unit": "teaspoons"
       },
       {
         "name": "turmeric powder",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "ground coriander",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "tomato puree (tomato sauce/Passata)",
-        "quantity": 14,
+        "quantity": "14",
         "unit": "oz"
       },
       {
         "name": "Kashmiri chili (optional for colour and flavour)",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "ground red chili powder (adjust to your taste preference)",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "salt",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "heavy or thickened cream (use evaporated milk for lower calories)",
-        "quantity": 1.25,
+        "quantity": "1 1/4",
         "unit": "cups"
       },
       {
         "name": "brown sugar",
-        "quantity": 1,
+        "quantity": "1",
         "unit": "teaspoon"
       },
       {
         "name": "water if needed",
-        "quantity": 0.25,
+        "quantity": "1/4",
         "unit": "cup"
       },
       {
         "name": "Fresh cilantro or coriander to garnish",
-        "quantity": 4,
+        "quantity": "4",
         "unit": "tablespoons"
       }
     ],

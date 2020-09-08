@@ -3,13 +3,14 @@ import Menu from "./Menu";
 import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import Spacer from "./Spacer";
 import { Link } from "react-router-dom";
 import Auth from "./Auth";
 const { connect } = require("react-redux");
 
 const { blueMunsell, ivory, redOrange } = ColorScheme;
-const MAX_WIDTH = process.env.REACT_APP_MOBILE_MAX_WIDTH;
+const { mobileMaxWidth, primaryFont } = Styles;
 
 interface LIProps {
   loggedIn: string | null;
@@ -32,16 +33,16 @@ const LogoContainer = styled.div<LIProps>`
   width: 70%;
   display: flex;
   justify-content: ${(props) => (props.loggedIn ? "left" : "center")};
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 60%;
   }
 `;
 
 const Logo = styled.div<LIProps>`
-  margin: ${(props) => (props.loggedIn ? "20px 0" : "20px 0px 20px 0px")};
-  font-family: "Raleway", sans-serif;
+  margin: ${(props) => (props.loggedIn ? "10px 0" : "20px 0")};
+  font-family: ${primaryFont};
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  font-size: ${(props) => (props.loggedIn ? "20px" : "30px")};
+  font-size: 30px;
   text-align: ${(props) => (props.loggedIn ? "left" : "center")};
   color: ${(props) => (props.loggedIn ? ivory : blueMunsell)};
   & > a {
@@ -49,7 +50,7 @@ const Logo = styled.div<LIProps>`
     text-decoration: none;
     margin-left: 20px;
   }
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     font-size: 20px;
   }
 `;
@@ -67,14 +68,14 @@ const Shadow = styled.div<LIProps>`
   position: fixed;
   width: 100vw;
   height: 100vh;
-  top: ${(props) => (props.loggedIn ? "63px" : "77px")};
+  top: ${(props) => (props.loggedIn ? "55px" : "78px")};
   background-color: ${ivory};
   opacity: 0.4;
 `;
 
 const LogoSpacer = styled.div`
   width: 15%;
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     display: none;
   } ;
 `;
@@ -88,7 +89,7 @@ const ButtonContainer = styled.div<BCProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  @media (max-width: ${MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 20%;
   } ;
 `;
@@ -151,7 +152,7 @@ class Header extends Component<NavProps, NavState> {
 
   handleLogo() {
     return (
-      <LogoContainer loggedIn={this.props.displayName}>
+      <LogoContainer loggedIn={this.props.displayName} id="logo cont">
         <Logo loggedIn={this.props.displayName}>
           {this.props.displayName ? (
             <Link to={"/"}>My Recipes</Link>
