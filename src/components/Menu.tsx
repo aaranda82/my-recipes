@@ -3,19 +3,20 @@ import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
 import firebase from "firebase";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import Spacer from "./Spacer";
 import { Link } from "react-router-dom";
 const { connect } = require("react-redux");
 
-const { ivory, blueMunsell, budGreen, gunmetal } = ColorScheme;
+const { ivory, blueMunsell, redOrange, gunmetal } = ColorScheme;
 
 const MContainer = styled.div`
   font-size: 2em;
-  font-family: "Quattrocento", serif;
+  font-family: ${Styles.secondaryFont};
   font-weight: 600;
   color: ${blueMunsell};
   position: absolute;
-  top: 63px;
+  top: 55px;
   right: 0;
   padding: 20px 70px 20px 70px;
   background: ${ivory};
@@ -26,7 +27,7 @@ const MContainer = styled.div`
     transition: all 1s ease;
   }
   & > div:hover {
-    color: ${budGreen};
+    color: ${redOrange};
   }
 `;
 

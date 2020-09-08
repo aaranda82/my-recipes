@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
@@ -8,9 +9,11 @@ import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 const { connect } = require("react-redux");
 
-const { blueMunsell, cafeAuLait } = ColorScheme;
+const { blueMunsell, brownSugar, redOrange } = ColorScheme;
+const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
+  font-family: ${primaryFont};
   width: 70%;
   margin: auto;
   display: flex;
@@ -32,13 +35,14 @@ const Exit = styled.div`
 const Image = styled.div`
   min-height: 200px;
   width: 40%;
-  background-color: ${cafeAuLait};
+  background-color: ${brownSugar};
   @media (max-width: 400px) {
     display: none;
   }
 `;
 
 const RecipeHeading = styled.div`
+  font-family: ${secondaryFont};
   width: 50%;
   text-align: center;
   padding-bottom: 20px;
@@ -71,7 +75,7 @@ interface IProps extends RouteComponentProps<{ id: string }> {
   c: () => void;
   recipe: {
     recipeId: number;
-    recipe: string;
+    name: string;
     category: string;
     servings: number;
     ingredients: { name: string; quantity: number; unit: string }[];
@@ -83,10 +87,10 @@ interface IProps extends RouteComponentProps<{ id: string }> {
 interface IState {
   recipeId: number;
   createdBy: string;
-  recipe: string;
+  name: string;
   category: string;
   servings: number;
-  ingredients: { name: string; quantity: number; unit: string }[];
+  ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
 }
 
@@ -96,7 +100,7 @@ class RecipeDetail extends Component<IProps, IState> {
     this.state = {
       recipeId: 0,
       createdBy: "",
-      recipe: "",
+      name: "",
       category: "",
       servings: 0,
       ingredients: [],
@@ -107,20 +111,12 @@ class RecipeDetail extends Component<IProps, IState> {
 
   handleIngredients() {
     const ingredientsList = this.state.ingredients.map(
-      (i: { name: string; quantity: number; unit: string }, index: number) => {
-        if (i.unit === "-") {
-          return (
-            <div key={index}>
-              {i.quantity} {i.name}
-            </div>
-          );
-        } else {
-          return (
-            <div key={index}>
-              {i.quantity} {i.unit} {i.name}
-            </div>
-          );
-        }
+      (i: { name: string; quantity: string; unit: string }, index: number) => {
+        return (
+          <div key={index}>
+            {i.quantity} {i.unit === "-" ? null : i.unit} {i.name}
+          </div>
+        );
       }
     );
     return ingredientsList;
@@ -156,7 +152,7 @@ class RecipeDetail extends Component<IProps, IState> {
     const {
       recipeId,
       createdBy,
-      recipe,
+      name,
       category,
       servings,
       ingredients,
@@ -165,7 +161,7 @@ class RecipeDetail extends Component<IProps, IState> {
     this.setState({
       recipeId,
       createdBy,
-      recipe,
+      name,
       category,
       servings,
       ingredients,
@@ -178,7 +174,7 @@ class RecipeDetail extends Component<IProps, IState> {
       <RecipeDetailDiv>
         <Image></Image>
         <RecipeHeading>
-          <h1>{this.state.recipe}</h1>
+          <h1>{this.state.name}</h1>
           <div>{this.state.category}</div>
           <div>Servings: {this.state.servings}</div>
           <div>Author: {this.handleAuthor()}</div>
@@ -192,7 +188,7 @@ class RecipeDetail extends Component<IProps, IState> {
             }
             style={{ textDecoration: "none", color: blueMunsell }}
           >
-            <i className="fas fa-times"></i>
+            <i style={{ color: redOrange }} className="fas fa-times"></i>
           </Link>
         </Exit>
         <Ingredients>{this.handleIngredients()}</Ingredients>

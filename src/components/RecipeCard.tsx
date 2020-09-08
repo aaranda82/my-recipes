@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
 
-const { gunmetal, ivory } = ColorScheme;
+const { ivory, gunmetal, redOrange } = ColorScheme;
+const { mobileMaxWidth, primaryFont } = Styles;
 
 const RContainer = styled.div`
   flex: 1 1 22%;
@@ -12,16 +14,12 @@ const RContainer = styled.div`
   margin: 10px;
   background-color: ${ivory};
   height: auto;
-  border-radius: 10px;
-  &:hover {
-    transition: all ease 0.2s;
-    transform: scale(1.1);
-    box-shadow: 15px 10px 10px ${gunmetal};
-  }
+  border: 1px solid lightgrey;
+
   @media (max-width: 875px) {
     flex: 1 1 20%;
   }
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 90%;
     flex: none;
     margin: 0 0 10px 0;
@@ -34,8 +32,7 @@ const RImage = styled.img`
   background-image: url(${Lunch});
   background-size: cover;
   background-position: center;
-  border-radius: 10px;
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+  @media (max-width: ${mobileMaxWidth}) {
     width: 40%;
   }
 `;
@@ -44,20 +41,27 @@ const RInfoContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  @media (max-width: ${process.env.REACT_APP_MOBILE_MAX_WIDTH}px) {
+  font-family: ${primaryFont};
+  @media (max-width: ${mobileMaxWidth}) {
     width: 60%;
   }
 `;
 
-const RName = styled.div`
+interface RNProps {
+  view: string;
+}
+
+const RName = styled.div<RNProps>`
   width: 100%;
-  font-weight: 600;
-  margin: 10px 0 10px 10px;
+  margin: ${(props) => (props.view !== "public" ? "20px 0" : "10px 0")};
+  text-align: center;
 `;
 
 const RButtonContainer = styled.div`
   width: 100%;
-  margin: 0 0 10px 10px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 `;
 
 const SaveButton = styled.button`
@@ -67,8 +71,19 @@ const SaveButton = styled.button`
   background-color: ${ivory};
   color: ${gunmetal};
   cursor: pointer;
+  font-family: ${primaryFont};
+  font-weight: 400;
   &:hover {
-    background-color: ${gunmetal};
+    border: 2px solid ${redOrange};
+    background-color: ${redOrange};
+    color: ${ivory};
+  }
+`;
+
+const Icon = styled.i`
+  margin-right: 5px;
+  color: ${redOrange};
+  ${SaveButton}:hover > & {
     color: ${ivory};
   }
 `;
@@ -93,11 +108,11 @@ function RecipeCard(
       >
         <RImage src={Lunch} alt="Lunch" />
         <RInfoContainer>
-          <RName>{recipe}</RName>
+          <RName view={view}>{recipe}</RName>
           {view === "public" ? (
             <RButtonContainer>
               <SaveButton>
-                <i className="fas fa-star" style={{ marginRight: "5px" }} />
+                <Icon className="fas fa-star" />
                 Save
               </SaveButton>
             </RButtonContainer>
@@ -118,7 +133,7 @@ export function BlankRecipeCard(index: number) {
       }}
     >
       <RImage src={Lunch} alt="Lunch" />
-      <RName></RName>
+      <RName view="blank"></RName>
     </RContainer>
   );
 }
