@@ -6,8 +6,8 @@ import { RootState } from "../reducers/rootReducer";
 
 const { connect } = require("react-redux");
 
-const { redOrange, honeyYellow } = ColorScheme;
-const { mobileMaxWidth, secondaryFont, primaryFont } = Styles;
+const { redOrange, honeyYellow, blueMunsell } = ColorScheme;
+const { mobileMaxWidth, primaryFont, secondaryFont } = Styles;
 
 const CRCont = styled.div`
   font-family: ${primaryFont};
@@ -16,7 +16,7 @@ const CRCont = styled.div`
   justify-content: center;
   width: 80%;
   margin: auto;
-  background-color: ${honeyYellow};
+  border: 1px solid ${honeyYellow};
   @media (max-width: ${mobileMaxWidth}) {
     width: 95%;
   }
@@ -43,6 +43,7 @@ const InfoInput = styled.div`
 const Input = styled.input`
   border: none;
   width: 100%;
+  outline: none;
 `;
 
 const Label = styled.label`
@@ -90,7 +91,7 @@ const ButtonCont = styled.div`
 `;
 
 const AddIngButton = styled.button`
-  font-family: ${secondaryFont};
+  font-family: ${primaryFont};
   border: none;
   width: 80%;
   cursor: pointer;
@@ -103,6 +104,18 @@ const StateIngCont = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+`;
+
+interface ILProps {
+  lineWidth: boolean;
+}
+
+const InputLine = styled.div<ILProps>`
+  width: ${(props) => (props.lineWidth ? "100%" : "0")};
+  height: 5px;
+  background-color: ${blueMunsell};
+  transition: width ease 0.5s;
 `;
 
 function HandleInputs(
@@ -111,6 +124,9 @@ function HandleInputs(
   value: string | number,
   validateName: () => void,
   error: string,
+  onInputFocusIn: (e?: any) => void,
+  onInputFocusOut: () => void,
+  onFocus: string | null,
   type: string
 ) {
   return (
@@ -119,16 +135,17 @@ function HandleInputs(
       <Input
         type={type}
         onChange={onChange}
-        onBlur={validateName}
+        onBlur={() => {
+          validateName();
+          onInputFocusOut();
+        }}
         value={value}
+        onFocus={() => onInputFocusIn(name)}
       />
+      <InputLine lineWidth={onFocus === name ? true : false}></InputLine>
       <Error>{error}</Error>
     </InfoInput>
   );
-}
-
-interface HIIProps {
-  nameChange: (e: any) => void;
 }
 
 function handleIngredientsInputs(
@@ -136,12 +153,26 @@ function handleIngredientsInputs(
   onChange: (e: any) => void,
   value: string,
   error: string,
-  onBlur: () => void
+  onBlur: () => void,
+  onInputFocusIn: (e?: any) => void,
+  onInputFocusOut: () => void,
+  onFocus: string | null
 ) {
   return (
     <IngredientInput name={name}>
       <Label>{name}</Label>
-      <Input type="text" onChange={onChange} value={value} onBlur={onBlur} />
+
+      <Input
+        type="text"
+        onChange={onChange}
+        value={value}
+        onBlur={() => {
+          onBlur();
+          onInputFocusOut();
+        }}
+        onFocus={() => onInputFocusIn(name)}
+      />
+      <InputLine lineWidth={onFocus === name ? true : false}></InputLine>
       <Error>{error}</Error>
     </IngredientInput>
   );
@@ -162,6 +193,7 @@ interface IState {
     quantity: string;
     unit: string;
   };
+  onFocus: string | null;
   nameToAddError: string;
   quantityToAddError: string;
   unitToAddError: string;
@@ -188,6 +220,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
         quantity: "",
         unit: "",
       },
+      onFocus: null,
       nameToAddError: "",
       quantityToAddError: "",
       unitToAddError: "",
@@ -208,6 +241,22 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     this.validateQuantityToAdd = this.validateQuantityToAdd.bind(this);
     this.validateUnitToAdd = this.validateUnitToAdd.bind(this);
     this.addIngredient = this.addIngredient.bind(this);
+    this.onInputFocusIn = this.onInputFocusIn.bind(this);
+    this.onInputFocusOut = this.onInputFocusOut.bind(this);
+  }
+
+  onInputFocusIn(onFocus: any) {
+    this.setState({ onFocus });
+  }
+
+  onInputFocusOut() {
+    this.setState({ onFocus: null });
+  }
+
+  deleteIng(index: number) {
+    const { recipe } = { ...this.state };
+    recipe.ingredients.splice(index, 1);
+    this.setState({ recipe });
   }
 
   handleStateIngredients() {
@@ -215,15 +264,32 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
       const ingredients = this.state.recipe.ingredients.map((r, index) => {
         const { name, quantity, unit } = r;
         return (
-          <div key={index} style={{ width: "80%" }}>
-            {quantity} {unit === "-" ? null : unit} {name}
-          </div>
+          <>
+            <i
+              className="fas fa-times"
+              style={{
+                cursor: "pointer",
+                color: redOrange,
+                marginRight: "10px",
+              }}
+              onClick={() => this.deleteIng(index)}
+            />
+            <div
+              key={index}
+              style={{
+                width: "50%",
+                margin: "10px 0",
+              }}
+            >
+              {quantity} {unit === "-" ? null : unit} {name}{" "}
+            </div>
+          </>
         );
       });
       return ingredients;
     } else {
       return (
-        <div>
+        <div style={{ margin: "10px 0" }}>
           Add an ingredient <i className="fas fa-arrow-down" />
         </div>
       );
@@ -351,6 +417,9 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.state.recipe.name,
             this.validateName,
             this.state.nameError,
+            this.onInputFocusIn,
+            this.onInputFocusOut,
+            this.state.onFocus,
             "text"
           )}
           {HandleInputs(
@@ -359,6 +428,9 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.state.recipe.servings,
             this.validateServings,
             this.state.servingsError,
+            this.onInputFocusIn,
+            this.onInputFocusOut,
+            this.state.onFocus,
             "number"
           )}
           {HandleInputs(
@@ -367,6 +439,9 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.state.recipe.category,
             this.validateCategory,
             this.state.categoryError,
+            this.onInputFocusIn,
+            this.onInputFocusOut,
+            this.state.onFocus,
             "text"
           )}
         </AddRInfoCont>
@@ -377,21 +452,30 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.handelIngredientChange,
             this.state.ingredientToAdd.name,
             this.state.nameToAddError,
-            this.validateIngToAdd
+            this.validateIngToAdd,
+            this.onInputFocusIn,
+            this.onInputFocusOut,
+            this.state.onFocus
           )}
           {handleIngredientsInputs(
             "QUANTITY",
             this.handelQuantityChange,
             this.state.ingredientToAdd.quantity,
             this.state.quantityToAddError,
-            this.validateQuantityToAdd
+            this.validateQuantityToAdd,
+            this.onInputFocusIn,
+            this.onInputFocusOut,
+            this.state.onFocus
           )}
           {handleIngredientsInputs(
             "UNIT",
             this.handelUnitChange,
             this.state.ingredientToAdd.unit,
             this.state.unitToAddError,
-            this.validateUnitToAdd
+            this.validateUnitToAdd,
+            this.onInputFocusIn,
+            this.onInputFocusOut,
+            this.state.onFocus
           )}
           <ButtonCont>
             <AddIngButton onClick={this.addIngredient}>
@@ -399,6 +483,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             </AddIngButton>
           </ButtonCont>
         </AddIngredientCont>
+        <StateIngCont>Instructions</StateIngCont>
       </CRCont>
     );
   }
