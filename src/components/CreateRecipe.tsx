@@ -100,7 +100,7 @@ const AddIngButton = styled.button`
 `;
 
 const StateIngCont = styled.div`
-  width: 100%;
+  width: 50%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -116,6 +116,16 @@ const InputLine = styled.div<ILProps>`
   height: 5px;
   background-color: ${blueMunsell};
   transition: width ease 0.5s;
+`;
+
+const Icon = styled.i`
+  cursor: pointer;
+  color: ${redOrange};
+  margin-right: 10px;
+`;
+const Ing = styled.div`
+  width: 95%;
+  margin: 10px 0;
 `;
 
 function HandleInputs(
@@ -186,7 +196,7 @@ interface IState {
     category: string;
     servings: number;
     ingredients: { name: string; quantity: string; unit: string }[];
-    instructions: { number: number; instruction: string }[];
+    instructions: string[];
   };
   ingredientToAdd: {
     name: string;
@@ -213,7 +223,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
         category: "",
         servings: 0,
         ingredients: [],
-        instructions: [],
+        instructions: ["do stuff", "do other stuff"],
       },
       ingredientToAdd: {
         name: "",
@@ -259,38 +269,64 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     this.setState({ recipe });
   }
 
+  deleteInst(index: number) {
+    const { recipe } = { ...this.state };
+    recipe.instructions.splice(index, 1);
+    this.setState({ recipe });
+  }
+
   handleStateIngredients() {
     if (this.state.recipe.ingredients.length > 0) {
       const ingredients = this.state.recipe.ingredients.map((r, index) => {
         const { name, quantity, unit } = r;
         return (
-          <>
-            <i
+          <React.Fragment key={index}>
+            <Icon
               className="fas fa-times"
-              style={{
-                cursor: "pointer",
-                color: redOrange,
-                marginRight: "10px",
-              }}
               onClick={() => this.deleteIng(index)}
             />
-            <div
-              key={index}
-              style={{
-                width: "50%",
-                margin: "10px 0",
-              }}
-            >
+            <Ing>
               {quantity} {unit === "-" ? null : unit} {name}{" "}
-            </div>
-          </>
+            </Ing>
+          </React.Fragment>
         );
       });
       return ingredients;
     } else {
       return (
-        <div style={{ margin: "10px 0" }}>
-          Add an ingredient <i className="fas fa-arrow-down" />
+        <div style={{ margin: "10px auto" }}>
+          Add an ingredient{" "}
+          <i style={{ color: blueMunsell }} className="fas fa-arrow-down" />
+        </div>
+      );
+    }
+  }
+
+  handleStateInstructions() {
+    const { instructions } = this.state.recipe;
+    if (instructions.length > 0) {
+      const instList = instructions.map((i, index: number) => {
+        return (
+          <React.Fragment key={index}>
+            <Icon
+              className="fas fa-times"
+              onClick={() => this.deleteInst(index)}
+            />
+            <Ing>
+              <strong>{index + 1}.</strong> {i}
+            </Ing>
+          </React.Fragment>
+        );
+      });
+      return instList;
+    } else {
+      return (
+        <div style={{ margin: "10px auto" }}>
+          Add an Instruction
+          <i
+            style={{ color: blueMunsell, marginLeft: "10px" }}
+            className="fas fa-arrow-down"
+          />
         </div>
       );
     }
@@ -483,7 +519,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             </AddIngButton>
           </ButtonCont>
         </AddIngredientCont>
-        <StateIngCont>Instructions</StateIngCont>
+        <StateIngCont>{this.handleStateInstructions()}</StateIngCont>
       </CRCont>
     );
   }
