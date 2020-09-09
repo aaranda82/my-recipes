@@ -6,6 +6,8 @@ import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import Spacer from "./Spacer";
 import { Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router";
+
 import Auth from "./Auth";
 const { connect } = require("react-redux");
 
@@ -130,7 +132,7 @@ const AddRecipeButton = styled.button`
   }
 `;
 
-interface NavProps {
+interface NavProps extends RouteComponentProps {
   displayName: string;
   signOut: () => void;
 }
@@ -218,9 +220,11 @@ class Header extends Component<NavProps, NavState> {
         {this.props.displayName ? (
           <>
             <ButtonContainer id="add recipe button" w="20%">
-              <AddRecipeButton>
-                <Link to={"/createrecipe"}>ADD RECIPE</Link>
-              </AddRecipeButton>
+              {this.props.location.pathname === "/createrecipe" ? null : (
+                <AddRecipeButton>
+                  <Link to={"/createrecipe"}>ADD RECIPE</Link>
+                </AddRecipeButton>
+              )}
             </ButtonContainer>
             <ButtonContainer id="nav menu button" w="10%">
               <NavMenuButton
@@ -266,4 +270,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
