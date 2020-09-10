@@ -16,10 +16,10 @@ const RContainer = styled.div`
   height: auto;
   border: 1px solid lightgrey;
 
-  @media (max-width: 875px) {
+  @media screen and (max-width: 875px) {
     flex: 1 1 20%;
   }
-  @media (max-width: ${mobileMaxWidth}) {
+  @media screen and (max-width: ${mobileMaxWidth}) {
     width: 90%;
     flex: none;
     margin: 0 0 10px 0;
@@ -32,7 +32,7 @@ const RImage = styled.img`
   background-image: url(${Lunch});
   background-size: cover;
   background-position: center;
-  @media (max-width: ${mobileMaxWidth}) {
+  @media screen and (max-width: ${mobileMaxWidth}) {
     width: 40%;
   }
 `;
@@ -42,7 +42,7 @@ const RInfoContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   font-family: ${primaryFont};
-  @media (max-width: ${mobileMaxWidth}) {
+  @media screen and (max-width: ${mobileMaxWidth}) {
     width: 60%;
   }
 `;
