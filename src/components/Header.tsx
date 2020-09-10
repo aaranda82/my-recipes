@@ -60,9 +60,8 @@ const Logo = styled.div<LIProps>`
 const NavMenuButton = styled.i`
   font-size: 2em;
   color: ${ivory};
-  opacity: 0.6;
   &:hover {
-    opacity: 1;
+    opacity: 0.6;
   }
 `;
 
@@ -102,9 +101,8 @@ const LogInButton = styled.button`
   background-color: ${redOrange};
   color: ${ivory};
   padding: 10px 20px;
-  opacity: 0.6;
   &:hover {
-    opacity: 1;
+    opacity: 0.6;
   }
   &:active {
     transform: scale(1.2);
@@ -113,22 +111,20 @@ const LogInButton = styled.button`
 
 const AddRecipeButton = styled.button`
   font-family: "Raleway", sans-serif;
-  border: 2px solid ${ivory};
-  background-color: ${blueMunsell};
+  background-color: ${ivory};
   padding: 10px 20px;
   outline: none;
-  color: ${ivory};
-  opacity: 0.6;
+  color: ${blueMunsell};
+  border: none;
   &:hover {
-    opacity: 1;
-    border: 4px solid ${ivory};
+    opacity: 0.6;
   }
   &:active {
     transform: scale(1.2);
   }
   & > a {
     text-decoration: none;
-    color: ${ivory};
+    color: ${blueMunsell};
   }
 `;
 
@@ -221,9 +217,13 @@ class Header extends Component<NavProps, NavState> {
           <>
             <ButtonContainer id="add recipe button" w="20%">
               {this.props.location.pathname === "/createrecipe" ? null : (
-                <AddRecipeButton>
-                  <Link to={"/createrecipe"}>ADD RECIPE</Link>
-                </AddRecipeButton>
+                <Link to={"/createrecipe"}>
+                  <AddRecipeButton
+                    onClick={() => this.setState({ showMenu: false })}
+                  >
+                    ADD RECIPE
+                  </AddRecipeButton>
+                </Link>
               )}
             </ButtonContainer>
             <ButtonContainer id="nav menu button" w="10%">
@@ -237,7 +237,7 @@ class Header extends Component<NavProps, NavState> {
           <>
             <ButtonContainer w="15%">
               <LogInButton onClick={() => this.toggleState("showAuth")}>
-                {this.state.showAuth ? "CANCEL" : "LOG IN"}
+                {this.state.showAuth ? "CANCEL" : "LOG IN/SIGN UP"}
               </LogInButton>
             </ButtonContainer>
             <Spacer />

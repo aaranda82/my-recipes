@@ -6,34 +6,32 @@ import { RootState } from "../reducers/rootReducer";
 
 const { connect } = require("react-redux");
 
-const { redOrange, honeyYellow, blueMunsell } = ColorScheme;
+const { redOrange, ivory, blueMunsell } = ColorScheme;
 const { mobileMaxWidth, primaryFont, secondaryFont } = Styles;
 
+// justify-content: center;
 const CRCont = styled.div`
   font-family: ${primaryFont};
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  width: 80%;
+  width: 75%;
   margin: auto;
-  border: 1px solid ${honeyYellow};
   @media (max-width: ${mobileMaxWidth}) {
     width: 95%;
   }
 `;
 
 const AddRInfoCont = styled.div`
-  width: auto;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
   padding-top: 10px;
 `;
 
 const InfoInput = styled.div`
   height: 100%;
   width: 30%;
-  margin: auto;
   @media (max-width: ${mobileMaxWidth}) {
     width: 80%;
     height: unset;
@@ -42,8 +40,9 @@ const InfoInput = styled.div`
 
 const Input = styled.input`
   border: none;
-  width: 100%;
+  width: 99%;
   outline: none;
+  border-left: 2px solid ${blueMunsell};
 `;
 
 const Label = styled.label`
@@ -60,10 +59,10 @@ const Error = styled.div`
   width: 100%;
 `;
 const AddIngredientCont = styled.div`
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 interface IIProps {
@@ -71,9 +70,13 @@ interface IIProps {
 }
 
 const IngredientInput = styled.div<IIProps>`
-  width: ${(props) => (props.name === "NAME" ? "40%" : "15%")};
+  width: ${(props) =>
+    props.name === "NAME"
+      ? "40%"
+      : props.name === "INSTRUCTION"
+      ? "77%"
+      : "15%"};
   height: 100%;
-  margin: auto;
   @media (max-width: ${mobileMaxWidth}) {
     width: ${(props) => (props.name === "NAME" ? "80%" : "35%")};
     height: unset;
@@ -81,7 +84,7 @@ const IngredientInput = styled.div<IIProps>`
 `;
 
 const ButtonCont = styled.div`
-  width: 30;
+  width: 20%;
   display: flex;
   justify-content: center;
   align-items: start;
@@ -97,6 +100,9 @@ const AddIngButton = styled.button`
   cursor: pointer;
   background-color: ${redOrange};
   padding: 5px;
+  &:hover {
+    color: ${ivory};
+  }
 `;
 
 const StateIngCont = styled.div`
@@ -113,7 +119,7 @@ interface ILProps {
 
 const InputLine = styled.div<ILProps>`
   width: ${(props) => (props.lineWidth ? "100%" : "0")};
-  height: 5px;
+  height: 2px;
   background-color: ${blueMunsell};
   transition: width ease 0.5s;
 `;
@@ -126,6 +132,7 @@ const Icon = styled.i`
 const Ing = styled.div`
   width: 95%;
   margin: 10px 0;
+  word-wrap: break-word;
 `;
 
 function HandleInputs(
@@ -196,13 +203,14 @@ interface IState {
     category: string;
     servings: number;
     ingredients: { name: string; quantity: string; unit: string }[];
-    instructions: string[];
+    instructions: { instruction: string; number: number }[];
   };
   ingredientToAdd: {
     name: string;
     quantity: string;
     unit: string;
   };
+  instructionToAdd: { number: number; instruction: string };
   onFocus: string | null;
   nameToAddError: string;
   quantityToAddError: string;
@@ -210,6 +218,7 @@ interface IState {
   nameError: string;
   servingsError: string;
   categoryError: string;
+  instToAddError: string;
 }
 
 class CreateRecipe extends Component<{ displayName: string }, IState> {
@@ -218,18 +227,19 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     this.state = {
       recipe: {
         recipeId: 0,
-        createdBy: "",
+        createdBy: this.props.displayName,
         name: "",
         category: "",
         servings: 0,
         ingredients: [],
-        instructions: ["do stuff", "do other stuff"],
+        instructions: [],
       },
       ingredientToAdd: {
         name: "",
         quantity: "",
         unit: "",
       },
+      instructionToAdd: { number: 1, instruction: "" },
       onFocus: null,
       nameToAddError: "",
       quantityToAddError: "",
@@ -237,6 +247,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
       nameError: "",
       servingsError: "",
       categoryError: "",
+      instToAddError: "",
     };
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleServingsChange = this.handleServingsChange.bind(this);
@@ -253,6 +264,9 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     this.addIngredient = this.addIngredient.bind(this);
     this.onInputFocusIn = this.onInputFocusIn.bind(this);
     this.onInputFocusOut = this.onInputFocusOut.bind(this);
+    this.handleInstChange = this.handleInstChange.bind(this);
+    this.validateInstToAdd = this.validateInstToAdd.bind(this);
+    this.addInstruction = this.addInstruction.bind(this);
   }
 
   onInputFocusIn(onFocus: any) {
@@ -261,18 +275,6 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
 
   onInputFocusOut() {
     this.setState({ onFocus: null });
-  }
-
-  deleteIng(index: number) {
-    const { recipe } = { ...this.state };
-    recipe.ingredients.splice(index, 1);
-    this.setState({ recipe });
-  }
-
-  deleteInst(index: number) {
-    const { recipe } = { ...this.state };
-    recipe.instructions.splice(index, 1);
-    this.setState({ recipe });
   }
 
   handleStateIngredients() {
@@ -305,15 +307,15 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
   handleStateInstructions() {
     const { instructions } = this.state.recipe;
     if (instructions.length > 0) {
-      const instList = instructions.map((i, index: number) => {
+      const instList = instructions.map((i) => {
         return (
-          <React.Fragment key={index}>
+          <React.Fragment key={i.number}>
             <Icon
               className="fas fa-times"
-              onClick={() => this.deleteInst(index)}
+              onClick={() => this.deleteInst(i.number - 1)}
             />
             <Ing>
-              <strong>{index + 1}.</strong> {i}
+              <strong>{i.number}.</strong> {i.instruction}
             </Ing>
           </React.Fragment>
         );
@@ -336,7 +338,6 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     e.preventDefault();
     const recipe = { ...this.state.recipe };
     recipe.name = e.target.value;
-    recipe.createdBy = this.props.displayName;
     this.setState({ recipe }, () => this.validateName());
   }
 
@@ -373,6 +374,13 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     const { ingredientToAdd } = { ...this.state };
     ingredientToAdd.unit = e.target.value;
     this.setState({ ingredientToAdd }, () => this.validateUnitToAdd());
+  }
+
+  handleInstChange(e: any) {
+    e.preventDefault();
+    let { instructionToAdd } = this.state;
+    instructionToAdd.instruction = e.target.value;
+    this.setState({ instructionToAdd }, () => this.validateInstToAdd());
   }
 
   validateName() {
@@ -427,6 +435,14 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     }
   }
 
+  validateInstToAdd() {
+    if (this.state.instructionToAdd.instruction.length < 3) {
+      this.setState({ instToAddError: "Instruction is too short" });
+    } else {
+      this.setState({ instToAddError: "" });
+    }
+  }
+
   addIngredient() {
     const { nameToAddError, quantityToAddError, unitToAddError } = this.state;
     if (!nameToAddError || !quantityToAddError || !unitToAddError) {
@@ -441,6 +457,43 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
         },
       });
     }
+  }
+
+  addInstruction() {
+    const { instToAddError } = this.state;
+    if (!instToAddError) {
+      const { recipe } = { ...this.state };
+      recipe.instructions.push(this.state.instructionToAdd);
+      const number = recipe.instructions.length + 1;
+      this.setState({
+        recipe,
+        instructionToAdd: {
+          instruction: "",
+          number,
+        },
+      });
+    }
+  }
+
+  deleteIng(index: number) {
+    const { recipe } = { ...this.state };
+    recipe.ingredients.splice(index, 1);
+    this.setState({ recipe });
+  }
+
+  deleteInst(index: number) {
+    const { recipe } = { ...this.state };
+    recipe.instructions.splice(index, 1);
+    for (let x = index; x < recipe.instructions.length; x++) {
+      recipe.instructions[x].number = x + 1;
+    }
+    this.setState({
+      recipe,
+      instructionToAdd: {
+        instruction: "",
+        number: recipe.instructions.length + 1,
+      },
+    });
   }
 
   render() {
@@ -520,6 +573,23 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
           </ButtonCont>
         </AddIngredientCont>
         <StateIngCont>{this.handleStateInstructions()}</StateIngCont>
+        <AddIngredientCont>
+          {handleIngredientsInputs(
+            "INSTRUCTION",
+            this.handleInstChange,
+            this.state.instructionToAdd.instruction,
+            this.state.instToAddError,
+            this.validateInstToAdd,
+            this.onInputFocusIn,
+            this.onInputFocusOut,
+            this.state.onFocus
+          )}
+          <ButtonCont>
+            <AddIngButton onClick={this.addInstruction}>
+              ADD INSTRUCTION
+            </AddIngButton>
+          </ButtonCont>
+        </AddIngredientCont>
       </CRCont>
     );
   }
