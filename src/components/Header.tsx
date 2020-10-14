@@ -11,7 +11,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import Auth from "./Auth";
 const { connect } = require("react-redux");
 
-const { blueMunsell, ivory, redOrange } = ColorScheme;
+const { primaryColorOne, primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
 
 interface LIProps {
@@ -24,7 +24,8 @@ const HeaderContainer = styled.header<LIProps>`
   flex-wrap: wrap;
   text-align: center;
   width: 100%;
-  background-color: ${(props) => (props.loggedIn ? blueMunsell : ivory)};
+  background-color: ${(props) =>
+    props.loggedIn ? primaryColorOne : primaryColorTwo};
   z-index: 5;
   position: sticky;
   top: 0;
@@ -46,9 +47,9 @@ const Logo = styled.div<LIProps>`
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   font-size: 30px;
   text-align: ${(props) => (props.loggedIn ? "left" : "center")};
-  color: ${(props) => (props.loggedIn ? ivory : blueMunsell)};
+  color: ${(props) => (props.loggedIn ? primaryColorTwo : primaryColorOne)};
   & > a {
-    color: ${(props) => (props.loggedIn ? ivory : blueMunsell)};
+    color: ${(props) => (props.loggedIn ? primaryColorTwo : primaryColorOne)};
     text-decoration: none;
     margin-left: 20px;
   }
@@ -59,7 +60,7 @@ const Logo = styled.div<LIProps>`
 
 const NavMenuButton = styled.i`
   font-size: 2em;
-  color: ${ivory};
+  color: ${primaryColorTwo};
   &:hover {
     opacity: 0.6;
   }
@@ -70,7 +71,7 @@ const Shadow = styled.div<LIProps>`
   width: 100vw;
   height: 100vh;
   top: ${(props) => (props.loggedIn ? "55px" : "78px")};
-  background-color: ${ivory};
+  background-color: ${primaryColorTwo};
   opacity: 0.4;
 `;
 
@@ -98,23 +99,21 @@ const ButtonContainer = styled.div<BCProps>`
 const LogInButton = styled.button`
   font-family: "Raleway", sans-serif;
   border: none;
-  background-color: ${redOrange};
-  color: ${ivory};
+  border-radius: 3px;
+  background-color: ${accentColorOne};
+  color: ${primaryColorTwo};
   padding: 10px 20px;
   &:hover {
-    opacity: 0.6;
-  }
-  &:active {
-    transform: scale(1.2);
+    background-color: black;
   }
 `;
 
 const AddRecipeButton = styled.button`
   font-family: "Raleway", sans-serif;
-  background-color: ${ivory};
+  background-color: ${primaryColorTwo};
   padding: 10px 20px;
   outline: none;
-  color: ${blueMunsell};
+  color: ${primaryColorOne};
   border: none;
   &:hover {
     opacity: 0.6;
@@ -124,7 +123,7 @@ const AddRecipeButton = styled.button`
   }
   & > a {
     text-decoration: none;
-    color: ${blueMunsell};
+    color: ${primaryColorOne};
   }
 `;
 

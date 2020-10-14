@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import Spacer from "./Spacer";
 
-const { blueMunsell } = ColorScheme;
+const { primaryColorOne } = ColorScheme;
 interface CBProps {
   selected: boolean;
 }
@@ -13,7 +13,7 @@ const CategoryButton = styled.div<CBProps>`
   cursor: pointer;
   transition: all ease 0.2s;
   &:hover {
-    color: ${blueMunsell};
+    color: ${primaryColorOne};
   }
 `;
 

@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 
-const { ivory, blueMunsell } = ColorScheme;
+const { primaryColorTwo, primaryColorOne } = ColorScheme;
 const SpacerDiv = styled.div`
-  background: radial-gradient(${blueMunsell} 10%, ${ivory} 60%);
+  background: radial-gradient(${primaryColorOne} 10%, ${primaryColorTwo} 60%);
   height: 3px;
   width: 100%;
 `;

@@ -6,16 +6,16 @@ import { RootState } from "../reducers/rootReducer";
 
 const { connect } = require("react-redux");
 
-const { redOrange, ivory, blueMunsell } = ColorScheme;
+const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont, secondaryFont } = Styles;
 
-// justify-content: center;
 const CRCont = styled.div`
   font-family: ${primaryFont};
   display: flex;
   flex-wrap: wrap;
   width: 75%;
   margin: auto;
+  padding: 20px;
   @media (max-width: ${mobileMaxWidth}) {
     width: 95%;
   }
@@ -39,30 +39,38 @@ const InfoInput = styled.div`
 `;
 
 const Input = styled.input`
-  border: none;
-  width: 99%;
+  width: 90%;
   outline: none;
-  border-left: 2px solid ${blueMunsell};
+  border: 1px solid lightgrey;
+  box-sizing: border-box;
+`;
+
+const TextArea = styled.textarea`
+  width: 90%;
+  outline: none;
+  border: 1px solid lightgrey;
+  box-sizing: border-box;
 `;
 
 const Label = styled.label`
   font-family: ${secondaryFont};
   margin-top: 10px;
-  width: 100%;
+  display: block;
   font-size: 15px;
 `;
 
 const Error = styled.div`
   font-family: ${primaryFont};
   margin-bottom: 10px;
-  color: ${redOrange};
+  color: red;
   width: 100%;
 `;
+
 const AddIngredientCont = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 interface IIProps {
@@ -78,38 +86,42 @@ const IngredientInput = styled.div<IIProps>`
       : "15%"};
   height: 100%;
   @media (max-width: ${mobileMaxWidth}) {
-    width: ${(props) => (props.name === "NAME" ? "80%" : "35%")};
+    width: ${(props) =>
+      props.name === "NAME"
+        ? "80%"
+        : props.name === "INSTRUCTION"
+        ? "80%"
+        : "35%"};
     height: unset;
   }
 `;
 
 const ButtonCont = styled.div`
-  width: 20%;
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: start;
-  @media (max-width: ${mobileMaxWidth}) {
-    width: 80%;
-  }
+  margin-bottom: 20px;
 `;
 
 const AddIngButton = styled.button`
   font-family: ${primaryFont};
   border: none;
-  width: 80%;
+  border-radius: 3px;
+  min-width: 150px;
   cursor: pointer;
-  background-color: ${redOrange};
+  background-color: ${accentColorOne};
+  color: ${primaryColorTwo};
   padding: 5px;
   &:hover {
-    color: ${ivory};
+    background-color: black;
   }
 `;
 
 const StateIngCont = styled.div`
-  width: 50%;
+  width: 75%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 `;
 
@@ -118,21 +130,29 @@ interface ILProps {
 }
 
 const InputLine = styled.div<ILProps>`
-  width: ${(props) => (props.lineWidth ? "100%" : "0")};
+  width: ${(props) => (props.lineWidth ? "90%" : "0")};
   height: 2px;
-  background-color: ${blueMunsell};
+  background-color: ${primaryColorOne};
   transition: width ease 0.5s;
 `;
 
 const Icon = styled.i`
   cursor: pointer;
-  color: ${redOrange};
-  margin-right: 10px;
+  color: ${accentColorOne};
+  width: 5%;
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 10%;
+  }
 `;
+
 const Ing = styled.div`
   width: 95%;
   margin: 10px 0;
   word-wrap: break-word;
+  text-align: left;
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 90%;
+  }
 `;
 
 function HandleInputs(
@@ -179,19 +199,39 @@ function handleIngredientsInputs(
     <IngredientInput name={name}>
       <Label>{name}</Label>
 
-      <Input
-        type="text"
-        onChange={onChange}
-        value={value}
-        onBlur={() => {
-          onBlur();
-          onInputFocusOut();
-        }}
-        onFocus={() => onInputFocusIn(name)}
-      />
+      {name === "INSTRUCTION" ? (
+        <TextArea
+          onChange={onChange}
+          value={value}
+          onBlur={() => {
+            onBlur();
+            onInputFocusOut();
+          }}
+          onFocus={() => onInputFocusIn(name)}
+        />
+      ) : (
+        <Input
+          type="text"
+          onChange={onChange}
+          value={value}
+          onBlur={() => {
+            onBlur();
+            onInputFocusOut();
+          }}
+          onFocus={() => onInputFocusIn(name)}
+        />
+      )}
       <InputLine lineWidth={onFocus === name ? true : false}></InputLine>
       <Error>{error}</Error>
     </IngredientInput>
+  );
+}
+
+function handleButton(cb: () => void, title: string) {
+  return (
+    <ButtonCont>
+      <AddIngButton onClick={cb}>{title}</AddIngButton>
+    </ButtonCont>
   );
 }
 
@@ -202,23 +242,25 @@ interface IState {
     name: string;
     category: string;
     servings: number;
-    ingredients: { name: string; quantity: string; unit: string }[];
+    ingredients: { ingName: string; quantity: string; unit: string }[];
     instructions: { instruction: string; number: number }[];
   };
   ingredientToAdd: {
-    name: string;
+    ingName: string;
     quantity: string;
     unit: string;
   };
   instructionToAdd: { number: number; instruction: string };
   onFocus: string | null;
-  nameToAddError: string;
+  ingNameToAddError: string;
   quantityToAddError: string;
   unitToAddError: string;
   nameError: string;
   servingsError: string;
   categoryError: string;
   instToAddError: string;
+  instructionsError: string;
+  ingredientsError: string;
 }
 
 class CreateRecipe extends Component<{ displayName: string }, IState> {
@@ -235,19 +277,21 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
         instructions: [],
       },
       ingredientToAdd: {
-        name: "",
+        ingName: "",
         quantity: "",
         unit: "",
       },
       instructionToAdd: { number: 1, instruction: "" },
       onFocus: null,
-      nameToAddError: "",
+      ingNameToAddError: "",
       quantityToAddError: "",
       unitToAddError: "",
       nameError: "",
       servingsError: "",
       categoryError: "",
       instToAddError: "",
+      instructionsError: "",
+      ingredientsError: "",
     };
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleServingsChange = this.handleServingsChange.bind(this);
@@ -267,6 +311,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     this.handleInstChange = this.handleInstChange.bind(this);
     this.validateInstToAdd = this.validateInstToAdd.bind(this);
     this.addInstruction = this.addInstruction.bind(this);
+    this.addRecipe = this.addRecipe.bind(this);
   }
 
   onInputFocusIn(onFocus: any) {
@@ -280,7 +325,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
   handleStateIngredients() {
     if (this.state.recipe.ingredients.length > 0) {
       const ingredients = this.state.recipe.ingredients.map((r, index) => {
-        const { name, quantity, unit } = r;
+        const { ingName, quantity, unit } = r;
         return (
           <React.Fragment key={index}>
             <Icon
@@ -288,17 +333,19 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
               onClick={() => this.deleteIng(index)}
             />
             <Ing>
-              {quantity} {unit === "-" ? null : unit} {name}{" "}
+              {quantity} {unit === "-" ? null : unit} {ingName}{" "}
             </Ing>
           </React.Fragment>
         );
       });
       return ingredients;
     } else {
-      return (
+      return this.state.ingredientsError ? (
+        <Error>{this.state.ingredientsError}</Error>
+      ) : (
         <div style={{ margin: "10px auto" }}>
           Add an ingredient{" "}
-          <i style={{ color: blueMunsell }} className="fas fa-arrow-down" />
+          <i style={{ color: primaryColorOne }} className="fas fa-arrow-down" />
         </div>
       );
     }
@@ -322,11 +369,13 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
       });
       return instList;
     } else {
-      return (
+      return this.state.instructionsError ? (
+        <Error>{this.state.instructionsError}</Error>
+      ) : (
         <div style={{ margin: "10px auto" }}>
           Add an Instruction
           <i
-            style={{ color: blueMunsell, marginLeft: "10px" }}
+            style={{ color: primaryColorOne, marginLeft: "10px" }}
             className="fas fa-arrow-down"
           />
         </div>
@@ -358,7 +407,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
   handelIngredientChange(e: any) {
     e.preventDefault();
     const { ingredientToAdd } = { ...this.state };
-    ingredientToAdd.name = e.target.value;
+    ingredientToAdd.ingName = e.target.value;
     this.setState({ ingredientToAdd }, () => this.validateIngToAdd());
   }
 
@@ -412,10 +461,10 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
   }
 
   validateIngToAdd() {
-    if (this.state.ingredientToAdd.name.length < 2) {
-      this.setState({ nameToAddError: "Name is too short" });
+    if (this.state.ingredientToAdd.ingName.length < 2) {
+      this.setState({ ingNameToAddError: "Name is too short" });
     } else {
-      this.setState({ nameToAddError: "" });
+      this.setState({ ingNameToAddError: "" });
     }
   }
 
@@ -443,25 +492,45 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     }
   }
 
+  validateInstructions() {
+    let instructionsError = "";
+    if (this.state.recipe.instructions.length < 1) {
+      instructionsError = "Please add an instruction";
+    }
+    this.setState({ instructionsError });
+  }
+
+  validateIngredients() {
+    let ingredientsError = "";
+    if (this.state.recipe.ingredients.length < 1) {
+      ingredientsError = "Please add an ingredient";
+    }
+    this.setState({ ingredientsError });
+  }
+
   addIngredient() {
-    const { nameToAddError, quantityToAddError, unitToAddError } = this.state;
-    if (!nameToAddError || !quantityToAddError || !unitToAddError) {
+    const { ingName, quantity, unit } = this.state.ingredientToAdd;
+    if (ingName || quantity || unit) {
       const { recipe } = { ...this.state };
       recipe.ingredients.push(this.state.ingredientToAdd);
       this.setState({
         recipe,
         ingredientToAdd: {
-          name: "",
+          ingName: "",
           quantity: "",
           unit: "",
         },
       });
     }
+    this.validateIngToAdd();
+    this.validateQuantityToAdd();
+    this.validateUnitToAdd();
+    this.validateIngredients();
   }
 
   addInstruction() {
-    const { instToAddError } = this.state;
-    if (!instToAddError) {
+    const { instruction } = this.state.instructionToAdd;
+    if (instruction) {
       const { recipe } = { ...this.state };
       recipe.instructions.push(this.state.instructionToAdd);
       const number = recipe.instructions.length + 1;
@@ -473,6 +542,8 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
         },
       });
     }
+    this.validateInstToAdd();
+    this.validateInstructions();
   }
 
   deleteIng(index: number) {
@@ -494,6 +565,41 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
         number: recipe.instructions.length + 1,
       },
     });
+  }
+
+  addRecipe() {
+    this.validateName();
+    this.validateServings();
+    this.validateCategory();
+    this.validateInstructions();
+    this.validateIngredients();
+    const {
+      name,
+      servings,
+      category,
+      ingredients,
+      instructions,
+    } = this.state.recipe;
+    if (
+      name &&
+      servings &&
+      category &&
+      ingredients.length > 0 &&
+      instructions.length > 0
+    ) {
+      console.log("RECIPE ADDED", this.state.recipe);
+    }
+    // this.setState({
+    //   recipe: {
+    //     recipeId: 0,
+    //     createdBy: this.props.displayName,
+    //     name: "",
+    //     category: "",
+    //     servings: 0,
+    //     ingredients: [],
+    //     instructions: [],
+    //   },
+    // });
   }
 
   render() {
@@ -539,8 +645,8 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
           {handleIngredientsInputs(
             "NAME",
             this.handelIngredientChange,
-            this.state.ingredientToAdd.name,
-            this.state.nameToAddError,
+            this.state.ingredientToAdd.ingName,
+            this.state.ingNameToAddError,
             this.validateIngToAdd,
             this.onInputFocusIn,
             this.onInputFocusOut,
@@ -566,12 +672,8 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.onInputFocusOut,
             this.state.onFocus
           )}
-          <ButtonCont>
-            <AddIngButton onClick={this.addIngredient}>
-              ADD INGREDIENT
-            </AddIngButton>
-          </ButtonCont>
         </AddIngredientCont>
+        {handleButton(this.addIngredient, "ADD INGREDIENT")}
         <StateIngCont>{this.handleStateInstructions()}</StateIngCont>
         <AddIngredientCont>
           {handleIngredientsInputs(
@@ -584,12 +686,9 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.onInputFocusOut,
             this.state.onFocus
           )}
-          <ButtonCont>
-            <AddIngButton onClick={this.addInstruction}>
-              ADD INSTRUCTION
-            </AddIngButton>
-          </ButtonCont>
         </AddIngredientCont>
+        {handleButton(this.addInstruction, "ADD INSTRUCTION")}
+        {handleButton(this.addRecipe, "ADD RECIPE")}
       </CRCont>
     );
   }

@@ -9,7 +9,7 @@ import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 const { connect } = require("react-redux");
 
-const { blueMunsell, brownSugar, redOrange } = ColorScheme;
+const { primaryColorOne, brownSugar, accentColorOne } = ColorScheme;
 const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
@@ -186,9 +186,9 @@ class RecipeDetail extends Component<IProps, IState> {
                 ? `/userpage/${this.props.uid}`
                 : "/publicpage"
             }
-            style={{ textDecoration: "none", color: blueMunsell }}
+            style={{ textDecoration: "none", color: primaryColorOne }}
           >
-            <i style={{ color: redOrange }} className="fas fa-times"></i>
+            <i style={{ color: accentColorOne }} className="fas fa-times"></i>
           </Link>
         </Exit>
         <Ingredients>{this.handleIngredients()}</Ingredients>
