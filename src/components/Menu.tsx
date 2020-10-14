@@ -8,18 +8,23 @@ import Spacer from "./Spacer";
 import { Link } from "react-router-dom";
 const { connect } = require("react-redux");
 
-const { ivory, blueMunsell, redOrange, gunmetal } = ColorScheme;
+const {
+  primaryColorTwo,
+  primaryColorOne,
+  accentColorOne,
+  gunmetal,
+} = ColorScheme;
 
 const MContainer = styled.div`
   font-size: 2em;
   font-family: ${Styles.secondaryFont};
   font-weight: 600;
-  color: ${blueMunsell};
+  color: ${primaryColorOne};
   position: absolute;
   top: 55px;
   right: 0;
   padding: 20px 70px 20px 70px;
-  background: ${ivory};
+  background: ${primaryColorTwo};
   border: 1px solid ${gunmetal};
   & > div {
     margin: 40px;
@@ -27,7 +32,7 @@ const MContainer = styled.div`
     transition: all 1s ease;
   }
   & > div:hover {
-    color: ${redOrange};
+    color: ${accentColorOne};
   }
 `;
 
@@ -57,7 +62,7 @@ class Menu extends Component<NavProps> {
         <MContainer>
           <Link
             to={"/publicpage"}
-            style={{ textDecoration: "none", color: blueMunsell }}
+            style={{ textDecoration: "none", color: primaryColorOne }}
           >
             <div onClick={() => this.props.toggleState("showMenu")}>
               Public Page
@@ -67,7 +72,7 @@ class Menu extends Component<NavProps> {
 
           <Link
             to={`/userpage/${this.props.uid}`}
-            style={{ textDecoration: "none", color: blueMunsell }}
+            style={{ textDecoration: "none", color: primaryColorOne }}
           >
             <div onClick={() => this.props.toggleState("showMenu")}>
               {this.props.displayName}'s Favorites
@@ -77,14 +82,17 @@ class Menu extends Component<NavProps> {
           <Spacer />
           <Link
             to={"/account"}
-            style={{ textDecoration: "none", color: blueMunsell }}
+            style={{ textDecoration: "none", color: primaryColorOne }}
           >
             <div onClick={() => this.props.toggleState("showMenu")}>
               Account
             </div>
           </Link>
           <Spacer />
-          <Link to={"/"} style={{ textDecoration: "none", color: blueMunsell }}>
+          <Link
+            to={"/"}
+            style={{ textDecoration: "none", color: primaryColorOne }}
+          >
             <div onClick={this.handleSignOut}>Sign Out</div>
           </Link>
         </MContainer>

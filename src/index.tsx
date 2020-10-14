@@ -11,7 +11,7 @@ const { Provider } = require("react-redux");
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: ${ColorScheme.ivory};
+    background-color: ${ColorScheme.primaryColorTwo};
   }
 `;
 

@@ -6,4 +6,9 @@ export const ColorScheme = {
   honeyYellow: "#FFB627",
   ivory: "#F6F7EB",
   redOrange: "#FF4A1C",
+  // blueMunsell
+  primaryColorOne: "#2980b9",
+  // ivory
+  primaryColorTwo: "#ecf0f1",
+  accentColorOne: "#1abc9c",
 };

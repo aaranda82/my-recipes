@@ -10,7 +10,7 @@ import { ColorScheme } from "../ColorScheme";
 import { withRouter } from "react-router";
 const { connect } = require("react-redux");
 
-const { gunmetal, ivory, blueMunsell } = ColorScheme;
+const { gunmetal, primaryColorTwo, primaryColorOne } = ColorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -25,10 +25,10 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 const Container = styled.div`
   border-radius: 20px;
-  box-shadow: 5px 5px ${blueMunsell};
+  box-shadow: 5px 5px ${primaryColorOne};
   position: fixed;
   top: 25vh;
-  background-color: ${ivory};
+  background-color: ${primaryColorTwo};
   color: ${gunmetal};
   text-align: center;
   font-family: "Raleway", sans-serif;

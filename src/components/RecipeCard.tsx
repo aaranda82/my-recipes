@@ -5,14 +5,14 @@ import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
 
-const { ivory, gunmetal, redOrange } = ColorScheme;
+const { primaryColorTwo, gunmetal, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
 
 const RContainer = styled.div`
   flex: 1 1 22%;
   cursor: pointer;
   margin: 10px;
-  background-color: ${ivory};
+  background-color: ${primaryColorTwo};
   height: auto;
   border: 1px solid lightgrey;
 
@@ -68,23 +68,23 @@ const SaveButton = styled.button`
   padding: 5px 10px 5px 10px;
   border: 2px solid ${gunmetal};
   border-radius: 20px;
-  background-color: ${ivory};
+  background-color: ${primaryColorTwo};
   color: ${gunmetal};
   cursor: pointer;
   font-family: ${primaryFont};
   font-weight: 400;
   &:hover {
-    border: 2px solid ${redOrange};
-    background-color: ${redOrange};
-    color: ${ivory};
+    border: 2px solid ${accentColorOne};
+    background-color: ${accentColorOne};
+    color: ${primaryColorTwo};
   }
 `;
 
 const Icon = styled.i`
   margin-right: 5px;
-  color: ${redOrange};
+  color: ${accentColorOne};
   ${SaveButton}:hover > & {
-    color: ${ivory};
+    color: ${primaryColorTwo};
   }
 `;
 

@@ -7,7 +7,7 @@ import userData from "../data-users.json";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
-const { gunmetal, blueMunsell, ivory } = ColorScheme;
+const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { secondaryFont, mobileMaxWidth } = Styles;
 
 const PublicPageDiv = styled.div`
@@ -82,6 +82,7 @@ const Recipes = styled.div`
   width: 85%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   @media (max-width: ${mobileMaxWidth}) {
     width: 100%;
   }
@@ -225,9 +226,11 @@ class AllRecipesPage extends Component<
                 <RViewSelector
                   onClick={() => this.setState({ recipesToShow: "ALL" })}
                   bgColor={
-                    this.state.recipesToShow === "ALL" ? blueMunsell : null
+                    this.state.recipesToShow === "ALL" ? accentColorOne : null
                   }
-                  textColor={this.state.recipesToShow === "ALL" ? ivory : null}
+                  textColor={
+                    this.state.recipesToShow === "ALL" ? primaryColorTwo : null
+                  }
                 >
                   ALL RECIPES
                 </RViewSelector>
@@ -235,11 +238,13 @@ class AllRecipesPage extends Component<
                   onClick={() => this.setState({ recipesToShow: "FAVORITES" })}
                   bgColor={
                     this.state.recipesToShow === "FAVORITES"
-                      ? blueMunsell
+                      ? accentColorOne
                       : null
                   }
                   textColor={
-                    this.state.recipesToShow === "FAVORITES" ? ivory : null
+                    this.state.recipesToShow === "FAVORITES"
+                      ? primaryColorTwo
+                      : null
                   }
                 >
                   FAVORITES
@@ -247,10 +252,14 @@ class AllRecipesPage extends Component<
                 <RViewSelector
                   onClick={() => this.setState({ recipesToShow: "PERSONAL" })}
                   bgColor={
-                    this.state.recipesToShow === "PERSONAL" ? blueMunsell : null
+                    this.state.recipesToShow === "PERSONAL"
+                      ? accentColorOne
+                      : null
                   }
                   textColor={
-                    this.state.recipesToShow === "PERSONAL" ? ivory : null
+                    this.state.recipesToShow === "PERSONAL"
+                      ? primaryColorTwo
+                      : null
                   }
                 >
                   PERSONAL RECIPES
