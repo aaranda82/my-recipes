@@ -111,7 +111,7 @@ class AllRecipesPage extends Component<
     super(props);
     this.state = {
       categoryToShow: "ALL",
-      recipesToShow: "ALL",
+      recipesToShow: "ALL RECIPES",
     };
     this.changeCategory = this.changeCategory.bind(this);
   }
@@ -168,26 +168,32 @@ class AllRecipesPage extends Component<
     return recipesByCat;
   }
 
-  handlePublicRecipes() {
+  renderPublicRecipes() {
     const allRecipes = this.filterRecipesByCat().map((recipeData, index) => {
       const { recipeId, name, createdBy } = recipeData;
-      return RecipeCard(name, recipeId, createdBy, index, "public");
+      return RecipeCard(
+        name,
+        recipeId,
+        createdBy,
+        index,
+        "public",
+        this.props.match.params.id
+      );
     });
-
     return this.handleRecipeArrayLength(allRecipes);
   }
 
   renderUserRecipes(t: string) {
     const recipesByCat = this.filterRecipesByCat();
     let recipes: Recipe[] = [];
-    if (t === "PERSONAL") {
+    const uid = this.props.match.params.id;
+    const user = userData.filter((u) => u.uid === uid);
+    const userFavs = user[0].favorites;
+    if (t === "PERSONAL RECIPES") {
       recipes = recipesByCat.filter(
         (r) => r.createdBy === this.props.match.params.id
       );
-    } else if (t === "FAVORITES") {
-      const user = userData.filter((u) => u.uid === this.props.match.params.id);
-
-      const userFavs = user[0].favorites;
+    } else if (t === "FAVORITE RECIPES") {
       for (let x = 0; x < userFavs.length; x++) {
         for (let y = 0; y < recipesByCat.length; y++) {
           if (recipesByCat[y].recipeId === userFavs[x]) {
@@ -198,18 +204,37 @@ class AllRecipesPage extends Component<
     }
     const userRecipes = recipes.map((recipeData, index) => {
       const { recipeId, name, createdBy } = recipeData;
-      return RecipeCard(name, recipeId, createdBy, index, "user");
+      return RecipeCard(
+        name,
+        recipeId,
+        createdBy,
+        index,
+        "user",
+        this.props.match.params.id
+      );
     });
     return this.handleRecipeArrayLength(userRecipes);
   }
 
   handleRecipes() {
     const { recipesToShow } = this.state;
-    if (recipesToShow === "ALL") {
-      return this.handlePublicRecipes();
+    if (recipesToShow === "ALL RECIPES") {
+      return this.renderPublicRecipes();
     } else {
       return this.renderUserRecipes(recipesToShow);
     }
+  }
+
+  handleRViewSelector(type: string) {
+    return (
+      <RViewSelector
+        onClick={() => this.setState({ recipesToShow: type })}
+        bgColor={this.state.recipesToShow === type ? accentColorOne : null}
+        textColor={this.state.recipesToShow === type ? primaryColorTwo : null}
+      >
+        {type}
+      </RViewSelector>
+    );
   }
 
   render() {
@@ -223,52 +248,14 @@ class AllRecipesPage extends Component<
           {this.props.match.params.id ? (
             <>
               <RVSCont>
-                <RViewSelector
-                  onClick={() => this.setState({ recipesToShow: "ALL" })}
-                  bgColor={
-                    this.state.recipesToShow === "ALL" ? accentColorOne : null
-                  }
-                  textColor={
-                    this.state.recipesToShow === "ALL" ? primaryColorTwo : null
-                  }
-                >
-                  ALL RECIPES
-                </RViewSelector>
-                <RViewSelector
-                  onClick={() => this.setState({ recipesToShow: "FAVORITES" })}
-                  bgColor={
-                    this.state.recipesToShow === "FAVORITES"
-                      ? accentColorOne
-                      : null
-                  }
-                  textColor={
-                    this.state.recipesToShow === "FAVORITES"
-                      ? primaryColorTwo
-                      : null
-                  }
-                >
-                  FAVORITES
-                </RViewSelector>
-                <RViewSelector
-                  onClick={() => this.setState({ recipesToShow: "PERSONAL" })}
-                  bgColor={
-                    this.state.recipesToShow === "PERSONAL"
-                      ? accentColorOne
-                      : null
-                  }
-                  textColor={
-                    this.state.recipesToShow === "PERSONAL"
-                      ? primaryColorTwo
-                      : null
-                  }
-                >
-                  PERSONAL RECIPES
-                </RViewSelector>
+                {this.handleRViewSelector("ALL RECIPES")}
+                {this.handleRViewSelector("FAVORITE RECIPES")}
+                {this.handleRViewSelector("PERSONAL RECIPES")}
               </RVSCont>
               <SectionContainer>{this.handleRecipes()}</SectionContainer>
             </>
           ) : (
-            this.handlePublicRecipes()
+            this.renderPublicRecipes()
           )}
         </Recipes>
       </PublicPageDiv>
