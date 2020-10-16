@@ -6,10 +6,17 @@ import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
+import isRecipeInFavs from "./isRecipeInFavs";
 import { RootState } from "../reducers/rootReducer";
 const { connect } = require("react-redux");
 
-const { primaryColorOne, brownSugar, accentColorOne } = ColorScheme;
+const {
+  primaryColorOne,
+  primaryColorTwo,
+  gunmetal,
+  brownSugar,
+  accentColorOne,
+} = ColorScheme;
 const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
@@ -48,6 +55,38 @@ const RecipeHeading = styled.div`
   padding-bottom: 20px;
   @media (max-width: 500px) {
     width: 90%;
+  }
+`;
+
+const SaveButtonCont = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+`;
+
+const SaveButton = styled.button`
+  padding: 5px 10px 5px 10px;
+  border: 2px solid ${gunmetal};
+  border-radius: 20px;
+  background-color: ${primaryColorTwo};
+  color: ${gunmetal};
+  cursor: pointer;
+  font-family: ${primaryFont};
+  font-weight: 400;
+  outline: none;
+  &:hover {
+    border: 2px solid ${accentColorOne};
+    background-color: ${accentColorOne};
+    color: ${primaryColorTwo};
+  }
+`;
+
+const Icon = styled.i`
+  margin-right: 5px;
+  color: ${accentColorOne};
+  ${SaveButton}:hover > & {
+    color: ${primaryColorTwo};
   }
 `;
 
@@ -142,6 +181,20 @@ class RecipeDetail extends Component<IProps, IState> {
     }
   }
 
+  handleSaveButton() {
+    console.log(this.props.uid);
+    if (!isRecipeInFavs(this.props.uid, this.state.recipeId)) {
+      return (
+        <SaveButtonCont onClick={() => console.log("SAVED")}>
+          <SaveButton>
+            <Icon className="fas fa-star" />
+            Save
+          </SaveButton>
+        </SaveButtonCont>
+      );
+    }
+  }
+
   componentDidMount() {
     const { id } = this.props.match.params;
     const idArr = id.split(":");
@@ -178,6 +231,8 @@ class RecipeDetail extends Component<IProps, IState> {
           <div>{this.state.category}</div>
           <div>Servings: {this.state.servings}</div>
           <div>Author: {this.handleAuthor()}</div>
+          {/*  */}
+          {this.handleSaveButton()}
         </RecipeHeading>
         <Exit id="Exit">
           <Link

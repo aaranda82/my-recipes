@@ -4,13 +4,13 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
+import isRecipeInFavs from "./isRecipeInFavs";
 
 const { primaryColorTwo, gunmetal, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
 
 const RContainer = styled.div`
   flex: 1 1 22%;
-  cursor: pointer;
   margin: 10px;
   background-color: ${primaryColorTwo};
   height: auto;
@@ -55,9 +55,10 @@ const RName = styled.div<RNProps>`
   width: 100%;
   margin: ${(props) => (props.view !== "public" ? "20px 0" : "10px 0")};
   text-align: center;
+  cursor: pointer;
 `;
 
-const RButtonContainer = styled.div`
+const SaveButtonCont = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -73,6 +74,7 @@ const SaveButton = styled.button`
   cursor: pointer;
   font-family: ${primaryFont};
   font-weight: 400;
+  outline: none;
   &:hover {
     border: 2px solid ${accentColorOne};
     background-color: ${accentColorOne};
@@ -88,37 +90,59 @@ const Icon = styled.i`
   }
 `;
 
+function handleSaveButton(
+  view: string,
+  userLoggedIn: boolean,
+  isInFavs: boolean
+) {
+  // && userLoggedIn && !isInFavs
+  if (view === "public") {
+    if (!userLoggedIn || (userLoggedIn && !isInFavs)) {
+      return (
+        <SaveButtonCont onClick={() => console.log("SAVED")}>
+          <SaveButton>
+            <Icon className="fas fa-star" />
+            Save
+          </SaveButton>
+        </SaveButtonCont>
+      );
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
 function RecipeCard(
   recipe: string,
   recipeId: number,
   createdBy: string,
   index: number,
-  view: string
+  view: string,
+  isLoggedIn: string
 ) {
   return (
     <RContainer id="RecipeCard" key={index}>
-      <Link
-        to={`/recipedetail/:${recipeId}`}
-        style={{
-          textDecoration: "none",
-          color: "black",
-          display: "flex",
-          flexWrap: "wrap",
-        }}
-      >
-        <RImage src={Lunch} alt="Lunch" />
-        <RInfoContainer>
-          <RName view={view}>{recipe}</RName>
-          {view === "public" ? (
-            <RButtonContainer>
-              <SaveButton>
-                <Icon className="fas fa-star" />
-                Save
-              </SaveButton>
-            </RButtonContainer>
-          ) : null}
-        </RInfoContainer>
-      </Link>
+      <RImage src={Lunch} alt="Lunch" />
+      <RInfoContainer>
+        <RName view={view}>
+          <Link
+            to={`/recipedetail/:${recipeId}`}
+            style={{
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
+            {recipe}
+          </Link>
+        </RName>
+        {handleSaveButton(
+          view,
+          !!isLoggedIn,
+          isRecipeInFavs(isLoggedIn, recipeId)
+        )}
+      </RInfoContainer>
     </RContainer>
   );
 }

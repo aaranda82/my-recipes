@@ -75,7 +75,7 @@ class Menu extends Component<NavProps> {
             style={{ textDecoration: "none", color: primaryColorOne }}
           >
             <div onClick={() => this.props.toggleState("showMenu")}>
-              {this.props.displayName}'s Favorites
+              {this.props.displayName}
             </div>
           </Link>
 
