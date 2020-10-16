@@ -170,15 +170,15 @@ class AllRecipesPage extends Component<
 
   renderPublicRecipes() {
     const allRecipes = this.filterRecipesByCat().map((recipeData, index) => {
-      const { recipeId, name, createdBy } = recipeData;
-      return RecipeCard(
+      const { recipeId, name } = recipeData;
+      const RCProps = {
         name,
         recipeId,
-        createdBy,
         index,
-        "public",
-        this.props.match.params.id
-      );
+        view: "public",
+        isLoggedIn: this.props.match.params.id,
+      };
+      return <RecipeCard key={index} {...RCProps} />;
     });
     return this.handleRecipeArrayLength(allRecipes);
   }
@@ -203,15 +203,15 @@ class AllRecipesPage extends Component<
       }
     }
     const userRecipes = recipes.map((recipeData, index) => {
-      const { recipeId, name, createdBy } = recipeData;
-      return RecipeCard(
+      const { recipeId, name } = recipeData;
+      const RCProps = {
         name,
         recipeId,
-        createdBy,
         index,
-        "user",
-        this.props.match.params.id
-      );
+        view: "user",
+        isLoggedIn: this.props.match.params.id,
+      };
+      return <RecipeCard key={index} {...RCProps} />;
     });
     return this.handleRecipeArrayLength(userRecipes);
   }
