@@ -7,8 +7,8 @@ import { Styles } from "../Styles";
 import Spacer from "./Spacer";
 import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
+import AuthModal from "./AuthModal";
 
-import Auth from "./Auth";
 const { connect } = require("react-redux");
 
 const { primaryColorOne, primaryColorTwo, accentColorOne } = ColorScheme;
@@ -144,7 +144,8 @@ class Header extends Component<NavProps, NavState> {
       showMenu: false,
       showAuth: false,
     };
-    this.toggleState = this.toggleState.bind(this);
+    this.toggleAuthView = this.toggleAuthView.bind(this);
+    this.toggleMenuView = this.toggleMenuView.bind(this);
   }
 
   handleLogo() {
@@ -161,12 +162,12 @@ class Header extends Component<NavProps, NavState> {
     );
   }
 
-  toggleState(s: string) {
-    if (s === "showMenu") {
-      this.setState({ showMenu: !this.state.showMenu });
-    } else if (s === "showAuth") {
-      this.setState({ showAuth: !this.state.showAuth });
-    }
+  toggleAuthView() {
+    this.setState({ showAuth: !this.state.showAuth })
+  }
+
+  toggleMenuView() {
+    this.setState({ showMenu: !this.state.showMenu })
   }
 
   handleMenuModal() {
@@ -175,44 +176,26 @@ class Header extends Component<NavProps, NavState> {
         <>
           <Shadow
             loggedIn={this.props.displayName}
-            onClick={() => this.toggleState("showMenu")}
+            onClick={() => this.toggleMenuView()}
           ></Shadow>
-          <Menu toggleState={this.toggleState} />
+          <Menu toggleMenuView={this.toggleMenuView} />
         </>
       );
     } else {
       return false;
     }
   }
-
-  handleAuthModal() {
-    if (this.state.showAuth) {
-      const authProps = {
-        toggleState: this.toggleState,
-      };
-      return (
-        <>
-          <Shadow
-            loggedIn={this.props.displayName}
-            onClick={() => this.toggleState("showAuth")}
-          ></Shadow>
-          <Auth {...authProps} />
-        </>
-      );
-    } else {
-      return false;
-    }
-  }
-
+  
   render() {
+    const { displayName } = this.props;
     return (
       <HeaderContainer
         id="Header"
-        loggedIn={this.props.displayName ? "loggedIn" : null}
+        loggedIn={displayName ? "loggedIn" : null}
       >
-        {this.props.displayName ? null : <LogoSpacer></LogoSpacer>}
+        {displayName ? null : <LogoSpacer></LogoSpacer>}
         {this.handleLogo()}
-        {this.props.displayName ? (
+        {displayName ? (
           <>
             <ButtonContainer id="add recipe button" w="20%">
               {this.props.location.pathname === "/createrecipe" ? null : (
@@ -228,14 +211,14 @@ class Header extends Component<NavProps, NavState> {
             <ButtonContainer id="nav menu button" w="10%">
               <NavMenuButton
                 className={this.state.showMenu ? "fas fa-times" : "fas fa-bars"}
-                onClick={() => this.toggleState("showMenu")}
+                onClick={() => this.toggleMenuView()}
               ></NavMenuButton>
             </ButtonContainer>
           </>
         ) : (
           <>
             <ButtonContainer w="15%">
-              <LogInButton onClick={() => this.toggleState("showAuth")}>
+              <LogInButton onClick={() => this.toggleAuthView()}>
                 {this.state.showAuth ? "CANCEL" : "LOG IN/SIGN UP"}
               </LogInButton>
             </ButtonContainer>
@@ -243,7 +226,7 @@ class Header extends Component<NavProps, NavState> {
           </>
         )}
         {this.handleMenuModal()}
-        {this.handleAuthModal()}
+        {AuthModal(this.state.showAuth, this.toggleAuthView, displayName )}
       </HeaderContainer>
     );
   }
