@@ -40,7 +40,7 @@ interface NavProps {
   displayName: string;
   uid: string;
   signOut: () => void;
-  toggleState: (s: string) => void;
+  toggleMenuView: () => void;
   history: { push: any };
 }
 
@@ -51,7 +51,7 @@ class Menu extends Component<NavProps> {
   }
 
   handleSignOut() {
-    this.props.toggleState("showMenu");
+    this.props.toggleMenuView();
     this.props.signOut();
     firebase.auth().signOut();
   }
@@ -64,7 +64,7 @@ class Menu extends Component<NavProps> {
             to={"/publicpage"}
             style={{ textDecoration: "none", color: primaryColorOne }}
           >
-            <div onClick={() => this.props.toggleState("showMenu")}>
+            <div onClick={() => this.props.toggleMenuView()}>
               Public Page
             </div>
           </Link>
@@ -74,7 +74,7 @@ class Menu extends Component<NavProps> {
             to={`/userpage/${this.props.uid}`}
             style={{ textDecoration: "none", color: primaryColorOne }}
           >
-            <div onClick={() => this.props.toggleState("showMenu")}>
+            <div onClick={() => this.props.toggleMenuView()}>
               {this.props.displayName}
             </div>
           </Link>
@@ -84,7 +84,7 @@ class Menu extends Component<NavProps> {
             to={"/account"}
             style={{ textDecoration: "none", color: primaryColorOne }}
           >
-            <div onClick={() => this.props.toggleState("showMenu")}>
+            <div onClick={() => this.props.toggleMenuView()}>
               Account
             </div>
           </Link>

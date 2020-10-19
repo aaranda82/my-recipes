@@ -176,7 +176,7 @@ class AllRecipesPage extends Component<
         recipeId,
         index,
         view: "public",
-        isLoggedIn: this.props.match.params.id,
+        uid: this.props.match.params.id,
       };
       return <RecipeCard key={index} {...RCProps} />;
     });
@@ -209,7 +209,7 @@ class AllRecipesPage extends Component<
         recipeId,
         index,
         view: "user",
-        isLoggedIn: this.props.match.params.id,
+        uid: this.props.match.params.id,
       };
       return <RecipeCard key={index} {...RCProps} />;
     });

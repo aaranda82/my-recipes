@@ -6,14 +6,13 @@ import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
-import isRecipeInFavs from "./isRecipeInFavs";
+import SaveButton from "./SaveButton";
 import { RootState } from "../reducers/rootReducer";
+import AuthModal from "./AuthModal";
 const { connect } = require("react-redux");
 
 const {
   primaryColorOne,
-  primaryColorTwo,
-  gunmetal,
   brownSugar,
   accentColorOne,
 } = ColorScheme;
@@ -58,38 +57,6 @@ const RecipeHeading = styled.div`
   }
 `;
 
-const SaveButtonCont = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-`;
-
-const SaveButton = styled.button`
-  padding: 5px 10px 5px 10px;
-  border: 2px solid ${gunmetal};
-  border-radius: 20px;
-  background-color: ${primaryColorTwo};
-  color: ${gunmetal};
-  cursor: pointer;
-  font-family: ${primaryFont};
-  font-weight: 400;
-  outline: none;
-  &:hover {
-    border: 2px solid ${accentColorOne};
-    background-color: ${accentColorOne};
-    color: ${primaryColorTwo};
-  }
-`;
-
-const Icon = styled.i`
-  margin-right: 5px;
-  color: ${accentColorOne};
-  ${SaveButton}:hover > & {
-    color: ${primaryColorTwo};
-  }
-`;
-
 const Ingredients = styled.div`
   width: 100%;
   @media (max-width: 400px) {
@@ -131,7 +98,9 @@ interface IState {
   servings: number;
   ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
+  showAuth?: boolean;
 }
+
 
 class RecipeDetail extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -144,8 +113,10 @@ class RecipeDetail extends Component<IProps, IState> {
       servings: 0,
       ingredients: [],
       instructions: [],
+      showAuth: false,
     };
     this.handleAuthor = this.handleAuthor.bind(this);
+    this.toggleAuthView = this.toggleAuthView.bind(this);
   }
 
   handleIngredients() {
@@ -181,18 +152,8 @@ class RecipeDetail extends Component<IProps, IState> {
     }
   }
 
-  handleSaveButton() {
-    console.log(this.props.uid);
-    if (!isRecipeInFavs(this.props.uid, this.state.recipeId)) {
-      return (
-        <SaveButtonCont onClick={() => console.log("SAVED")}>
-          <SaveButton>
-            <Icon className="fas fa-star" />
-            Save
-          </SaveButton>
-        </SaveButtonCont>
-      );
-    }
+  toggleAuthView() {
+    this.setState({ showAuth: !this.state.showAuth })
   }
 
   componentDidMount() {
@@ -224,15 +185,16 @@ class RecipeDetail extends Component<IProps, IState> {
 
   render() {
     return (
+      <>
       <RecipeDetailDiv>
+      {AuthModal(this.state.showAuth, this.toggleAuthView, this.props.uid)}
         <Image></Image>
         <RecipeHeading>
           <h1>{this.state.name}</h1>
           <div>{this.state.category}</div>
           <div>Servings: {this.state.servings}</div>
           <div>Author: {this.handleAuthor()}</div>
-          {/*  */}
-          {this.handleSaveButton()}
+          {SaveButton(this.props.uid, this.toggleAuthView, this.state.recipeId)}
         </RecipeHeading>
         <Exit id="Exit">
           <Link
@@ -249,6 +211,7 @@ class RecipeDetail extends Component<IProps, IState> {
         <Ingredients>{this.handleIngredients()}</Ingredients>
         <Instructions>{this.handleInstructions()}</Instructions>
       </RecipeDetailDiv>
+      </>
     );
   }
 }

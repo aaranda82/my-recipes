@@ -44,14 +44,14 @@ interface AuthProps {
   signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
   history: { push: any };
-  toggleState: (s: string) => void;
+  toggleAuthView: () => void;
 }
 
 class Auth extends Component<AuthProps> {
   uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: () => {
-        this.props.toggleState("showAuth");
+        this.props.toggleAuthView();
         this.props.history.push("/");
         return false;
       },
