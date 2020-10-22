@@ -14,11 +14,13 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 const { connect } = require("react-redux");
 
 function App(props: { uid: string }) {
   return (
     <Router>
+      <ScrollToTop/>
       <Header />
       <main>
         <Switch>
