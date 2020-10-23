@@ -1,12 +1,4 @@
 import React from "react";
-import Auth from "./components/Auth";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import AllRecipesPage from "./components/AllRecipesPage";
-import RecipeDetail from "./components/RecipeDetail";
-import AccountPage from "./components/AccountPage";
-import CreateRecipe from "./components/CreateRecipe";
-import { RootState } from "./reducers/rootReducer";
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,15 +6,28 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
+import styled from "styled-components";
+import Auth from "./components/Auth";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import AllRecipesPage from "./components/AllRecipesPage";
+import RecipeDetail from "./components/RecipeDetail";
+import AccountPage from "./components/AccountPage";
+import CreateRecipe from "./components/CreateRecipe";
 import ScrollToTop from "./components/ScrollToTop";
+import { RootState } from "./reducers/rootReducer";
 const { connect } = require("react-redux");
 
+const Main = styled.main`
+  width: 900px;
+  margin: auto;
+`;
 function App(props: { uid: string }) {
   return (
     <Router>
       <ScrollToTop/>
       <Header />
-      <main>
+      <Main>
         <Switch>
           <Route exact path="/">
             {props.uid ? (
@@ -38,7 +43,7 @@ function App(props: { uid: string }) {
           <Route path="/userpage/:id" component={AllRecipesPage} />
           <Route path="/createrecipe" component={CreateRecipe} />
         </Switch>
-      </main>
+      </Main>
       <Footer />
     </Router>
   );

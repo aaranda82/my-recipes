@@ -13,12 +13,6 @@ const CRCont = styled.div`
   font-family: ${primaryFont};
   display: flex;
   flex-wrap: wrap;
-  width: 75%;
-  margin: auto;
-  padding: 20px;
-  @media (max-width: ${mobileMaxWidth}) {
-    width: 95%;
-  }
 `;
 
 const AddRInfoCont = styled.div`

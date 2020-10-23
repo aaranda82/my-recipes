@@ -20,7 +20,6 @@ const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
   font-family: ${primaryFont};
-  width: 70%;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
