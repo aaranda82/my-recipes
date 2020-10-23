@@ -11,38 +11,64 @@ const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { secondaryFont, mobileMaxWidth } = Styles;
 
 const PublicPageDiv = styled.div`
-  width: 95%;
-  margin: auto;
-  display: flex;
-  @media (max-width: ${mobileMaxWidth}) {
-    width: 100%;
-  }
 `;
+
+const CategoriesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: white;
+  border-radius: 50px;
+`;
+
+const CategoriesContent = styled.div`
+  width: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  background: white;
+  border-radius: 50px;
+`;
+
 const Categories = styled.div`
-  min-width: 110px;
+  width: 800px;
+  height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+interface CDProps {
+  catPage: number;
+}
+
+const CategoriesDisplayed = styled.div<CDProps>`
+transform: translateX(-${(props) => props.catPage * 800}px);
+transition: all 0.7s ease;
+`;
+
+const CatButtonCont = styled.div`
   width: 15%;
-  justify-content: space-around;
-  @media (max-width: ${mobileMaxWidth}) {
-    display: none;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CatButton = styled.button`
+
 `;
 
 const CatTitle = styled.div`
+  width: 70%;
   font-family: ${secondaryFont};
   font-size: 30px;
-  margin-top: 15px;
   color: ${gunmetal};
-  width: 100%;
   text-align: center;
-  @media (max-width: ${mobileMaxWidth}) {
-    display: none;
-  }
 `;
 
 const RVSCont = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 interface RVSProps {
@@ -57,7 +83,6 @@ const RViewSelector = styled.div<RVSProps>`
   text-align: center;
   padding: 10px;
   font-family: ${secondaryFont};
-  margin-top: 10px;
   cursor: pointer;
   color: ${(props) => props.textColor};
   background-color: ${(props) => props.bgColor};
@@ -67,7 +92,6 @@ const RViewSelector = styled.div<RVSProps>`
 `;
 
 const SectionContainer = styled.div`
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -79,7 +103,6 @@ const SectionContainer = styled.div`
 
 const Recipes = styled.div`
   margin-top: 10px;
-  width: 85%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -99,6 +122,8 @@ interface Recipe {
 }
 
 interface IState {
+  categories: string[];
+  categoryPage: number;
   categoryToShow: string;
   recipesToShow: string;
 }
@@ -110,27 +135,23 @@ class AllRecipesPage extends Component<
   constructor(props: RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
+      categories: ["ALL"],
+      categoryPage: 0,
       categoryToShow: "ALL",
       recipesToShow: "ALL RECIPES",
     };
-    this.changeCategory = this.changeCategory.bind(this);
+    this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
   }
 
-  changeCategory(categoryToShow: string) {
+  changeCategoryToShow(categoryToShow: string) {
     this.setState({ categoryToShow });
   }
 
   renderCategories() {
-    const categories: string[] = ["ALL"];
-    for (let x = 0; x < recipeData.length; x++) {
-      let cat = recipeData[x].category;
-      if (!categories.includes(cat)) {
-        categories.push(cat);
-      }
-    }
-    const catElements = categories.map((cat, index) => {
+    
+    const catElements = this.state.categories.map((cat, index) => {
       let selected = this.state.categoryToShow === cat ? true : false;
-      return Category(index, this.changeCategory, selected, cat);
+      return Category(index, this.changeCategoryToShow, selected, cat);
     });
     return catElements;
   }
@@ -183,17 +204,16 @@ class AllRecipesPage extends Component<
     return this.handleRecipeArrayLength(allRecipes);
   }
 
-  renderUserRecipes(t: string) {
+  renderUserRecipes(recipesToShow: string) {
     const recipesByCat = this.filterRecipesByCat();
     let recipes: Recipe[] = [];
     const uid = this.props.match.params.id;
-    const user = userData.filter((u) => u.uid === uid);
-    const userFavs = user[0].favorites;
-    if (t === "PERSONAL RECIPES") {
+    const userFavs = userData.filter((u) => u.uid === uid)[0].favorites;
+    if (recipesToShow === "PERSONAL RECIPES") {
       recipes = recipesByCat.filter(
         (r) => r.createdBy === this.props.match.params.id
       );
-    } else if (t === "FAVORITE RECIPES") {
+    } else if (recipesToShow === "FAVORITE RECIPES") {
       for (let x = 0; x < userFavs.length; x++) {
         for (let y = 0; y < recipesByCat.length; y++) {
           if (recipesByCat[y].recipeId === userFavs[x]) {
@@ -237,13 +257,59 @@ class AllRecipesPage extends Component<
     );
   }
 
+  decrimentCategoryPage() {
+    let categoryPage;
+    if(this.state.categoryPage <= 0) {
+      categoryPage = 0  
+    } else {
+      categoryPage = this.state.categoryPage - 1;
+    }
+    this.setState({ categoryPage })
+  }
+
+  incrementCategoryPage() {
+    if((this.state.categoryPage + 1) >= this.state.categories.length / 8 ){
+      return false;
+    } else {
+      this.setState({ categoryPage: this.state.categoryPage + 1})
+    }
+  }
+
+  componentDidMount() {
+    const state = {...this.state}
+    const categories = state.categories
+    console.log(categories)
+    for (let x = 0; x < recipeData.length; x++) {
+      let cat = recipeData[x].category;
+      if (!categories.includes(cat)) {
+        categories.push(cat);
+      }
+    }
+    this.setState({ categories })
+  }
+
+
+  // make categories a horizontal element above recipes, it will scroll side to side
+
   render() {
     return (
       <PublicPageDiv id="PublicPage">
-        <Categories id="Categories">
-          <CatTitle>Categories</CatTitle>
-          {this.renderCategories()}
-        </Categories>
+        <CategoriesContainer>
+          <CategoriesContent>
+            <CatButtonCont>
+              <CatButton onClick={()=>{this.decrimentCategoryPage()}}><i className="fas fa-arrow-left"></i></CatButton>
+            </CatButtonCont>
+            <CatTitle>Categories</CatTitle>
+            <CatButtonCont>
+              <CatButton onClick={()=>{this.incrementCategoryPage()}}><i className="fas fa-arrow-right"></i></CatButton>
+            </CatButtonCont>
+            <Categories id="Categories">
+              <CategoriesDisplayed catPage={this.state.categoryPage}>
+                {this.renderCategories()}
+              </CategoriesDisplayed>
+            </Categories>
+          </CategoriesContent>
+        </CategoriesContainer>
         <Recipes id="Recipes">
           {this.props.match.params.id ? (
             <>

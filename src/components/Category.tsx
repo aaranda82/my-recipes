@@ -1,38 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
-import Spacer from "./Spacer";
 
-const { primaryColorOne } = ColorScheme;
+const { accentColorOne } = ColorScheme;
 interface CBProps {
   selected: boolean;
 }
 const CategoryButton = styled.div<CBProps>`
-  margin: 5px 20px 0;
+  width: 100px;
+  display: inline-block;
   font-family: "Raleway", sans-serif;
+  text-align: center;
   cursor: pointer;
-  transition: all ease 0.2s;
+  background-color: ${(props) => props.selected? accentColorOne: ""};
+  color: ${(props) => props.selected? "white": ""};
   &:hover {
-    color: ${primaryColorOne};
+    background-color: lightgrey;
   }
 `;
 
 const Category = (
   index: number,
-  changeCategory: (categoryToShow: string) => void,
+  changeCategoryToShow: (categoryToShow: string) => void,
   selected: boolean,
   cat: string
 ) => {
   return (
     <React.Fragment key={index}>
       <CategoryButton
-        id="category"
-        onClick={() => changeCategory(cat)}
+        className="category"
+        onClick={() => changeCategoryToShow(cat)}
         selected={selected}
       >
-        {cat}
+        <div>
+          {cat}
+        </div>
       </CategoryButton>
-      {selected ? <Spacer /> : null}
     </React.Fragment>
   );
 };
