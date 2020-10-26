@@ -8,7 +8,7 @@ import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
-const { secondaryFont, mobileMaxWidth } = Styles;
+const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
 
 const PublicPageDiv = styled.div`
 `;
@@ -19,6 +19,7 @@ const CategoriesContainer = styled.div`
   justify-content: center;
   background: white;
   border-radius: 50px;
+  
 `;
 
 const CategoriesContent = styled.div`
@@ -26,14 +27,22 @@ const CategoriesContent = styled.div`
   display: flex;
   flex-wrap: wrap;
   background: white;
-  border-radius: 50px;
+  @media screen and (max-width: ${tabletMaxWidth}) {
+    width: 700px;
+    overflow: auto;
+  }
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 350px;
+  }
 `;
 
-const Categories = styled.div`
-  width: 800px;
+const CategoriesDisplayedCont = styled.div`
   height: 30px;
   overflow: hidden;
   white-space: nowrap;
+  @media (max-width: ${mobileMaxWidth}) {
+    overflow: auto;
+  }
 `;
 
 interface CDProps {
@@ -53,7 +62,9 @@ const CatButtonCont = styled.div`
 `;
 
 const CatButton = styled.button`
-
+  @media (max-width: ${tabletMaxWidth}) {
+    display: none;
+  }
 `;
 
 const CatTitle = styled.div`
@@ -62,6 +73,9 @@ const CatTitle = styled.div`
   font-size: 30px;
   color: ${gunmetal};
   text-align: center;
+  @media (max-width: ${mobileMaxWidth}) {
+    font-size: 20px;
+  }
 `;
 
 const RVSCont = styled.div`
@@ -303,11 +317,11 @@ class AllRecipesPage extends Component<
             <CatButtonCont>
               <CatButton onClick={()=>{this.incrementCategoryPage()}}><i className="fas fa-arrow-right"></i></CatButton>
             </CatButtonCont>
-            <Categories id="Categories">
+            <CategoriesDisplayedCont id="Categories">
               <CategoriesDisplayed catPage={this.state.categoryPage}>
                 {this.renderCategories()}
               </CategoriesDisplayed>
-            </Categories>
+            </CategoriesDisplayedCont>
           </CategoriesContent>
         </CategoriesContainer>
         <Recipes id="Recipes">

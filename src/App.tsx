@@ -19,7 +19,7 @@ import { RootState } from "./reducers/rootReducer";
 const { connect } = require("react-redux");
 
 const Main = styled.main`
-  width: 900px;
+  max-width: 900px;
   margin: auto;
 `;
 function App(props: { uid: string }) {

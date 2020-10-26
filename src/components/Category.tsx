@@ -14,6 +14,7 @@ const CategoryButton = styled.div<CBProps>`
   cursor: pointer;
   background-color: ${(props) => props.selected? accentColorOne: ""};
   color: ${(props) => props.selected? "white": ""};
+  border-radius: 50px;
   &:hover {
     background-color: lightgrey;
   }
