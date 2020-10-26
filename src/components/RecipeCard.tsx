@@ -16,11 +16,11 @@ const RContainer = styled.div`
   background-color: ${primaryColorTwo};
   height: auto;
   border: 1px solid lightgrey;
-
   @media screen and (max-width: 875px) {
     flex: 1 1 20%;
   }
   @media screen and (max-width: ${mobileMaxWidth}) {
+    display: flex;
     width: 90%;
     flex: none;
     margin: 0 0 10px 0;

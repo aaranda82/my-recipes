@@ -84,6 +84,7 @@ const LogoSpacer = styled.div`
 
 interface BCProps {
   w: string;
+  mobileWidth: string;
 }
 
 const ButtonContainer = styled.div<BCProps>`
@@ -92,7 +93,7 @@ const ButtonContainer = styled.div<BCProps>`
   justify-content: center;
   align-items: center;
   @media (max-width: ${mobileMaxWidth}) {
-    width: 20%;
+    width: ${(props) => props.mobileWidth};
   } ;
 `;
 
@@ -105,6 +106,9 @@ const LogInButton = styled.button`
   padding: 10px 20px;
   &:hover {
     background-color: black;
+  }
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    font-size: 10px;
   }
 `;
 
@@ -124,6 +128,9 @@ const AddRecipeButton = styled.button`
   & > a {
     text-decoration: none;
     color: ${primaryColorOne};
+  }
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    font-size: 10px;
   }
 `;
 
@@ -197,7 +204,7 @@ class Header extends Component<NavProps, NavState> {
         {this.handleLogo()}
         {displayName ? (
           <>
-            <ButtonContainer id="add recipe button" w="20%">
+            <ButtonContainer id="add recipe button" w="20%"  mobileWidth="25%">
               {this.props.location.pathname === "/createrecipe" ? null : (
                 <Link to={"/createrecipe"}>
                   <AddRecipeButton
@@ -208,7 +215,7 @@ class Header extends Component<NavProps, NavState> {
                 </Link>
               )}
             </ButtonContainer>
-            <ButtonContainer id="nav menu button" w="10%">
+            <ButtonContainer id="nav menu button" w="10%" mobileWidth="15%">
               <NavMenuButton
                 className={this.state.showMenu ? "fas fa-times" : "fas fa-bars"}
                 onClick={() => this.toggleMenuView()}
@@ -217,9 +224,9 @@ class Header extends Component<NavProps, NavState> {
           </>
         ) : (
           <>
-            <ButtonContainer w="15%">
+            <ButtonContainer w="15%" mobileWidth="40%">
               <LogInButton onClick={() => this.toggleAuthView()}>
-                {this.state.showAuth ? "CANCEL" : "LOG IN/SIGN UP"}
+                {this.state.showAuth ? "CANCEL" : "LOG IN/ SIGN UP"}
               </LogInButton>
             </ButtonContainer>
             <Spacer />
