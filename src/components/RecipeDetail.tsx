@@ -12,7 +12,6 @@ import AuthModal from "./AuthModal";
 const { connect } = require("react-redux");
 
 const {
-  primaryColorOne,
   brownSugar,
   accentColorOne,
 } = ColorScheme;
@@ -23,6 +22,7 @@ const RecipeDetailDiv = styled.div`
   margin: auto;
   display: flex;
   flex-wrap: wrap;
+  line-height: 1.6;
   @media (max-width: 400px) {
     width: 100%;
   }
@@ -35,6 +35,12 @@ const Exit = styled.div`
   top: 20px;
   font-size: 2em;
   cursor: pointer;
+`;
+
+const Icon = styled.i`
+  &:hover {
+    color: black;
+  }
 `;
 
 const Image = styled.div`
@@ -74,6 +80,12 @@ const Instructions = styled.div`
 
 const Instruction = styled.div`
   margin-bottom: 10px;
+`;
+
+const Number = styled.div`
+  border-bottom: 1px solid black;
+  text-align: center;
+  font-size: 25px;
 `;
 
 interface IProps extends RouteComponentProps<{ id: string }> {
@@ -136,7 +148,9 @@ class RecipeDetail extends Component<IProps, IState> {
       (i: { number: number; instruction: string }, key: number) => {
         return (
           <Instruction key={key}>
-            <strong>{i.number}.</strong> {i.instruction}
+            {/* <strong>{i.number}.</strong> {i.instruction} */}
+            <Number>{i.number}</Number>
+            <div>{i.instruction}</div>
           </Instruction>
         );
       }
@@ -202,9 +216,9 @@ class RecipeDetail extends Component<IProps, IState> {
                 ? `/userpage/${this.props.uid}`
                 : "/publicpage"
             }
-            style={{ textDecoration: "none", color: primaryColorOne }}
+            style={{ color: accentColorOne }}
           >
-            <i style={{ color: accentColorOne }} className="fas fa-times"></i>
+            <Icon className="fas fa-times"></Icon>
           </Link>
         </Exit>
         <Ingredients>{this.handleIngredients()}</Ingredients>
