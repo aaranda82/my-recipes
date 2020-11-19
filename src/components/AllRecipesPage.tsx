@@ -292,7 +292,6 @@ class AllRecipesPage extends Component<
   componentDidMount() {
     const state = {...this.state}
     const categories = state.categories
-    console.log(categories)
     for (let x = 0; x < recipeData.length; x++) {
       let cat = recipeData[x].category;
       if (!categories.includes(cat)) {
@@ -301,9 +300,6 @@ class AllRecipesPage extends Component<
     }
     this.setState({ categories })
   }
-
-
-  // make categories a horizontal element above recipes, it will scroll side to side
 
   render() {
     return (

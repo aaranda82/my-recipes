@@ -62,6 +62,13 @@ const RecipeHeading = styled.div`
   }
 `;
 
+const Author = styled.div`
+  display: inline;
+  &:hover{
+    color: ${accentColorOne};
+  }
+`;
+
 const Ingredients = styled.div`
   width: 100%;
   @media (max-width: 400px) {
@@ -206,7 +213,7 @@ class RecipeDetail extends Component<IProps, IState> {
           <h1>{this.state.name}</h1>
           <div>{this.state.category}</div>
           <div>Servings: {this.state.servings}</div>
-          <div>Author: {this.handleAuthor()}</div>
+          <div>Author: <Link to={`/user/${this.state.createdBy}`} style={{textDecoration: "none", color: "black"}}><Author>{this.handleAuthor()}</Author></Link></div>
           {SaveButton(this.props.uid, this.toggleAuthView, this.state.recipeId)}
         </RecipeHeading>
         <Exit id="Exit">

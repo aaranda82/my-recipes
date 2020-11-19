@@ -15,6 +15,7 @@ import RecipeDetail from "./components/RecipeDetail";
 import AccountPage from "./components/AccountPage";
 import CreateRecipe from "./components/CreateRecipe";
 import ScrollToTop from "./components/ScrollToTop";
+import UserProfile from "./components/UserProfile";
 import { RootState } from "./reducers/rootReducer";
 const { connect } = require("react-redux");
 
@@ -42,6 +43,7 @@ function App(props: { uid: string }) {
           <Route path="/recipedetail/:id" component={RecipeDetail} />
           <Route path="/userpage/:id" component={AllRecipesPage} />
           <Route path="/createrecipe" component={CreateRecipe} />
+          <Route path="/user/:id" component={UserProfile} />
         </Switch>
       </Main>
       <Footer />
