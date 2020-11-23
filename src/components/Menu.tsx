@@ -21,7 +21,7 @@ const MContainer = styled.div`
   font-weight: 600;
   color: ${primaryColorOne};
   position: absolute;
-  top: 55px;
+  top: 44px;
   right: 0;
   padding: 20px 70px 20px 70px;
   background: ${primaryColorTwo};
