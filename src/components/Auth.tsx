@@ -7,9 +7,11 @@ import styled from "styled-components";
 import { signInAction, signOutAction } from "../actions/userActions";
 import { RootState } from "../reducers/rootReducer";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
 import { withRouter } from "react-router";
 const { connect } = require("react-redux");
 
+const { mobileMaxWidth } = Styles;
 const { gunmetal, primaryColorTwo, primaryColorOne } = ColorScheme;
 
 const config = {
@@ -28,6 +30,8 @@ const Container = styled.div`
   box-shadow: 5px 5px ${primaryColorOne};
   position: fixed;
   top: 25vh;
+  left: 50%;
+  transform: translatex(-50%);
   background-color: ${primaryColorTwo};
   color: ${gunmetal};
   text-align: center;
@@ -35,6 +39,10 @@ const Container = styled.div`
   padding: 50px;
   & h3 {
     padding-top: 0;
+  }
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 80%;
+    padding: 20px;
   }
 `;
 interface AuthProps {

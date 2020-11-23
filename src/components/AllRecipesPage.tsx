@@ -10,9 +10,6 @@ import { withRouter, RouteComponentProps } from "react-router";
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
 
-const PublicPageDiv = styled.div`
-`;
-
 const CategoriesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -125,6 +122,27 @@ const Recipes = styled.div`
   }
 `;
 
+ export function handleRecipeArrayLength(allRecipes: JSX.Element[]) {
+  if (window.screen.width < 500) {
+    return allRecipes;
+  } else {
+    if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
+      return false;
+    } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
+      do {
+        let key = allRecipes.length;
+        allRecipes.push(BlankRecipeCard(key));
+      } while (allRecipes.length % 4 !== 0);
+    } else if (allRecipes.length < 4) {
+      do {
+        let key = allRecipes.length;
+        allRecipes.push(BlankRecipeCard(key));
+      } while (allRecipes.length <= 3);
+    }
+    return allRecipes;
+  }
+}
+
 interface Recipe {
   recipeId: number;
   createdBy: string;
@@ -170,27 +188,6 @@ class AllRecipesPage extends Component<
     return catElements;
   }
 
-  handleRecipeArrayLength(allRecipes: JSX.Element[]) {
-    if (window.screen.width < 500) {
-      return allRecipes;
-    } else {
-      if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
-        return false;
-      } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
-        do {
-          let key = allRecipes.length;
-          allRecipes.push(BlankRecipeCard(key));
-        } while (allRecipes.length % 4 !== 0);
-      } else if (allRecipes.length < 4) {
-        do {
-          let key = allRecipes.length;
-          allRecipes.push(BlankRecipeCard(key));
-        } while (allRecipes.length <= 3);
-      }
-      return allRecipes;
-    }
-  }
-
   filterRecipesByCat() {
     let recipesByCat: Recipe[] = [];
     if (this.state.categoryToShow === "ALL") {
@@ -205,17 +202,18 @@ class AllRecipesPage extends Component<
 
   renderPublicRecipes() {
     const allRecipes = this.filterRecipesByCat().map((recipeData, index) => {
-      const { recipeId, name } = recipeData;
+      const { recipeId, name, createdBy } = recipeData;
       const RCProps = {
         name,
         recipeId,
         index,
         view: "public",
         uid: this.props.match.params.id,
+        createdBy,
       };
       return <RecipeCard key={index} {...RCProps} />;
     });
-    return this.handleRecipeArrayLength(allRecipes);
+    return handleRecipeArrayLength(allRecipes);
   }
 
   renderUserRecipes(recipesToShow: string) {
@@ -237,17 +235,18 @@ class AllRecipesPage extends Component<
       }
     }
     const userRecipes = recipes.map((recipeData, index) => {
-      const { recipeId, name } = recipeData;
+      const { recipeId, name, createdBy } = recipeData;
       const RCProps = {
         name,
         recipeId,
         index,
         view: "user",
         uid: this.props.match.params.id,
+        createdBy,
       };
       return <RecipeCard key={index} {...RCProps} />;
     });
-    return this.handleRecipeArrayLength(userRecipes);
+    return handleRecipeArrayLength(userRecipes);
   }
 
   handleRecipes() {
@@ -303,7 +302,7 @@ class AllRecipesPage extends Component<
 
   render() {
     return (
-      <PublicPageDiv id="PublicPage">
+      <div id="PublicPage">
         <CategoriesContainer>
           <CategoriesContent>
             <CatButtonCont>
@@ -334,7 +333,7 @@ class AllRecipesPage extends Component<
             this.renderPublicRecipes()
           )}
         </Recipes>
-      </PublicPageDiv>
+      </div>
     );
   }
 }

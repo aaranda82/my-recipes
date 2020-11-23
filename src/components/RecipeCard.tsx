@@ -6,8 +6,9 @@ import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
 import AuthModal from "./AuthModal"
 import SaveButton from "./SaveButton";
+import userData from "../data-users.json";
 
-const { primaryColorTwo } = ColorScheme;
+const { primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
 
 const RContainer = styled.div`
@@ -53,23 +54,26 @@ interface RNProps {
 }
 
 const RName = styled.div<RNProps>`
-  width: 100%;
   margin: ${(props) => (props.view !== "public" ? "20px 0" : "10px 0")};
   text-align: center;
   cursor: pointer;
+  color: black;
+  &:hover {
+    color: ${accentColorOne};
+  }
 `;
 
-
-interface RCProps {
+interface IProps {
   name: string;
   recipeId: number;
   index: number;
   view: string;
   uid: string;
+  createdBy: string;
 }
 
-class RecipeCard extends Component<RCProps, { showAuth: boolean }> {
-  constructor(props: RCProps) {
+class RecipeCard extends Component<IProps, { showAuth: boolean }> {
+  constructor(props: IProps) {
     super(props);
     this.state = { showAuth: false };
     this.toggleAuthView = this.toggleAuthView.bind(this);
@@ -80,24 +84,36 @@ class RecipeCard extends Component<RCProps, { showAuth: boolean }> {
   }
 
   render() {
-    const { name, recipeId, index, view, uid } = this.props;
+    const { name, recipeId, index, view, uid, createdBy } = this.props;
     return (
       <>
         {AuthModal(this.state.showAuth, this.toggleAuthView, uid)}
         <RContainer id="RecipeCard" key={index}>
           <RImage src={Lunch} alt="Lunch" />
           <RInfoContainer>
-            <RName view={view}>
-              <Link
-                to={`/recipedetail/:${recipeId}`}
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                }}
-              >
-                {name}
-              </Link>
-            </RName>
+            <Link
+              to={`/recipedetail/:${recipeId}`}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+              }}
+            >
+              <RName view={view}>
+                <strong>
+                  {name}
+                </strong>
+              </RName>
+            </Link>
+            <Link
+              to={`/user/:${createdBy}`}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+              }}
+            >
+
+              <RName view={view}>{userData.filter((u) => createdBy === u.uid)[0].userName}</RName>
+            </Link>
             {SaveButton(uid, this.toggleAuthView, recipeId)}
           </RInfoContainer>
         </RContainer>

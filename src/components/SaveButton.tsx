@@ -41,7 +41,7 @@ ${Button}:hover > & {
 }
 `;
 
-function isRecipeInFavs(uid: string | undefined, recipeId: number) {
+function isRecipeInFavs(uid: string | undefined, recipeId: number) { 
   let isInFavs = false;
   if (uid) {
     let user = userData.filter((u) => u.uid === uid);
@@ -55,7 +55,7 @@ function isRecipeInFavs(uid: string | undefined, recipeId: number) {
   return isInFavs;
 }
 
-function SaveButton(uid: string, toggleAuthView: () => void, recipeId: number) {
+function SaveButton(uid: string, toggleAuthView: () => void, recipeId: number) { // uid to determine if user is logged in or not
   const isInFavs = recipeId ? isRecipeInFavs(uid, recipeId) : false;
   if (!uid || (uid && !isInFavs)) {
     return (
