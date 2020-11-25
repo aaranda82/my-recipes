@@ -26,13 +26,13 @@ const Email = styled.p`
 `;
 
 function AccountPage(props: { displayName: string; email: string }) {
-  console.log(props);
+  const { displayName, email } = props
   return (
     <AccountContainer>
       <h1>ACCOUNT PAGE</h1>
       <InfoContainer>
-        <DisplayName>{props.displayName}</DisplayName>
-        <Email>{props.email}</Email>
+        <DisplayName>{displayName}</DisplayName>
+        <Email>{email}</Email>
       </InfoContainer>
     </AccountContainer>
   );

@@ -58,9 +58,13 @@ interface AuthProps {
 class Auth extends Component<AuthProps> {
   uiConfig = {
     callbacks: {
-      signInSuccessWithAuthResult: () => {
+      signInSuccessWithAuthResult: (authResult: any) => {
         this.props.toggleAuthView();
         this.props.history.push("/");
+        console.log(authResult)  // check to see if this is a new user with 'authResult.additionalUserInfo.isNewUser'
+        if(authResult.additionalUserInfo.isNewUser) {
+          console.log("write user name to DB")
+        }
         return false;
       },
     },
@@ -71,7 +75,8 @@ class Auth extends Component<AuthProps> {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.props.signIn(user.displayName, user.email, user.uid);
+        const { displayName, email, uid } = user
+        this.props.signIn(displayName, email, uid);
       } else {
         console.log("no user");
       }

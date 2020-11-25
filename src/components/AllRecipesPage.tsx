@@ -220,33 +220,39 @@ class AllRecipesPage extends Component<
     const recipesByCat = this.filterRecipesByCat();
     let recipes: Recipe[] = [];
     const uid = this.props.match.params.id;
-    const userFavs = userData.filter((u) => u.uid === uid)[0].favorites;
-    if (recipesToShow === "PERSONAL RECIPES") {
+    const user = userData.filter((u) => u.uid === uid)
+    if(user.length) {
+
+      const userFavs = user[0].favorites;
+      if (recipesToShow === "PERSONAL RECIPES") {
       recipes = recipesByCat.filter(
         (r) => r.createdBy === this.props.match.params.id
-      );
-    } else if (recipesToShow === "FAVORITE RECIPES") {
-      for (let x = 0; x < userFavs.length; x++) {
-        for (let y = 0; y < recipesByCat.length; y++) {
-          if (recipesByCat[y].recipeId === userFavs[x]) {
-            recipes.push(recipesByCat[y]);
+        );
+      } else if (recipesToShow === "FAVORITE RECIPES") {
+        for (let x = 0; x < userFavs.length; x++) {
+          for (let y = 0; y < recipesByCat.length; y++) {
+            if (recipesByCat[y].recipeId === userFavs[x]) {
+              recipes.push(recipesByCat[y]);
+            }
           }
         }
       }
+      const userRecipes = recipes.map((recipeData, index) => {
+        const { recipeId, name, createdBy } = recipeData;
+        const RCProps = {
+          name,
+          recipeId,
+          index,
+          view: "user",
+          uid: this.props.match.params.id,
+          createdBy,
+        };
+        return <RecipeCard key={index} {...RCProps} />;
+      });
+      return handleRecipeArrayLength(userRecipes);
+    } else {
+      return "NO FAVORITES YET"
     }
-    const userRecipes = recipes.map((recipeData, index) => {
-      const { recipeId, name, createdBy } = recipeData;
-      const RCProps = {
-        name,
-        recipeId,
-        index,
-        view: "user",
-        uid: this.props.match.params.id,
-        createdBy,
-      };
-      return <RecipeCard key={index} {...RCProps} />;
-    });
-    return handleRecipeArrayLength(userRecipes);
   }
 
   handleRecipes() {
