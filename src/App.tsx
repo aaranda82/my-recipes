@@ -7,7 +7,7 @@ import {
   withRouter,
 } from "react-router-dom";
 import styled from "styled-components";
-import Auth from "./components/Auth";
+import LogIn from "./components/LogIn";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AllRecipesPage from "./components/AllRecipesPage";
@@ -37,7 +37,7 @@ function App(props: { uid: string }) {
               <AllRecipesPage />
             )}
           </Route>
-          <Route path="/login" component={Auth} />
+          <Route path="/login" component={LogIn} />
           <Route path="/publicpage" component={AllRecipesPage} />
           <Route path="/account" component={AccountPage} />
           <Route path="/recipedetail/:id" component={RecipeDetail} />

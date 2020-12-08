@@ -1,10 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Auth from "./Auth";
-import { ColorScheme } from "../ColorScheme";
+import LogIn from "./LogIn";
 import { Styles } from "../Styles";
 
-const { brownSugar } = ColorScheme;
 const { mobileMaxWidth } = Styles;
 
 interface LIProps {
@@ -17,8 +15,8 @@ const Shadow = styled.div<LIProps>`
   height: 100vh;
   top: ${(props) => (props.loggedIn ? "55px" : "78px")};
   left: 0;
-  background-color: ${brownSugar};
-  opacity: 0.4;
+  background-color: black;
+  opacity: 0.8;
   @media screen and (max-width: ${mobileMaxWidth}) {
     top: ${(props) => (props.loggedIn ? "55px" : "67px")};
   }
@@ -35,7 +33,7 @@ function AuthModal(showAuth: boolean | undefined, toggleAuthView: () => void, ui
           loggedIn={uid}
           onClick={() => toggleAuthView()}
         ></Shadow>
-        <Auth {...authProps} />
+        <LogIn {...authProps} />
       </>
     );
   } else {

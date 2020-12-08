@@ -25,7 +25,7 @@ const HeaderContainer = styled.header<LIProps>`
   text-align: center;
   width: 100%;
   background-color: ${(props) =>
-    props.loggedIn ? primaryColorOne : primaryColorTwo};
+    props.loggedIn ? primaryColorOne : "white"};
   z-index: 5;
   position: sticky;
   top: 0;
@@ -226,7 +226,7 @@ class Header extends Component<NavProps, NavState> {
           <>
             <ButtonContainer w="15%" mobileWidth="40%">
               <LogInButton onClick={() => this.toggleAuthView()}>
-                {this.state.showAuth ? "CANCEL" : "LOG IN/ SIGN UP"}
+                {this.state.showAuth ? "CANCEL" : "LOG IN"}
               </LogInButton>
             </ButtonContainer>
             <Spacer />
