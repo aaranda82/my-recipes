@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import Menu from "./Menu";
+import { RouteComponentProps, withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
-import Spacer from "./Spacer";
-import { Link } from "react-router-dom";
-import { withRouter, RouteComponentProps } from "react-router";
 import AuthModal from "./AuthModal";
+import Menu from "./Menu";
+import Spacer from "./Spacer";
 
 const { connect } = require("react-redux");
 
@@ -170,11 +170,11 @@ class Header extends Component<NavProps, NavState> {
   }
 
   toggleAuthView() {
-    this.setState({ showAuth: !this.state.showAuth })
+    this.setState({ showAuth: !this.state.showAuth });
   }
 
   toggleMenuView() {
-    this.setState({ showMenu: !this.state.showMenu })
+    this.setState({ showMenu: !this.state.showMenu });
   }
 
   handleMenuModal() {
@@ -183,8 +183,7 @@ class Header extends Component<NavProps, NavState> {
         <>
           <Shadow
             loggedIn={this.props.displayName}
-            onClick={() => this.toggleMenuView()}
-          ></Shadow>
+            onClick={() => this.toggleMenuView()}></Shadow>
           <Menu toggleMenuView={this.toggleMenuView} />
         </>
       );
@@ -192,24 +191,20 @@ class Header extends Component<NavProps, NavState> {
       return false;
     }
   }
-  
+
   render() {
     const { displayName } = this.props;
     return (
-      <HeaderContainer
-        id="Header"
-        loggedIn={displayName ? "loggedIn" : null}
-      >
+      <HeaderContainer id="Header" loggedIn={displayName ? "loggedIn" : null}>
         {displayName ? null : <LogoSpacer></LogoSpacer>}
         {this.handleLogo()}
         {displayName ? (
           <>
-            <ButtonContainer id="add recipe button" w="20%"  mobileWidth="25%">
+            <ButtonContainer id="add recipe button" w="20%" mobileWidth="25%">
               {this.props.location.pathname === "/createrecipe" ? null : (
                 <Link to={"/createrecipe"}>
                   <AddRecipeButton
-                    onClick={() => this.setState({ showMenu: false })}
-                  >
+                    onClick={() => this.setState({ showMenu: false })}>
                     ADD RECIPE
                   </AddRecipeButton>
                 </Link>
@@ -218,8 +213,7 @@ class Header extends Component<NavProps, NavState> {
             <ButtonContainer id="nav menu button" w="10%" mobileWidth="15%">
               <NavMenuButton
                 className={this.state.showMenu ? "fas fa-times" : "fas fa-bars"}
-                onClick={() => this.toggleMenuView()}
-              ></NavMenuButton>
+                onClick={() => this.toggleMenuView()}></NavMenuButton>
             </ButtonContainer>
           </>
         ) : (
@@ -233,7 +227,11 @@ class Header extends Component<NavProps, NavState> {
           </>
         )}
         {this.handleMenuModal()}
-        {AuthModal(this.state.showAuth, this.toggleAuthView, displayName )}
+        <AuthModal
+          showAuth={this.state.showAuth}
+          toggleAuthView={this.toggleAuthView}
+          uid={displayName}
+        />
       </HeaderContainer>
     );
   }

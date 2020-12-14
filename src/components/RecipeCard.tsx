@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
-import AuthModal from "./AuthModal"
-import SaveButton from "./SaveButton";
+import { ColorScheme } from "../ColorScheme";
 import userData from "../data-users.json";
+import { Styles } from "../Styles";
+import AuthModal from "./AuthModal";
+import SaveButton from "./SaveButton";
 
 const { primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
@@ -87,7 +87,11 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
     const { name, recipeId, index, view, uid, createdBy } = this.props;
     return (
       <>
-        {AuthModal(this.state.showAuth, this.toggleAuthView, uid)}
+        <AuthModal
+          showAuth={this.state.showAuth}
+          toggleAuthView={this.toggleAuthView}
+          uid={uid}
+        />
         <RContainer id="RecipeCard" key={index}>
           <RImage src={Lunch} alt="Lunch" />
           <RInfoContainer>
@@ -96,12 +100,9 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
               style={{
                 textDecoration: "none",
                 width: "100%",
-              }}
-            >
+              }}>
               <RName view={view}>
-                <strong>
-                  {name}
-                </strong>
+                <strong>{name}</strong>
               </RName>
             </Link>
             <Link
@@ -109,10 +110,10 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
               style={{
                 textDecoration: "none",
                 width: "100%",
-              }}
-            >
-
-              <RName view={view}>{userData.filter((u) => createdBy === u.uid)[0].userName}</RName>
+              }}>
+              <RName view={view}>
+                {userData.filter((u) => createdBy === u.uid)[0].userName}
+              </RName>
             </Link>
             {SaveButton(uid, this.toggleAuthView, recipeId)}
           </RInfoContainer>
@@ -129,8 +130,7 @@ export function BlankRecipeCard(index: number) {
       style={{
         visibility: "hidden",
         transition: "none",
-      }}
-    >
+      }}>
       <RImage src={Lunch} alt="Lunch" />
       <RName view="blank"></RName>
     </RContainer>

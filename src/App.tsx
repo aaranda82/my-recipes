@@ -1,19 +1,18 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
   Redirect,
+  Route,
+  Switch,
   withRouter,
 } from "react-router-dom";
 import styled from "styled-components";
-import Auth from "./components/Auth";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import AllRecipesPage from "./components/AllRecipesPage";
-import RecipeDetail from "./components/RecipeDetail";
 import AccountPage from "./components/AccountPage";
+import AllRecipesPage from "./components/AllRecipesPage";
 import CreateRecipe from "./components/CreateRecipe";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import RecipeDetail from "./components/RecipeDetail";
 import ScrollToTop from "./components/ScrollToTop";
 import UserProfile from "./components/UserProfile";
 import { RootState } from "./reducers/rootReducer";
@@ -26,7 +25,7 @@ const Main = styled.main`
 function App(props: { uid: string }) {
   return (
     <Router>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Header />
       <Main>
         <Switch>
@@ -37,7 +36,6 @@ function App(props: { uid: string }) {
               <AllRecipesPage />
             )}
           </Route>
-          <Route path="/login" component={Auth} />
           <Route path="/publicpage" component={AllRecipesPage} />
           <Route path="/account" component={AccountPage} />
           <Route path="/recipedetail/:id" component={RecipeDetail} />

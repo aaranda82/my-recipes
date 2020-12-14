@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Auth from "./Auth";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
+import Auth from "./Auth";
 
 const { brownSugar } = ColorScheme;
 const { mobileMaxWidth } = Styles;
@@ -24,23 +24,21 @@ const Shadow = styled.div<LIProps>`
   }
 `;
 
-function AuthModal(showAuth: boolean | undefined, toggleAuthView: () => void, uid: string) {
-  if (showAuth) {
-    const authProps = {
-      toggleAuthView: toggleAuthView,
-    };
-    return (
-      <>
-        <Shadow
-          loggedIn={uid}
-          onClick={() => toggleAuthView()}
-        ></Shadow>
-        <Auth {...authProps} />
-      </>
-    );
-  } else {
-    return false;
-  }
+function AuthModal({
+  showAuth,
+  toggleAuthView,
+  uid,
+}: {
+  showAuth?: boolean;
+  toggleAuthView: () => void;
+  uid: string;
+}) {
+  return showAuth ? (
+    <>
+      <Shadow loggedIn={uid} onClick={() => toggleAuthView()}></Shadow>
+      <Auth toggleAuthView={toggleAuthView} />
+    </>
+  ) : null;
 }
 
 export default AuthModal;
