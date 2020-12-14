@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
-import AuthModal from "./AuthModal"
+import AuthModal from "./AuthModal";
 import SaveButton from "./SaveButton";
 import userData from "../data-users.json";
 
@@ -87,7 +87,11 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
     const { name, recipeId, index, view, uid, createdBy } = this.props;
     return (
       <>
-        {AuthModal(this.state.showAuth, this.toggleAuthView, uid)}
+        <AuthModal
+          showAuth={this.state.showAuth}
+          toggleAuthView={this.toggleAuthView}
+          uid={uid}
+        />
         <RContainer id="RecipeCard" key={index}>
           <RImage src={Lunch} alt="Lunch" />
           <RInfoContainer>
@@ -99,9 +103,7 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
               }}
             >
               <RName view={view}>
-                <strong>
-                  {name}
-                </strong>
+                <strong>{name}</strong>
               </RName>
             </Link>
             <Link
@@ -111,8 +113,9 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
                 width: "100%",
               }}
             >
-
-              <RName view={view}>{userData.filter((u) => createdBy === u.uid)[0].userName}</RName>
+              <RName view={view}>
+                {userData.filter((u) => createdBy === u.uid)[0].userName}
+              </RName>
             </Link>
             {SaveButton(uid, this.toggleAuthView, recipeId)}
           </RInfoContainer>

@@ -24,23 +24,21 @@ const Shadow = styled.div<LIProps>`
   }
 `;
 
-function AuthModal(showAuth: boolean | undefined, toggleAuthView: () => void, uid: string) {
-  if (showAuth) {
-    const authProps = {
-      toggleAuthView: toggleAuthView,
-    };
-    return (
-      <>
-        <Shadow
-          loggedIn={uid}
-          onClick={() => toggleAuthView()}
-        ></Shadow>
-        <Auth {...authProps} />
-      </>
-    );
-  } else {
-    return false;
-  }
+function AuthModal({
+  showAuth,
+  toggleAuthView,
+  uid,
+}: {
+  showAuth?: boolean;
+  toggleAuthView: () => void;
+  uid: string;
+}) {
+  return showAuth ? (
+    <>
+      <Shadow loggedIn={uid} onClick={() => toggleAuthView()}></Shadow>
+      <Auth toggleAuthView={toggleAuthView} />
+    </>
+  ) : null;
 }
 
 export default AuthModal;

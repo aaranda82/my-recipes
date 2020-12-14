@@ -11,10 +11,7 @@ import { RootState } from "../reducers/rootReducer";
 import AuthModal from "./AuthModal";
 const { connect } = require("react-redux");
 
-const {
-  brownSugar,
-  accentColorOne,
-} = ColorScheme;
+const { brownSugar, accentColorOne } = ColorScheme;
 const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
@@ -64,7 +61,7 @@ const RecipeHeading = styled.div`
 
 const Author = styled.div`
   display: inline;
-  &:hover{
+  &:hover {
     color: ${accentColorOne};
   }
 `;
@@ -119,7 +116,6 @@ interface IState {
   showAuth?: boolean;
 }
 
-
 class RecipeDetail extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -173,7 +169,7 @@ class RecipeDetail extends Component<IProps, IState> {
   }
 
   toggleAuthView() {
-    this.setState({ showAuth: !this.state.showAuth })
+    this.setState({ showAuth: !this.state.showAuth });
   }
 
   componentDidMount() {
@@ -206,31 +202,47 @@ class RecipeDetail extends Component<IProps, IState> {
   render() {
     return (
       <>
-      <RecipeDetailDiv>
-      {AuthModal(this.state.showAuth, this.toggleAuthView, this.props.uid)}
-        <Image></Image>
-        <RecipeHeading>
-          <h1>{this.state.name}</h1>
-          <div>{this.state.category}</div>
-          <div>Servings: {this.state.servings}</div>
-          <div>Author: <Link to={`/user/${this.state.createdBy}`} style={{textDecoration: "none", color: "black"}}><Author>{this.handleAuthor()}</Author></Link></div>
-          {SaveButton(this.props.uid, this.toggleAuthView, this.state.recipeId)}
-        </RecipeHeading>
-        <Exit id="Exit">
-          <Link
-            to={
-              this.props.displayName
-                ? `/userpage/${this.props.uid}`
-                : "/publicpage"
-            }
-            style={{ color: accentColorOne }}
-          >
-            <Icon className="fas fa-times"></Icon>
-          </Link>
-        </Exit>
-        <Ingredients>{this.handleIngredients()}</Ingredients>
-        <Instructions>{this.handleInstructions()}</Instructions>
-      </RecipeDetailDiv>
+        <RecipeDetailDiv>
+          <AuthModal
+            showAuth={this.state.showAuth}
+            toggleAuthView={this.toggleAuthView}
+            uid={this.props.uid}
+          />
+          <Image></Image>
+          <RecipeHeading>
+            <h1>{this.state.name}</h1>
+            <div>{this.state.category}</div>
+            <div>Servings: {this.state.servings}</div>
+            <div>
+              Author:{" "}
+              <Link
+                to={`/user/${this.state.createdBy}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <Author>{this.handleAuthor()}</Author>
+              </Link>
+            </div>
+            {SaveButton(
+              this.props.uid,
+              this.toggleAuthView,
+              this.state.recipeId
+            )}
+          </RecipeHeading>
+          <Exit id="Exit">
+            <Link
+              to={
+                this.props.displayName
+                  ? `/userpage/${this.props.uid}`
+                  : "/publicpage"
+              }
+              style={{ color: accentColorOne }}
+            >
+              <Icon className="fas fa-times"></Icon>
+            </Link>
+          </Exit>
+          <Ingredients>{this.handleIngredients()}</Ingredients>
+          <Instructions>{this.handleInstructions()}</Instructions>
+        </RecipeDetailDiv>
       </>
     );
   }

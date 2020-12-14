@@ -1,15 +1,14 @@
-import React, { Component } from "react";
+import React, { useCallback, useEffect } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import styled from "styled-components";
-import { signInAction, signOutAction } from "../actions/userActions";
-import { RootState } from "../reducers/rootReducer";
+import { signInAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
-import { withRouter } from "react-router";
-const { connect } = require("react-redux");
+import { useHistory } from "react-router";
+import { connect, useDispatch } from "react-redux";
 
 const { mobileMaxWidth } = Styles;
 const { gunmetal, primaryColorTwo, primaryColorOne } = ColorScheme;
@@ -45,26 +44,24 @@ const Container = styled.div`
     padding: 20px;
   }
 `;
-interface AuthProps {
-  displayName: string;
-  uid: string;
-  isSignedIn: boolean;
-  signIn: (d: string | null, e: string | null, u: string | null) => void;
-  signOut: () => void;
-  history: { push: any };
+
+interface Props {
   toggleAuthView: () => void;
 }
 
-class Auth extends Component<AuthProps> {
-  uiConfig = {
+const Auth = (props: Props) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const uiConfig = {
     callbacks: {
       signInSuccessWithAuthResult: (authResult: any) => {
-        this.props.toggleAuthView();
-        this.props.history.push("/");
-        console.log(authResult)  // check to see if this is a new user with 'authResult.additionalUserInfo.isNewUser'
-        if(authResult.additionalUserInfo.isNewUser) {
-          console.log("write user name to DB")
+        history.push("/");
+        console.log(authResult); // check to see if this is a new user with 'authResult.additionalUserInfo.isNewUser'
+        if (authResult.additionalUserInfo.isNewUser) {
+          console.log("write user name to DB");
         }
+        props.toggleAuthView();
         return false;
       },
     },
@@ -72,47 +69,32 @@ class Auth extends Component<AuthProps> {
     signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
   };
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        const { displayName, email, uid } = user
-        this.props.signIn(displayName, email, uid);
+  const handleAuthStateChange = useCallback(
+    (user: firebase.User | null) => {
+      if (user?.email && user?.uid) {
+        const stringName = user.displayName || "";
+        dispatch(signInAction(stringName, user.email, user.uid));
       } else {
-        console.log("no user");
+        console.log(`"Missing email and/or uid"`);
       }
-    });
-  }
+    },
+    [dispatch]
+  );
 
-  render() {
-    return (
-      <Container id="Auth">
-        <h3>Please enter email to log in/register</h3>
-        <StyledFirebaseAuth
-          uiConfig={this.uiConfig}
-          firebaseAuth={firebase.auth()}
-        />
-      </Container>
-    );
-  }
-}
+  useEffect(() => {
+    const unsubscribe = firebase
+      .auth()
+      .onAuthStateChanged(handleAuthStateChange);
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    displayName: state.userReducer.displayName,
-    email: state.userReducer.email,
-    uid: state.userReducer.uid,
-  };
+    return () => unsubscribe();
+  }, [handleAuthStateChange, props]);
+
+  return (
+    <Container id="Auth">
+      <h3>Please enter email to log in/register</h3>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    </Container>
+  );
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    signIn: (displayName: string, email: string, uid: string) => {
-      dispatch(signInAction(displayName, email, uid));
-    },
-    signOut: () => {
-      dispatch(signOutAction());
-    },
-  };
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));
+export default Auth;

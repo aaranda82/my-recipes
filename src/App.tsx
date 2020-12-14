@@ -26,7 +26,7 @@ const Main = styled.main`
 function App(props: { uid: string }) {
   return (
     <Router>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Header />
       <Main>
         <Switch>
@@ -37,7 +37,6 @@ function App(props: { uid: string }) {
               <AllRecipesPage />
             )}
           </Route>
-          <Route path="/login" component={Auth} />
           <Route path="/publicpage" component={AllRecipesPage} />
           <Route path="/account" component={AccountPage} />
           <Route path="/recipedetail/:id" component={RecipeDetail} />
