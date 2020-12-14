@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
+import { ColorScheme } from "../ColorScheme";
+import userData from "../data-users.json";
+import { Styles } from "../Styles";
 import AuthModal from "./AuthModal";
 import SaveButton from "./SaveButton";
-import userData from "../data-users.json";
 
 const { primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
@@ -100,8 +100,7 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
               style={{
                 textDecoration: "none",
                 width: "100%",
-              }}
-            >
+              }}>
               <RName view={view}>
                 <strong>{name}</strong>
               </RName>
@@ -111,8 +110,7 @@ class RecipeCard extends Component<IProps, { showAuth: boolean }> {
               style={{
                 textDecoration: "none",
                 width: "100%",
-              }}
-            >
+              }}>
               <RName view={view}>
                 {userData.filter((u) => createdBy === u.uid)[0].userName}
               </RName>
@@ -132,8 +130,7 @@ export function BlankRecipeCard(index: number) {
       style={{
         visibility: "hidden",
         transition: "none",
-      }}
-    >
+      }}>
       <RImage src={Lunch} alt="Lunch" />
       <RName view="blank"></RName>
     </RContainer>

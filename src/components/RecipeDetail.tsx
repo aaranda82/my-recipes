@@ -1,14 +1,14 @@
 import React, { Component } from "react";
+import { RouteComponentProps, withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
-import { Link } from "react-router-dom";
-import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
-import SaveButton from "./SaveButton";
 import { RootState } from "../reducers/rootReducer";
+import { Styles } from "../Styles";
 import AuthModal from "./AuthModal";
+import SaveButton from "./SaveButton";
 const { connect } = require("react-redux");
 
 const { brownSugar, accentColorOne } = ColorScheme;
@@ -141,7 +141,7 @@ class RecipeDetail extends Component<IProps, IState> {
             {i.quantity} {i.unit === "-" ? null : i.unit} {i.name}
           </div>
         );
-      }
+      },
     );
     return ingredientsList;
   }
@@ -156,7 +156,7 @@ class RecipeDetail extends Component<IProps, IState> {
             <div>{i.instruction}</div>
           </Instruction>
         );
-      }
+      },
     );
     return instructionsList;
   }
@@ -217,15 +217,14 @@ class RecipeDetail extends Component<IProps, IState> {
               Author:{" "}
               <Link
                 to={`/user/${this.state.createdBy}`}
-                style={{ textDecoration: "none", color: "black" }}
-              >
+                style={{ textDecoration: "none", color: "black" }}>
                 <Author>{this.handleAuthor()}</Author>
               </Link>
             </div>
             {SaveButton(
               this.props.uid,
               this.toggleAuthView,
-              this.state.recipeId
+              this.state.recipeId,
             )}
           </RecipeHeading>
           <Exit id="Exit">
@@ -235,8 +234,7 @@ class RecipeDetail extends Component<IProps, IState> {
                   ? `/userpage/${this.props.uid}`
                   : "/publicpage"
               }
-              style={{ color: accentColorOne }}
-            >
+              style={{ color: accentColorOne }}>
               <Icon className="fas fa-times"></Icon>
             </Link>
           </Exit>

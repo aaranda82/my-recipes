@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Auth from "./Auth";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
+import Auth from "./Auth";
 
 const { brownSugar } = ColorScheme;
 const { mobileMaxWidth } = Styles;

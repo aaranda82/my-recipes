@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect } from "react";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import * as firebaseui from "firebaseui";
+import React, { useCallback, useEffect } from "react";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { signInAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
-import { useHistory } from "react-router";
-import { connect, useDispatch } from "react-redux";
 
 const { mobileMaxWidth } = Styles;
 const { gunmetal, primaryColorTwo, primaryColorOne } = ColorScheme;
@@ -75,10 +75,10 @@ const Auth = (props: Props) => {
         const stringName = user.displayName || "";
         dispatch(signInAction(stringName, user.email, user.uid));
       } else {
-        console.log(`"Missing email and/or uid"`);
+        console.log("Missing email and/or uid");
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
