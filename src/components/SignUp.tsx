@@ -133,7 +133,7 @@ class SignUp extends Component<IProps, IState> {
           })
           this.props.clear();
         }
-      })
+      }).catch(error => console.log(error))
     }
   }
   
