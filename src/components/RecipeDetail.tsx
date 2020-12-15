@@ -1,17 +1,20 @@
 import React, { Component } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
+import { Styles } from "../Styles";
+import { Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
-import { RootState } from "../reducers/rootReducer";
-import { Styles } from "../Styles";
-import AuthModal from "./AuthModal";
 import SaveButton from "./SaveButton";
+import { RootState } from "../reducers/rootReducer";
+import AuthModal from "./AuthModal";
 const { connect } = require("react-redux");
 
-const { brownSugar, accentColorOne } = ColorScheme;
+const {
+  brownSugar,
+  accentColorOne,
+} = ColorScheme;
 const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
@@ -61,7 +64,7 @@ const RecipeHeading = styled.div`
 
 const Author = styled.div`
   display: inline;
-  &:hover {
+  &:hover{
     color: ${accentColorOne};
   }
 `;
@@ -113,8 +116,9 @@ interface IState {
   servings: number;
   ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
-  showAuth?: boolean;
+  showLogIn?: boolean;
 }
+
 
 class RecipeDetail extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -127,7 +131,7 @@ class RecipeDetail extends Component<IProps, IState> {
       servings: 0,
       ingredients: [],
       instructions: [],
-      showAuth: false,
+      showLogIn: false,
     };
     this.handleAuthor = this.handleAuthor.bind(this);
     this.toggleAuthView = this.toggleAuthView.bind(this);
@@ -141,7 +145,7 @@ class RecipeDetail extends Component<IProps, IState> {
             {i.quantity} {i.unit === "-" ? null : i.unit} {i.name}
           </div>
         );
-      },
+      }
     );
     return ingredientsList;
   }
@@ -156,7 +160,7 @@ class RecipeDetail extends Component<IProps, IState> {
             <div>{i.instruction}</div>
           </Instruction>
         );
-      },
+      }
     );
     return instructionsList;
   }
@@ -169,7 +173,7 @@ class RecipeDetail extends Component<IProps, IState> {
   }
 
   toggleAuthView() {
-    this.setState({ showAuth: !this.state.showAuth });
+    this.setState({ showLogIn: !this.state.showLogIn })
   }
 
   componentDidMount() {
@@ -200,47 +204,35 @@ class RecipeDetail extends Component<IProps, IState> {
   }
 
   render() {
+    const { name, category, servings, createdBy } = this.state;
+    const { uid, displayName } = this.props
     return (
       <>
-        <RecipeDetailDiv>
-          <AuthModal
-            showAuth={this.state.showAuth}
-            toggleAuthView={this.toggleAuthView}
-            uid={this.props.uid}
-          />
-          <Image></Image>
-          <RecipeHeading>
-            <h1>{this.state.name}</h1>
-            <div>{this.state.category}</div>
-            <div>Servings: {this.state.servings}</div>
-            <div>
-              Author:{" "}
-              <Link
-                to={`/user/${this.state.createdBy}`}
-                style={{ textDecoration: "none", color: "black" }}>
-                <Author>{this.handleAuthor()}</Author>
-              </Link>
-            </div>
-            {SaveButton(
-              this.props.uid,
-              this.toggleAuthView,
-              this.state.recipeId,
-            )}
-          </RecipeHeading>
-          <Exit id="Exit">
-            <Link
-              to={
-                this.props.displayName
-                  ? `/userpage/${this.props.uid}`
-                  : "/publicpage"
-              }
-              style={{ color: accentColorOne }}>
-              <Icon className="fas fa-times"></Icon>
-            </Link>
-          </Exit>
-          <Ingredients>{this.handleIngredients()}</Ingredients>
-          <Instructions>{this.handleInstructions()}</Instructions>
-        </RecipeDetailDiv>
+      <RecipeDetailDiv>
+        <AuthModal />
+        <Image></Image>
+        <RecipeHeading>
+          <h1>{name}</h1>
+          <div>{category}</div>
+          <div>Servings: {servings}</div>
+          <div>Author: <Link to={`/user/${createdBy}`} style={{textDecoration: "none", color: "black"}}><Author>{this.handleAuthor()}</Author></Link></div>
+          <SaveButton uid={uid} />
+        </RecipeHeading>
+        <Exit id="Exit">
+          <Link
+            to={
+              displayName
+                ? `/userpage/${uid}`
+                : "/publicpage"
+            }
+            style={{ color: accentColorOne }}
+          >
+            <Icon className="fas fa-times"></Icon>
+          </Link>
+        </Exit>
+        <Ingredients>{this.handleIngredients()}</Ingredients>
+        <Instructions>{this.handleInstructions()}</Instructions>
+      </RecipeDetailDiv>
       </>
     );
   }

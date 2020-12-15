@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Lunch from "../assets/Lunch.jpg";
 import { ColorScheme } from "../ColorScheme";
-import userData from "../data-users.json";
 import { Styles } from "../Styles";
-import AuthModal from "./AuthModal";
+import Lunch from "../assets/Lunch.jpg";
+import AuthModal from "./AuthModal"
 import SaveButton from "./SaveButton";
+import userData from "../data-users.json";
 
 const { primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
@@ -72,55 +72,42 @@ interface IProps {
   createdBy: string;
 }
 
-class RecipeCard extends Component<IProps, { showAuth: boolean }> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = { showAuth: false };
-    this.toggleAuthView = this.toggleAuthView.bind(this);
-  }
+function RecipeCard(props: IProps) {
+  const { name, recipeId, index, view, uid, createdBy } = props;
+  return (
+    <>
+      <AuthModal />
+      <RContainer id="RecipeCard" key={index}>
+        <RImage src={Lunch} alt="Lunch" />
+        <RInfoContainer>
+          <Link
+            to={`/recipedetail/:${recipeId}`}
+            style={{
+              textDecoration: "none",
+              width: "100%",
+            }}
+          >
+            <RName view={view}>
+              <strong>
+                {name}
+              </strong>
+            </RName>
+          </Link>
+          <Link
+            to={`/user/:${createdBy}`}
+            style={{
+              textDecoration: "none",
+              width: "100%",
+            }}
+          >
 
-  toggleAuthView() {
-    this.setState({ showAuth: !this.state.showAuth });
-  }
-
-  render() {
-    const { name, recipeId, index, view, uid, createdBy } = this.props;
-    return (
-      <>
-        <AuthModal
-          showAuth={this.state.showAuth}
-          toggleAuthView={this.toggleAuthView}
-          uid={uid}
-        />
-        <RContainer id="RecipeCard" key={index}>
-          <RImage src={Lunch} alt="Lunch" />
-          <RInfoContainer>
-            <Link
-              to={`/recipedetail/:${recipeId}`}
-              style={{
-                textDecoration: "none",
-                width: "100%",
-              }}>
-              <RName view={view}>
-                <strong>{name}</strong>
-              </RName>
-            </Link>
-            <Link
-              to={`/user/:${createdBy}`}
-              style={{
-                textDecoration: "none",
-                width: "100%",
-              }}>
-              <RName view={view}>
-                {userData.filter((u) => createdBy === u.uid)[0].userName}
-              </RName>
-            </Link>
-            {SaveButton(uid, this.toggleAuthView, recipeId)}
-          </RInfoContainer>
-        </RContainer>
-      </>
-    );
-  }
+            <RName view={view}>{userData.filter((u) => createdBy === u.uid)[0].userName}</RName>
+          </Link>
+          <SaveButton uid={uid} recipeId={recipeId} />
+        </RInfoContainer>
+      </RContainer>
+    </>
+  );
 }
 
 export function BlankRecipeCard(index: number) {
@@ -130,7 +117,8 @@ export function BlankRecipeCard(index: number) {
       style={{
         visibility: "hidden",
         transition: "none",
-      }}>
+      }}
+    >
       <RImage src={Lunch} alt="Lunch" />
       <RName view="blank"></RName>
     </RContainer>
