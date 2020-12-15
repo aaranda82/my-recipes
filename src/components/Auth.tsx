@@ -3,13 +3,13 @@ import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import React, { useCallback, useEffect } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import { signInAction } from "../actions/userActions";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 
+const { useDispatch } = require("react-redux")
 const { mobileMaxWidth } = Styles;
 const { gunmetal, primaryColorTwo, primaryColorOne } = ColorScheme;
 

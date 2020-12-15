@@ -15,8 +15,6 @@ const CategoriesContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   background: white;
-  border-radius: 50px;
-  
 `;
 
 const CategoriesContent = styled.div`
