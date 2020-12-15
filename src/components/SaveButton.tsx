@@ -3,8 +3,10 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import userData from "../data-users.json";
+import { showLogInAction } from "../actions/authActions";
+import { RootState } from "../reducers/rootReducer";
 
-
+const { connect } = require("react-redux");
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { primaryFont } = Styles;
 
@@ -57,12 +59,20 @@ function isRecipeInFavs(uid: string | undefined, recipeId: number) {
   return isInFavs;
 }
 
-function SaveButton(uid: string, toggleAuthView: () => void, recipeId: number) { // uid to determine if user is logged in or not
-  const isInFavs = recipeId ? isRecipeInFavs(uid, recipeId) : false;
-  if (!uid || (uid && !isInFavs)) {
+interface IProps {
+  recipeId: number;
+  displayName: string;
+  showLogIn: boolean;
+  showLogInA: () => void;
+}
+
+function SaveButton(props: IProps) {
+  const { recipeId, displayName, showLogInA } = props;
+  const isInFavs = recipeId ? isRecipeInFavs(displayName, recipeId) : false;
+  if (!displayName || (displayName && !isInFavs)) {
     return (
       <SaveButtonCont>
-        <Button onClick={uid ? () => console.log("SAVED") : () => toggleAuthView()}>
+        <Button onClick={displayName ? () => console.log("SAVED") : () => showLogInA()}>
           <Icon className="fas fa-star" />
           Save
         </Button>
@@ -71,4 +81,19 @@ function SaveButton(uid: string, toggleAuthView: () => void, recipeId: number) {
   }
 }
 
-export default SaveButton;
+const mapStateToProps = (state: RootState) => {
+  return {
+    displayName: state.userReducer.displayName,
+    showLogIn: state.authReducer.showLogIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    showLogInA: () => {
+      dispatch(showLogInAction());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveButton);

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
-// import * as firebaseui from "firebaseui";
 import styled from "styled-components";
 import { signInAction, signOutAction } from "../actions/userActions";
+import { clearAction } from "../actions/authActions";
 import { RootState } from "../reducers/rootReducer";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
@@ -12,7 +11,7 @@ import { withRouter } from "react-router";
 const { connect } = require("react-redux");
 
 const { mobileMaxWidth } = Styles;
-const { gunmetal, primaryColorTwo, primaryColorOne, accentColorOne } = ColorScheme;
+const { gunmetal, redOrange, primaryColorTwo, primaryColorOne, accentColorOne } = ColorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -25,7 +24,7 @@ const config = {
 firebase.initializeApp(config);
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
-const Container = styled.div`
+export const Container = styled.div`
   border-radius: 20px;
   box-shadow: 5px 5px ${primaryColorOne};
   position: fixed;
@@ -46,22 +45,28 @@ const Container = styled.div`
   }
 `;
 
-  const FormGroup = styled.div`
-    margin: 10px 0;
-    background-color: ${accentColorOne};
-    display: flex;
-    padding: 10px 0;
-  `;
+interface IProps {
+  error: string;
+}
 
-  const Label = styled.label`
-    margin: auto;
-  `;
+export const FormGroup = styled.div<IProps>`
+  margin: 10px 0;
+  background-color: ${(props) => props.error ? redOrange : accentColorOne};
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 0;
+`;
 
-  const Input = styled.input`
-    border: none;
-    background-color: transparent;
-    outline: none;
-  `;
+export const Label = styled.label`
+  width: 40%;
+`;
+
+export const Input = styled.input`
+  width: 55%;
+  border: none;
+  background-color: transparent;
+  outline: none;
+`;
 
 interface AuthProps {
   displayName: string;
@@ -70,7 +75,7 @@ interface AuthProps {
   signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
   history: { push: any };
-  toggleAuthView: () => void;
+  clear: () => void;
 }
 
 interface IState {
@@ -89,21 +94,6 @@ class LogIn extends Component<AuthProps, IState> {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  // uiConfig = {
-  //   callbacks: {
-  //     signInSuccessWithAuthResult: (authResult: any) => {
-  //       this.props.toggleAuthView();
-  //       this.props.history.push("/");
-  //       console.log(authResult)  // check to see if this is a new user with 'authResult.additionalUserInfo.isNewUser'
-  //       if(authResult.additionalUserInfo.isNewUser) {
-  //         console.log("write user name to DB")
-  //       }
-  //       return false;
-  //     },
-  //   },
-  //   credentialHelper: firebaseui.auth.CredentialHelper.NONE,
-  //   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
-  // };
 
   handleUserNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ email: e.target.value })
@@ -117,8 +107,7 @@ class LogIn extends Component<AuthProps, IState> {
     e.preventDefault();
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then((user) => {
-    // Signed in 
-      this.props.toggleAuthView();
+      this.props.clear();
       this.props.history.push("/");
       console.log(user)
     })
@@ -142,12 +131,8 @@ class LogIn extends Component<AuthProps, IState> {
     return (
       <Container id="Auth">
         <h3>Please enter email to log in/register</h3>
-        {/* <StyledFirebaseAuth
-          uiConfig={this.uiConfig}
-          firebaseAuth={firebase.auth()}
-        /> */}
         <form onSubmit={this.handleSubmit}>
-          <FormGroup>
+          <FormGroup error="">
             <Label htmlFor="email">
               email 
             </Label>
@@ -159,7 +144,7 @@ class LogIn extends Component<AuthProps, IState> {
               placeholder="Your email"
             />
           </FormGroup>
-          <FormGroup>
+          <FormGroup error="">
             <Label htmlFor="Password">
               Password 
             </Label>
@@ -194,6 +179,9 @@ const mapDispatchToProps = (dispatch: any) => {
     signOut: () => {
       dispatch(signOutAction());
     },
+    clear: () => {
+      dispatch(clearAction());
+    }
   };
 };
 

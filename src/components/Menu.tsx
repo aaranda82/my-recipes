@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
+import { clearAction } from "../actions/authActions";
 import firebase from "firebase";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
-import Spacer from "./Spacer";
+import { Spacer } from "./Spacer";
 import { Link } from "react-router-dom";
 const { connect } = require("react-redux");
 
@@ -40,7 +41,7 @@ interface NavProps {
   displayName: string;
   uid: string;
   signOut: () => void;
-  toggleMenuView: () => void;
+  clear: () => void;
   history: { push: any };
 }
 
@@ -51,12 +52,13 @@ class Menu extends Component<NavProps> {
   }
 
   handleSignOut() {
-    this.props.toggleMenuView();
+    this.props.clear();
     this.props.signOut();
     firebase.auth().signOut();
   }
 
   render() {
+    const { clear, displayName, uid } = this.props
     return (
       <>
         <MContainer>
@@ -64,27 +66,25 @@ class Menu extends Component<NavProps> {
             to={"/publicpage"}
             style={{ textDecoration: "none", color: primaryColorOne }}
           >
-            <div onClick={() => this.props.toggleMenuView()}>
+            <div onClick={() => clear()}>
               Public Page
             </div>
           </Link>
           <Spacer />
-
           <Link
-            to={`/userpage/${this.props.uid}`}
+            to={`/userpage/${uid}`}
             style={{ textDecoration: "none", color: primaryColorOne }}
           >
-            <div onClick={() => this.props.toggleMenuView()}>
-              {this.props.displayName}
+            <div onClick={() => clear()}>
+              {displayName}
             </div>
           </Link>
-
           <Spacer />
           <Link
             to={"/account"}
             style={{ textDecoration: "none", color: primaryColorOne }}
           >
-            <div onClick={() => this.props.toggleMenuView()}>
+            <div onClick={() => clear()}>
               Account
             </div>
           </Link>
@@ -120,6 +120,9 @@ const mapDispatchToProps = (dispatch: any) => {
     signOut: () => {
       dispatch(signOutAction());
     },
+    clear: () => {
+      dispatch(clearAction());
+    }
   };
 };
 

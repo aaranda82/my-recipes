@@ -1,13 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import Menu from "./Menu";
 import styled from "styled-components";
 import { signOutAction } from "../actions/userActions";
+import { showMenuAction, showLogInAction, showSignUpAction, clearAction } from "../actions/authActions";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
-import Spacer from "./Spacer";
+import {Spacer} from "./Spacer";
 import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import AuthModal from "./AuthModal";
+import { RootState } from "../reducers/rootReducer";
 
 const { connect } = require("react-redux");
 
@@ -33,7 +35,7 @@ const HeaderContainer = styled.header<LIProps>`
 `;
 
 const LogoContainer = styled.div<LIProps>`
-  width: 70%;
+  width: 60%;
   display: flex;
   justify-content: ${(props) => (props.loggedIn ? "left" : "center")};
   @media (max-width: ${mobileMaxWidth}) {
@@ -76,7 +78,7 @@ const Shadow = styled.div<LIProps>`
 `;
 
 const LogoSpacer = styled.div`
-  width: 15%;
+  width: 20%;
   @media (max-width: ${mobileMaxWidth}) {
     display: none;
   } ;
@@ -90,7 +92,7 @@ interface BCProps {
 const ButtonContainer = styled.div<BCProps>`
   width: ${(props) => props.w};
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   @media (max-width: ${mobileMaxWidth}) {
     width: ${(props) => props.mobileWidth};
@@ -134,129 +136,122 @@ const AddRecipeButton = styled.button`
   }
 `;
 
-interface NavProps extends RouteComponentProps {
-  displayName: string;
-  signOut: () => void;
-}
 
-interface NavState {
-  showMenu: boolean;
-  showAuth: boolean;
-}
-
-class Header extends Component<NavProps, NavState> {
-  constructor(props: NavProps) {
-    super(props);
-    this.state = {
-      showMenu: false,
-      showAuth: false,
-    };
-    this.toggleAuthView = this.toggleAuthView.bind(this);
-    this.toggleMenuView = this.toggleMenuView.bind(this);
-  }
-
-  handleLogo() {
+function handleMenuModal(showMenu: boolean, displayName: string, clear: () => void) {
+  if (showMenu) {
     return (
-      <LogoContainer loggedIn={this.props.displayName} id="logo cont">
-        <Logo loggedIn={this.props.displayName}>
-          {this.props.displayName ? (
-            <Link to={"/"}>My Recipes</Link>
-          ) : (
-            "My Recipes"
-          )}
-        </Logo>
-      </LogoContainer>
-    );
-  }
-
-  toggleAuthView() {
-    this.setState({ showAuth: !this.state.showAuth })
-  }
-
-  toggleMenuView() {
-    this.setState({ showMenu: !this.state.showMenu })
-  }
-
-  handleMenuModal() {
-    if (this.state.showMenu) {
-      return (
         <>
           <Shadow
-            loggedIn={this.props.displayName}
-            onClick={() => this.toggleMenuView()}
+            loggedIn={displayName}
+            onClick={() => {clear()}}
           ></Shadow>
-          <Menu toggleMenuView={this.toggleMenuView} />
+          <Menu/>
         </>
       );
     } else {
       return false;
     }
-  }
+}
   
-  render() {
-    const { displayName } = this.props;
-    return (
-      <HeaderContainer
-        id="Header"
-        loggedIn={displayName ? "loggedIn" : null}
-      >
-        {displayName ? null : <LogoSpacer></LogoSpacer>}
-        {this.handleLogo()}
+function handleLogo(displayName: string) {
+  return (
+    <>
+    {displayName ? null : <LogoSpacer/>}
+    <LogoContainer loggedIn={displayName} id="logo cont">
+      <Logo loggedIn={displayName}>
         {displayName ? (
-          <>
-            <ButtonContainer id="add recipe button" w="20%"  mobileWidth="25%">
-              {this.props.location.pathname === "/createrecipe" ? null : (
-                <Link to={"/createrecipe"}>
-                  <AddRecipeButton
-                    onClick={() => this.setState({ showMenu: false })}
-                  >
-                    ADD RECIPE
-                  </AddRecipeButton>
-                </Link>
-              )}
-            </ButtonContainer>
-            <ButtonContainer id="nav menu button" w="10%" mobileWidth="15%">
-              <NavMenuButton
-                className={this.state.showMenu ? "fas fa-times" : "fas fa-bars"}
-                onClick={() => this.toggleMenuView()}
-              ></NavMenuButton>
-            </ButtonContainer>
-          </>
-        ) : (
-          <>
-            <ButtonContainer w="15%" mobileWidth="40%">
-              <LogInButton onClick={() => this.toggleAuthView()}>
-                {this.state.showAuth ? "CANCEL" : "LOG IN"}
-              </LogInButton>
-            </ButtonContainer>
-            <Spacer />
-          </>
-        )}
-        {this.handleMenuModal()}
-        {AuthModal(this.state.showAuth, this.toggleAuthView, displayName )}
-      </HeaderContainer>
-    );
-  }
+          <Link to={"/"}>My Recipes</Link>
+          ) : (
+            "My Recipes"
+            )}
+      </Logo>
+    </LogoContainer>
+    </>
+  );
 }
 
-interface mapState {
-  userReducer: {
-    displayName: string;
-  };
+function handleButtons(props: StateProps & DispatchProps) {
+  const { displayName, clear, showMenu, showSignUp, showLogIn, showMenuA, showSignUpA, showLogInA, location } = props;
+  return displayName ? (
+        <>
+          <ButtonContainer id="add recipe button" w="20%"  mobileWidth="25%">
+            {location.pathname === "/createrecipe" ? null : (
+              <Link to={"/createrecipe"}>
+                <AddRecipeButton
+                  onClick={clear}
+                >
+                  ADD RECIPE
+                </AddRecipeButton>
+              </Link>
+            )}
+          </ButtonContainer>
+          <ButtonContainer id="nav menu button" w="10%" mobileWidth="15%">
+            <NavMenuButton
+              className={showMenu ? "fas fa-times" : "fas fa-bars"}
+              onClick={showMenu ? clear : showMenuA}
+            ></NavMenuButton>
+          </ButtonContainer>
+        </>
+      ) : (
+        <>
+          <ButtonContainer w="20%" mobileWidth="40%">
+            <LogInButton onClick={showSignUp ? clear : showSignUpA}>
+              {showSignUp ? "CANCEL" : "SIGN UP"}
+            </LogInButton>
+            <LogInButton onClick={showLogIn ? clear : showLogInA}>
+              {showLogIn ? "CANCEL" : "LOG IN"}
+            </LogInButton>
+          </ButtonContainer>
+          <Spacer />
+        </>
+      )
 }
 
-const mapStateToProps = (state: mapState) => {
+interface StateProps extends RouteComponentProps {
+  displayName: string;
+  showMenu: boolean;
+  showLogIn: boolean;
+  showSignUp: boolean;
+}
+
+interface DispatchProps {
+  signOut: () => void;
+  showMenuA: () => void;
+  showLogInA: () => void;
+  showSignUpA: () => void;
+  clear: () => void;
+
+}
+
+function Header(props: StateProps & DispatchProps) {
+  const { displayName, clear, showMenu } = props;
+  return (
+    <HeaderContainer id="Header" loggedIn={displayName ? "loggedIn" : null}>
+      {handleLogo(displayName)}
+      {handleButtons(props)}
+      {handleMenuModal(showMenu, displayName, clear)}
+      <AuthModal />
+    </HeaderContainer>
+  );
+}
+
+const mapStateToProps = (state: RootState) => {
   return {
     displayName: state.userReducer.displayName,
+    showMenu: state.authReducer.showMenu,
+    showLogIn: state.authReducer.showLogIn,
+    showSignUp: state.authReducer.showSignUp,
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    signOut: () => {
-      dispatch(signOutAction());
-    },
-  };
+    signOut: () => dispatch(signOutAction()),
+    showMenuA: () => dispatch(showMenuAction()),
+    showLogInA: () => dispatch(showLogInAction()),
+    showSignUpA: () => dispatch(showSignUpAction()),
+    clear: () => dispatch(clearAction()),
+  }
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

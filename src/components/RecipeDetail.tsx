@@ -116,7 +116,7 @@ interface IState {
   servings: number;
   ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
-  showAuth?: boolean;
+  showLogIn?: boolean;
 }
 
 
@@ -131,7 +131,7 @@ class RecipeDetail extends Component<IProps, IState> {
       servings: 0,
       ingredients: [],
       instructions: [],
-      showAuth: false,
+      showLogIn: false,
     };
     this.handleAuthor = this.handleAuthor.bind(this);
     this.toggleAuthView = this.toggleAuthView.bind(this);
@@ -173,7 +173,7 @@ class RecipeDetail extends Component<IProps, IState> {
   }
 
   toggleAuthView() {
-    this.setState({ showAuth: !this.state.showAuth })
+    this.setState({ showLogIn: !this.state.showLogIn })
   }
 
   componentDidMount() {
@@ -204,23 +204,25 @@ class RecipeDetail extends Component<IProps, IState> {
   }
 
   render() {
+    const { name, category, servings, createdBy } = this.state;
+    const { uid, displayName } = this.props
     return (
       <>
       <RecipeDetailDiv>
-      {AuthModal(this.state.showAuth, this.toggleAuthView, this.props.uid)}
+        <AuthModal />
         <Image></Image>
         <RecipeHeading>
-          <h1>{this.state.name}</h1>
-          <div>{this.state.category}</div>
-          <div>Servings: {this.state.servings}</div>
-          <div>Author: <Link to={`/user/${this.state.createdBy}`} style={{textDecoration: "none", color: "black"}}><Author>{this.handleAuthor()}</Author></Link></div>
-          {SaveButton(this.props.uid, this.toggleAuthView, this.state.recipeId)}
+          <h1>{name}</h1>
+          <div>{category}</div>
+          <div>Servings: {servings}</div>
+          <div>Author: <Link to={`/user/${createdBy}`} style={{textDecoration: "none", color: "black"}}><Author>{this.handleAuthor()}</Author></Link></div>
+          <SaveButton uid={uid} />
         </RecipeHeading>
         <Exit id="Exit">
           <Link
             to={
-              this.props.displayName
-                ? `/userpage/${this.props.uid}`
+              displayName
+                ? `/userpage/${uid}`
                 : "/publicpage"
             }
             style={{ color: accentColorOne }}
