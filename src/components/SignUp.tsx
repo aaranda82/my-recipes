@@ -1,20 +1,10 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import { Container, FormGroup, Label, Input } from "./LogIn";
+import { Container, Form, FormGroup, Label, Input, Button } from "./LogIn";
 import { clearAction } from "../actions/authActions";
 import { signInAction } from "../actions/userActions";
 import firebase from "firebase";
 
 const { connect } = require("react-redux");
-
-const Button = styled.button`
-  cursor: pointer;
-  background-color: orange;
-  border: none;
-  padding: 10px;
-  border-raius: 10px;
-`;
-
 
 interface IState {
   userName: string;
@@ -161,13 +151,13 @@ class SignUp extends Component<IProps, IState> {
     return (
       <Container>
         <h3>CREATE ACCOUNT</h3>
-        <form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           {this.renderInput('User Name', 'text', userName, userNameError, this.handleUserNameChange, this.validateUserName)}
           {this.renderInput('Email', 'text', email, emailError, this.handleEmailChange, this.validateEmail)}
           {this.renderInput('Password', 'password', password, passwordError, this.handlePasswordChange, this.validatePassword)}
           {this.renderInput('Confirm Password', 'password', confirmPassword, confirmPasswordError, this.handleConfirmPasswordChange, this.validateConfirmPassword)}
           <Button type="submit">SUBMIT</Button>
-        </form>
+        </Form>
       </Container>
     );
   }

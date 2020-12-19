@@ -103,7 +103,7 @@ const AddIngButton = styled.button`
   border-radius: 3px;
   min-width: 150px;
   cursor: pointer;
-  background-color: ${accentColorOne};
+  background-color: orange;
   color: ${primaryColorTwo};
   padding: 5px;
   &:hover {

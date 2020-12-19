@@ -8,9 +8,10 @@ import { RootState } from "../reducers/rootReducer";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import { withRouter } from "react-router";
+
 const { connect } = require("react-redux");
 
-const { mobileMaxWidth } = Styles;
+const { mobileMaxWidth, primaryFont } = Styles;
 const { gunmetal, redOrange, primaryColorTwo, primaryColorOne, accentColorOne } = ColorScheme;
 
 const config = {
@@ -49,6 +50,10 @@ interface IProps {
   error: string;
 }
 
+export const Form = styled.form`
+  width: 300px;
+`;
+
 export const FormGroup = styled.div<IProps>`
   margin: 10px 0;
   background-color: ${(props) => props.error ? redOrange : accentColorOne};
@@ -68,19 +73,34 @@ export const Input = styled.input`
   outline: none;
 `;
 
+export const Button = styled.button`
+  cursor: pointer;
+  background-color: orange;
+  border: none;
+  padding: 5px;
+  border-raius: 3px;
+  font-family: ${primaryFont};
+  min-width: 150px;
+  color: ${primaryColorTwo};
+  &:hover {
+    background-color: black;
+  }
+`;
+
 interface AuthProps {
   displayName: string;
   uid: string;
   isSignedIn: boolean;
+  history: { push: any}
   signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
-  history: { push: any };
   clear: () => void;
 }
 
 interface IState {
   email: string;
   password: string;
+  error: string;
 }
 
 class LogIn extends Component<AuthProps, IState> {
@@ -89,6 +109,7 @@ class LogIn extends Component<AuthProps, IState> {
     this.state = {
       email: '',
       password: '',
+      error: '',
     }
     this.handleUserNameChange = this.handleUserNameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -107,31 +128,23 @@ class LogIn extends Component<AuthProps, IState> {
     e.preventDefault();
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then((user) => {
-      this.props.clear();
-      this.props.history.push("/");
-      console.log(user)
+      if(user?.user?.displayName && user?.user?.email && user?.user?.uid) {
+        const { displayName, email, uid } = user?.user
+        this.props.signIn(displayName, email, uid);
+        this.props.clear();
+        this.props.history.push("/");
+      }
     })
     .catch((error) => {
-      console.log(error.code, error.message);
-    });
-  }
-
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        const { displayName, email, uid } = user
-        this.props.signIn(displayName, email, uid); 
-      } else {
-        console.log("no user");
-      }
+      this.setState({ error: error.message })
     });
   }
 
   render() {
     return (
       <Container id="Auth">
-        <h3>Please enter email to log in/register</h3>
-        <form onSubmit={this.handleSubmit}>
+        <h3>LOG IN</h3>
+        <Form onSubmit={this.handleSubmit}>
           <FormGroup error="">
             <Label htmlFor="email">
               email 
@@ -156,8 +169,9 @@ class LogIn extends Component<AuthProps, IState> {
               placeholder="Your Password"
             />
           </FormGroup>
-          <button type="submit">Submit</button>
-        </form>
+          <div style={{color: "red"}}>{this.state.error}</div>
+          <Button type="submit">Submit</Button>
+        </Form>
       </Container>
     );
   }

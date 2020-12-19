@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
-import Menu from "./Menu";
 import { Styles } from "../Styles";
 import { clearAction } from "../actions/authActions";
 import { RootState } from "../reducers/rootReducer";
@@ -22,7 +21,7 @@ const Shadow = styled.div<LIProps>`
   top: ${(props) => (props.loggedIn ? "55px" : "78px")};
   left: 0;
   background-color: black;
-  opacity: 0.8;
+  opacity: 0.12;
   @media screen and (max-width: ${mobileMaxWidth}) {
     top: ${(props) => (props.loggedIn ? "55px" : "67px")};
   }
@@ -44,7 +43,7 @@ function AuthModal(props: IProps) {
   } else if(showSignUp) {
     auth = <SignUp />
   } else if(showMenu) {
-    auth = <Menu />
+    auth = ''
   }
   if(showLogIn || showSignUp || showMenu) {
     return (

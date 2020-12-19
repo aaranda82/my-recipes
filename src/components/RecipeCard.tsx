@@ -100,7 +100,6 @@ function RecipeCard(props: IProps) {
               width: "100%",
             }}
           >
-
             <RName view={view}>{userData.filter((u) => createdBy === u.uid)[0].userName}</RName>
           </Link>
           <SaveButton uid={uid} recipeId={recipeId} />

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
-import { signOutAction } from "../actions/userActions";
-import { clearAction } from "../actions/authActions";
 import firebase from "firebase";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
-import { Spacer } from "./Spacer";
 import { Link } from "react-router-dom";
-const { connect } = require("react-redux");
+import { RootState } from "../reducers/rootReducer";
+import { signOutAction } from "../actions/userActions";
+import { clearAction } from "../actions/authActions";
+const { useDispatch, useSelector } = require("react-redux");
 
 const {
   primaryColorTwo,
@@ -16,17 +16,22 @@ const {
   gunmetal,
 } = ColorScheme;
 
-const MContainer = styled.div`
+interface MProps {
+  showMenu: boolean;
+}
+
+const MContainer = styled.div<MProps>`
   font-size: 2em;
   font-family: ${Styles.secondaryFont};
   font-weight: 600;
   color: ${primaryColorOne};
   position: absolute;
-  top: 44px;
-  right: 0;
+  top: 55px;
+  right: ${(props) => props.showMenu ? "0" : "-315px"};
   padding: 20px 70px 20px 70px;
   background: ${primaryColorTwo};
   border: 1px solid ${gunmetal};
+  transition: all ease 0.5s;
   & > div {
     margin: 40px;
     cursor: pointer;
@@ -37,93 +42,41 @@ const MContainer = styled.div`
   }
 `;
 
-interface NavProps {
-  displayName: string;
-  uid: string;
-  signOut: () => void;
-  clear: () => void;
-  history: { push: any };
-}
+const Menu = () => {
+  const dispatch = useDispatch()
 
-class Menu extends Component<NavProps> {
-  constructor(props: NavProps) {
-    super(props);
-    this.handleSignOut = this.handleSignOut.bind(this);
-  }
-
-  handleSignOut() {
-    this.props.clear();
-    this.props.signOut();
+  const handleSignOut = () => {
+    dispatch(clearAction());
+    dispatch(signOutAction());
     firebase.auth().signOut();
   }
 
-  render() {
-    const { clear, displayName, uid } = this.props
+  const handleMenuItems = (to: string, name: string) => {
     return (
-      <>
-        <MContainer>
-          <Link
-            to={"/publicpage"}
-            style={{ textDecoration: "none", color: primaryColorOne }}
-          >
-            <div onClick={() => clear()}>
-              Public Page
-            </div>
-          </Link>
-          <Spacer />
-          <Link
-            to={`/userpage/${uid}`}
-            style={{ textDecoration: "none", color: primaryColorOne }}
-          >
-            <div onClick={() => clear()}>
-              {displayName}
-            </div>
-          </Link>
-          <Spacer />
-          <Link
-            to={"/account"}
-            style={{ textDecoration: "none", color: primaryColorOne }}
-          >
-            <div onClick={() => clear()}>
-              Account
-            </div>
-          </Link>
-          <Spacer />
-          <Link
-            to={"/"}
-            style={{ textDecoration: "none", color: primaryColorOne }}
-          >
-            <div onClick={this.handleSignOut}>Sign Out</div>
-          </Link>
-        </MContainer>
-      </>
+      <Link
+        to={to}
+        style={{ textDecoration: "none", color: primaryColorOne }}
+      >
+        <div onClick={() => name === "SIGN OUT" ? handleSignOut() : dispatch(clearAction())}>
+          {name}
+        </div>
+      </Link>
     );
   }
+
+  const props = useSelector((state: RootState) => state)
+  const { showMenu } = props.authReducer
+  const { uid, displayName } = props.userReducer
+  return (
+    <>
+      <MContainer showMenu={showMenu}>
+        {handleMenuItems(`/user/${uid}`, displayName)}
+        {handleMenuItems(`/userpage/${uid}`, "HOME")}
+        {handleMenuItems("/account", "ACCOUNT")}
+        {handleMenuItems("/", "SIGN OUT")}
+      </MContainer>
+    </>
+  );
 }
 
-interface mapState {
-  userReducer: {
-    displayName: string;
-    uid: string;
-  };
-}
-
-const mapStateToProps = (state: mapState) => {
-  return {
-    displayName: state.userReducer.displayName,
-    uid: state.userReducer.uid,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    signOut: () => {
-      dispatch(signOutAction());
-    },
-    clear: () => {
-      dispatch(clearAction());
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default Menu;

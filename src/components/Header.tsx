@@ -68,15 +68,6 @@ const NavMenuButton = styled.i`
   }
 `;
 
-const Shadow = styled.div<LIProps>`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: ${(props) => (props.loggedIn ? "55px" : "78px")};
-  background-color: ${primaryColorTwo};
-  opacity: 0.4;
-`;
-
 const LogoSpacer = styled.div`
   width: 20%;
   @media (max-width: ${mobileMaxWidth}) {
@@ -135,23 +126,6 @@ const AddRecipeButton = styled.button`
     font-size: 10px;
   }
 `;
-
-
-function handleMenuModal(showMenu: boolean, displayName: string, clear: () => void) {
-  if (showMenu) {
-    return (
-        <>
-          <Shadow
-            loggedIn={displayName}
-            onClick={() => {clear()}}
-          ></Shadow>
-          <Menu/>
-        </>
-      );
-    } else {
-      return false;
-    }
-}
   
 function handleLogo(displayName: string) {
   return (
@@ -224,13 +198,13 @@ interface DispatchProps {
 }
 
 function Header(props: StateProps & DispatchProps) {
-  const { displayName, clear, showMenu } = props;
+  const { displayName } = props;
   return (
     <HeaderContainer id="Header" loggedIn={displayName ? "loggedIn" : null}>
       {handleLogo(displayName)}
       {handleButtons(props)}
-      {handleMenuModal(showMenu, displayName, clear)}
       <AuthModal />
+      <Menu />
     </HeaderContainer>
   );
 }
