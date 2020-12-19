@@ -62,7 +62,6 @@ function handleFavorites( favs: number[], uid: string ) { //uid of user logged i
     };
     return <RecipeCard key={index} {...RCProps} />
   })
-  console.log(favoriteRecipes)
   return handleRecipeArrayLength(favoriteRecipes);
 }
 
@@ -79,7 +78,7 @@ function handleUserCreatedRecipes(userToViewId: string, uid: string) {
         uid,
         createdBy,
       };
-    userCreatedRecipes.push(<RecipeCard key={x} {...RCProps} />)
+    userCreatedRecipes.push(<RecipeCard key={x + 1000} {...RCProps} />)
     }
   } 
   return handleRecipeArrayLength(userCreatedRecipes);
@@ -97,7 +96,7 @@ interface IProps extends RouteComponentProps<{id: string}> {
 
 function UserProfile(props: IProps) {
   let userIdToParse = props.match.params.id.split(":")
-  const userToViewId = userIdToParse[1]
+  const userToViewId = userIdToParse[0]
   const userToViewInfo = userData.filter((u: Users)=> u.uid === userToViewId)[0];
   const { userName, favorites } = userToViewInfo
   return (

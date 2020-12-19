@@ -124,9 +124,7 @@ const Recipes = styled.div`
   if (window.screen.width < 500) {
     return allRecipes;
   } else {
-    if (allRecipes.length === 4 || allRecipes.length % 4 === 0) {
-      return false;
-    } else if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
+    if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
       do {
         let key = allRecipes.length;
         allRecipes.push(BlankRecipeCard(key));

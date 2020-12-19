@@ -1,22 +1,12 @@
 [
   {
-    "uid": "2xN7cLoe6uRd5EkfzbeB5fGDJf43",
-    "userName": "Alejandro Aranda",
-    "favorites": [1, 2, 10]
+    "uid": "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
+    "userName": "Bill",
+    "favorites": [1, 2, 3, 4]
   },
   {
-    "uid": "3U4VMiM58daimRXvvINMQa06IzB3",
-    "userName": "JohnHaup",
-    "favorites": [3, 11, 5]
-  },
-  {
-    "uid": "ghYmsu4erFe9CFlYIVLd0x8P9nw2",
-    "userName": "Mr. Brown",
-    "favorites": [7, 9, 11]
-  },
-  {
-    "uid": "usN6qlzDeNbRQhIPIr1tZWM10n82",
-    "userName": "Alex Aranda",
-    "favorites": [8, 1, 2, 4, 9]
+    "uid": "SW1T9FNUxecYoDBv7IWqGil9lAW2",
+    "userName": "Mike",
+    "favorites": [7, 8, 9, 10]
   }
 ]
