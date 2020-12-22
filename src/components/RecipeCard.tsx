@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import Lunch from "../assets/Lunch.jpg";
-import AuthModal from "./AuthModal"
 import SaveButton from "./SaveButton";
 import userData from "../data-users.json";
 
@@ -73,10 +72,9 @@ interface IProps {
 }
 
 function RecipeCard(props: IProps) {
-  const { name, recipeId, index, view, uid, createdBy } = props;
+  const { name, recipeId, index, view, createdBy } = props;
   return (
     <>
-      <AuthModal />
       <RContainer id="RecipeCard" key={index}>
         <RImage src={Lunch} alt="Lunch" />
         <RInfoContainer>
@@ -102,7 +100,7 @@ function RecipeCard(props: IProps) {
           >
             <RName view={view}>{userData.filter((u) => createdBy === u.uid)[0].userName}</RName>
           </Link>
-          <SaveButton uid={uid} recipeId={recipeId} />
+          <SaveButton recipeId={recipeId} />
         </RInfoContainer>
       </RContainer>
     </>

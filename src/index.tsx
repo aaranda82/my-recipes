@@ -4,8 +4,6 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { createGlobalStyle } from "styled-components";
-// import { ColorScheme } from "./ColorScheme";
-import { BrowserRouter as Router } from "react-router-dom";
 import { store } from "./store";
 const { Provider } = require("react-redux");
 
@@ -19,9 +17,7 @@ ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
     <Provider store={store}>
-      <Router>
         <App />
-      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

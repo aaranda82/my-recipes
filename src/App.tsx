@@ -4,7 +4,6 @@ import {
   Redirect,
   Route,
   Switch,
-  withRouter,
 } from "react-router-dom";
 import styled from "styled-components";
 import AccountPage from "./components/AccountPage";
@@ -15,14 +14,19 @@ import Header from "./components/Header";
 import RecipeDetail from "./components/RecipeDetail";
 import ScrollToTop from "./components/ScrollToTop";
 import UserProfile from "./components/UserProfile";
+import AuthModal from "./components/AuthModal";
+import Menu from "./components/Menu";
 import { RootState } from "./reducers/rootReducer";
-const { connect } = require("react-redux");
+const { useSelector } = require("react-redux");
 
 const Main = styled.main`
   max-width: 900px;
   margin: auto;
 `;
-function App(props: { uid: string }) {
+function App() {
+  const props = useSelector((state: RootState) => state)
+  const { uid } = props.userReducer;
+  const { showLogIn, showSignUp, showMenu } = props.authReducer;
   return (
     <Router>
       <ScrollToTop />
@@ -30,8 +34,8 @@ function App(props: { uid: string }) {
       <Main>
         <Switch>
           <Route exact path="/">
-            {props.uid ? (
-              <Redirect to={`/userpage/${props.uid}`} />
+            {uid ? (
+              <Redirect to={`/userpage/${uid}`} />
             ) : (
               <AllRecipesPage />
             )}
@@ -43,18 +47,13 @@ function App(props: { uid: string }) {
           <Route path="/createrecipe" component={CreateRecipe} />
           <Route path="/user/:id" component={UserProfile} />
         </Switch>
+        { showLogIn || showSignUp || showMenu ? <AuthModal /> : false }
+        <Menu />
       </Main>
       <Footer />
     </Router>
   );
 }
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    displayName: state.userReducer.displayName,
-    email: state.userReducer.email,
-    uid: state.userReducer.uid,
-  };
-};
 
-export default withRouter(connect(mapStateToProps)(App));
+export default App;

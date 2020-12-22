@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from "react-router";
+import { useParams, useHistory } from "react-router";
 import userData from "../data-users.json";
 import recipeData from "../data-recipes.json";
 import RecipeCard from "./RecipeCard";
@@ -9,7 +9,7 @@ import { ColorScheme } from "../ColorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { handleRecipeArrayLength } from "./AllRecipesPage";
 
-const { connect } = require("react-redux");
+const { useSelector } = require("react-redux");
 
 const Return = styled.button`
   font-family: ${Styles.primaryFont};
@@ -90,30 +90,24 @@ interface Users {
   favorites: number[];
 }
 
-interface IProps extends RouteComponentProps<{id: string}> {
-  uid: string;
-}
-
-function UserProfile(props: IProps) {
-  let userIdToParse = props.match.params.id.split(":")
-  const userToViewId = userIdToParse[0]
-  const userToViewInfo = userData.filter((u: Users)=> u.uid === userToViewId)[0];
+function UserProfile() {
+  const history = useHistory()
+  const { uid } = useSelector((state: RootState) => state.userReducer.uid)
+  const { id } = useParams<{id: string}>();
+  const parsedId = id.split(":")[1]
+  const userToViewInfo = userData.filter((u: Users)=> {
+    return u.uid === parsedId
+  })[0];
   const { userName, favorites } = userToViewInfo
   return (
     <>
-      <Return onClick={()=> {props.history.goBack()}}><i className={"fas fa-reply"}></i> RETURN</Return>
+      <Return onClick={()=> {history.goBack()}}><i className={"fas fa-reply"}></i> RETURN</Return>
       <Title>{userName}'s Favorites</Title>
-      <RecipeContainer>{handleFavorites(favorites, props.uid)}</RecipeContainer>
+      <RecipeContainer>{handleFavorites(favorites, uid)}</RecipeContainer>
       <Title>{userName}'s Recipes</Title>
-      <RecipeContainer>{handleUserCreatedRecipes(userToViewId, props.uid)}</RecipeContainer>
+      <RecipeContainer>{handleUserCreatedRecipes(parsedId, uid)}</RecipeContainer>
     </>
   )
 }
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    uid: state.userReducer.uid,
-  }
-}
-
-export default withRouter(connect(mapStateToProps)(UserProfile));
+export default UserProfile;

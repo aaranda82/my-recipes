@@ -44,6 +44,9 @@ const MContainer = styled.div<MProps>`
 
 const Menu = () => {
   const dispatch = useDispatch()
+  const props = useSelector((state: RootState) => state)
+  const { showMenu } = props.authReducer
+  const { uid, displayName } = props.userReducer
 
   const handleSignOut = () => {
     dispatch(clearAction());
@@ -64,9 +67,6 @@ const Menu = () => {
     );
   }
 
-  const props = useSelector((state: RootState) => state)
-  const { showMenu } = props.authReducer
-  const { uid, displayName } = props.userReducer
   return (
     <>
       <MContainer showMenu={showMenu}>

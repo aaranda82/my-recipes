@@ -279,7 +279,7 @@
   {
     "recipeId": 5,
     "createdBy": "SW1T9FNUxecYoDBv7IWqGil9lAW2",
-    "name": "Scrammbled Eggs",
+    "name": "Scrammbled Eggs 2",
     "category": "BREAKFAST",
     "servings": 2,
     "ingredients": [
@@ -325,7 +325,7 @@
   {
     "recipeId": 6,
     "createdBy": "SW1T9FNUxecYoDBv7IWqGil9lAW2",
-    "name": "BLT",
+    "name": "BLT 2",
     "category": "LUNCH",
     "servings": 1,
     "ingredients": [
@@ -389,7 +389,7 @@
   {
     "recipeId": 7,
     "createdBy": "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
-    "name": "Baked Teriyaki Chicken",
+    "name": "Baked Teriyaki Chicken 2",
     "category": "DINNER",
     "servings": 6,
     "ingredients": [
@@ -461,7 +461,7 @@
   {
     "recipeId": 8,
     "createdBy": "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
-    "name": "strawberry cheesecake",
+    "name": "strawberry cheesecake 2",
     "category": "DESSERT",
     "servings": 12,
     "ingredients": [
@@ -658,7 +658,7 @@
   {
     "recipeId": 10,
     "createdBy": "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
-    "name": "Fresh Southern Peach Cobbler",
+    "name": "Fresh Southern Peach Cobbler 2",
     "category": "TREAT",
     "servings": 4,
     "ingredients": [

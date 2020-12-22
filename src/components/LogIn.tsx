@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { ChangeEvent, Component } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import styled from "styled-components";
@@ -140,35 +140,30 @@ class LogIn extends Component<AuthProps, IState> {
     });
   }
 
+  handleFormGroups(name: string, value: string, onChange: (e: ChangeEvent<HTMLInputElement>) => void, type: string) {
+    return (
+      <FormGroup error="">
+            <Label htmlFor="name">
+              {name} 
+            </Label>
+            <Input 
+              autoComplete="name"  
+              type={type} 
+              value={value} 
+              onChange={onChange}
+              placeholder={`Your ${name}`}
+            />
+          </FormGroup>
+    )
+  }
+
   render() {
     return (
       <Container id="Auth">
         <h3>LOG IN</h3>
         <Form onSubmit={this.handleSubmit}>
-          <FormGroup error="">
-            <Label htmlFor="email">
-              email 
-            </Label>
-            <Input 
-              autoComplete="email"  
-              type="text" 
-              value={this.state.email} 
-              onChange={this.handleUserNameChange}
-              placeholder="Your email"
-            />
-          </FormGroup>
-          <FormGroup error="">
-            <Label htmlFor="Password">
-              Password 
-            </Label>
-            <Input 
-              autoComplete="new-password" 
-              type="password" 
-              value={this.state.password} 
-              onChange={this.handlePasswordChange}
-              placeholder="Your Password"
-            />
-          </FormGroup>
+          {this.handleFormGroups("Email", this.state.email, this.handleUserNameChange, "text")}
+          {this.handleFormGroups("Password", this.state.password, this.handlePasswordChange, "password")}
           <div style={{color: "red"}}>{this.state.error}</div>
           <Button type="submit">Submit</Button>
         </Form>

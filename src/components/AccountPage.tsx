@@ -1,8 +1,8 @@
 import React from "react";
-import { RootState } from "../reducers/rootReducer";
 import styled from "styled-components";
+import { RootState } from "../reducers/rootReducer";
 import { ColorScheme } from "../ColorScheme";
-const { connect } = require("react-redux");
+const { useSelector } = require("react-redux");
 
 const AccountContainer = styled.div`
   color: ${ColorScheme.gunmetal};
@@ -25,8 +25,9 @@ const Email = styled.p`
   margin: auto;
 `;
 
-function AccountPage(props: { displayName: string; email: string }) {
-  const { displayName, email } = props
+function AccountPage() {
+  const props = useSelector((state: RootState) => state)
+  const { displayName, email } = props.userReducer;
   return (
     <AccountContainer>
       <h1>ACCOUNT PAGE</h1>
@@ -38,12 +39,4 @@ function AccountPage(props: { displayName: string; email: string }) {
   );
 }
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    displayName: state.userReducer.displayName,
-    email: state.userReducer.email,
-    uid: state.userReducer.uid,
-  };
-};
-
-export default connect(mapStateToProps)(AccountPage);
+export default AccountPage;

@@ -6,7 +6,7 @@ import userData from "../data-users.json";
 import { showLogInAction } from "../actions/authActions";
 import { RootState } from "../reducers/rootReducer";
 
-const { connect } = require("react-redux");
+const { useSelector, useDispatch } = require("react-redux");
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { primaryFont } = Styles;
 
@@ -43,57 +43,41 @@ ${Button}:hover > & {
 }
 `;
 
-function isRecipeInFavs(uid: string | undefined, recipeId: number) { 
-  let isInFavs = false;
-  if (uid) {
-    let user = userData.filter((u) => u.uid === uid);
-    if(user.length) {
-      const userFavs = user[0].favorites;
-      for (let x = 0; x < userFavs.length; x++) {
-        if (userFavs[x] === recipeId) {
-          isInFavs = true;
+function SaveButton(props: { recipeId: number }) {
+  const { recipeId } = props
+  const dispatch = useDispatch()
+  const uid = useSelector((state: RootState) => state.userReducer.uid)
+
+  const isRecipeInFavs = () => {
+    let boolIsInFavs = false;
+    if (uid) {
+      let user = userData.filter((u) => u.uid === uid);
+      if(user.length) {
+        const userFavs = user[0].favorites;
+        for (let x = 0; x < userFavs.length; x++) {
+          if (userFavs[x] === recipeId) {
+            boolIsInFavs = true;
+          }
         }
       }
     }
+    return boolIsInFavs;
   }
-  return isInFavs;
-}
 
-interface IProps {
-  recipeId: number;
-  displayName: string;
-  showLogIn: boolean;
-  showLogInA: () => void;
-}
-
-function SaveButton(props: IProps) {
-  const { recipeId, displayName, showLogInA } = props;
-  const isInFavs = recipeId ? isRecipeInFavs(displayName, recipeId) : false;
-  if (!displayName || (displayName && !isInFavs)) {
+  const isInFavs = recipeId ? isRecipeInFavs() : false;
+  
+  if (!uid || (uid && !isInFavs)) {
     return (
       <SaveButtonCont>
-        <Button onClick={displayName ? () => console.log("SAVED") : () => showLogInA()}>
+        <Button onClick={uid ? () => console.log("SAVED") : () => dispatch(showLogInAction())}>
           <Icon className="fas fa-star" />
           Save
         </Button>
       </SaveButtonCont>
     );
+  } else {
+    return <div/>
   }
 }
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    displayName: state.userReducer.displayName,
-    showLogIn: state.authReducer.showLogIn,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    showLogInA: () => {
-      dispatch(showLogInAction());
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SaveButton);
+export default SaveButton;

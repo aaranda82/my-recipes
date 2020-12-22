@@ -155,7 +155,6 @@ class RecipeDetail extends Component<IProps, IState> {
       (i: { number: number; instruction: string }, key: number) => {
         return (
           <Instruction key={key}>
-            {/* <strong>{i.number}.</strong> {i.instruction} */}
             <Number>{i.number}</Number>
             <div>{i.instruction}</div>
           </Instruction>
@@ -204,7 +203,7 @@ class RecipeDetail extends Component<IProps, IState> {
   }
 
   render() {
-    const { name, category, servings, createdBy } = this.state;
+    const { name, category, servings, createdBy, recipeId } = this.state;
     const { uid, displayName } = this.props
     return (
       <>
@@ -216,7 +215,7 @@ class RecipeDetail extends Component<IProps, IState> {
           <div>{category}</div>
           <div>Servings: {servings}</div>
           <div>Author: <Link to={`/user/${createdBy}`} style={{textDecoration: "none", color: "black"}}><Author>{this.handleAuthor()}</Author></Link></div>
-          <SaveButton uid={uid} />
+          <SaveButton recipeId={recipeId} />
         </RecipeHeading>
         <Exit id="Exit">
           <Link
