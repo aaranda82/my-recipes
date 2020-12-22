@@ -18,14 +18,14 @@ const userReducer = (
   }
 ) => {
   switch (action.type) {
-    case "SIGNIN":
+    case "SIGN_IN":
       const { displayName, email, uid } = action.payload;
       return {
         displayName,
         email,
         uid,
       };
-    case "SIGNOUT":
+    case "SIGN_OUT":
       return {
         displayName: "",
         email: "",

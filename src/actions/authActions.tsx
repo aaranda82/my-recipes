@@ -1,18 +1,18 @@
 export const showMenuAction = () => {
   return {
-    type: "SHOWMENU"
+    type: "SHOW_MENU"
   }
 }
 
 export const showLogInAction = () => {
   return {
-    type: "SHOWLOGIN"
+    type: "SHOW_LOG_IN"
   }
 }
 
 export const showSignUpAction = () => {
   return {
-    type: "SHOWSIGNUP"
+    type: "SHOW_SIGN_UP"
   }
 }
 

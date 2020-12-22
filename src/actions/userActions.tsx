@@ -4,13 +4,13 @@ export const signInAction = (
   uid: string
 ) => {
   return {
-    type: "SIGNIN",
+    type: "SIGN_IN",
     payload: { displayName, email, uid },
   };
 };
 
 export const signOutAction = () => {
   return {
-    type: "SIGNOUT",
+    type: "SIGN_OUT",
   };
 };
