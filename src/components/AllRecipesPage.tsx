@@ -7,6 +7,7 @@ import userData from "../data-users.json";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
+
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
 
