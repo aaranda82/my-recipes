@@ -2,11 +2,11 @@ import React, { ChangeEvent, Component } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import styled from "styled-components";
-import { signInAction, signOutAction } from "../actions/userActions";
-import { clearAction } from "../actions/authActions";
-import { RootState } from "../reducers/rootReducer";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
+import { signInAction, signOutAction } from "../../actions/userActions";
+import { clearAction } from "../../actions/authActions";
+import { RootState } from "../../reducers/rootReducer";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
 import { withRouter } from "react-router";
 
 const { connect } = require("react-redux");

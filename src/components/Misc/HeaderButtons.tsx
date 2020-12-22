@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { showMenuAction, showLogInAction, showSignUpAction, clearAction } from "../actions/authActions";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
+import { showMenuAction, showLogInAction, showSignUpAction, clearAction } from "../../actions/authActions";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
 import {Spacer} from "./Spacer";
 import { Link } from "react-router-dom";
-import { RootState } from "../reducers/rootReducer";
+import { RootState } from "../../reducers/rootReducer";
 import { useHistory } from "react-router"
 
 const { useSelector, useDispatch } = require("react-redux");

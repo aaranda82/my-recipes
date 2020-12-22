@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
+import { ColorScheme } from "../../ColorScheme";
 
 const Nav = styled.footer`
   height: 100px;

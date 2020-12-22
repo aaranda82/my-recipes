@@ -10,7 +10,7 @@ const { Provider } = require("react-redux");
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: white;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 `;
 

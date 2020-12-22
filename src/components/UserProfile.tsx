@@ -2,12 +2,12 @@ import React from 'react';
 import { useParams, useHistory } from "react-router";
 import userData from "../data-users.json";
 import recipeData from "../data-recipes.json";
-import RecipeCard from "./RecipeCard";
+import RecipeCard from "./Misc/RecipeCard";
 import styled from "styled-components";
 import { Styles } from "../Styles";
 import { ColorScheme } from "../ColorScheme";
 import { RootState } from "../reducers/rootReducer";
-import { handleRecipeArrayLength } from "./AllRecipesPage";
+import { handleRecipeArrayLength } from "./AllRecipesPage/AllRecipesPage";
 
 const { useSelector } = require("react-redux");
 

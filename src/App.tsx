@@ -7,15 +7,15 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import AccountPage from "./components/AccountPage";
-import AllRecipesPage from "./components/AllRecipesPage";
+import AllRecipesPage from "./components/AllRecipesPage/AllRecipesPage";
 import CreateRecipe from "./components/CreateRecipe";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import Footer from "./components/Misc/Footer";
+import Header from "./components/Misc/Header";
 import RecipeDetail from "./components/RecipeDetail";
-import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTop from "./components/Misc/ScrollToTop";
 import UserProfile from "./components/UserProfile";
-import AuthModal from "./components/AuthModal";
-import Menu from "./components/Menu";
+import AuthModal from "./components/Misc/AuthModal";
+import Menu from "./components/Misc/Menu";
 import { RootState } from "./reducers/rootReducer";
 const { useSelector } = require("react-redux");
 
