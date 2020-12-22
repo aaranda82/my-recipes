@@ -17,19 +17,19 @@ const authReducer = (
   }
 ) => {
   switch (action.type) {
-    case "SHOWMENU":
+    case "SHOW_MENU":
       return {
         showMenu: true,
         showLogIn: false,
         showSignUp: false,
       };
-    case "SHOWLOGIN":
+    case "SHOW_LOG_IN":
       return {
         showMenu: false,
         showLogIn: true,
         showSignUp: false,
       };
-    case "SHOWSIGNUP":
+    case "SHOW_SIGN_UP":
       return {
         showMenu: false,
         showLogIn: false,
