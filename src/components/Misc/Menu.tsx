@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import firebase from "firebase";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
 import { Link } from "react-router-dom";
-import { RootState } from "../reducers/rootReducer";
-import { signOutAction } from "../actions/userActions";
-import { clearAction } from "../actions/authActions";
+import { RootState } from "../../reducers/rootReducer";
+import { signOutAction } from "../../actions/userActions";
+import { clearAction } from "../../actions/authActions";
 const { useDispatch, useSelector } = require("react-redux");
 
 const {

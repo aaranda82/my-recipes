@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
-import Lunch from "../assets/Lunch.jpg";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
+import Lunch from "../../assets/Lunch.jpg";
 import SaveButton from "./SaveButton";
-import userData from "../data-users.json";
+import userData from "../../data-users.json";
 
 const { primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;

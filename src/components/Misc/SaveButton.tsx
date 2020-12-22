@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
-import userData from "../data-users.json";
-import { showLogInAction } from "../actions/authActions";
-import { RootState } from "../reducers/rootReducer";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
+import userData from "../../data-users.json";
+import { showLogInAction } from "../../actions/authActions";
+import { RootState } from "../../reducers/rootReducer";
 
 const { useSelector, useDispatch } = require("react-redux");
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;

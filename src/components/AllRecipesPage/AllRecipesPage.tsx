@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
-import recipeData from "../data-recipes.json";
-import userData from "../data-users.json";
-import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
+import recipeData from "../../data-recipes.json";
+import userData from "../../data-users.json";
+import RecipeCard, { BlankRecipeCard } from "../Misc/RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
 

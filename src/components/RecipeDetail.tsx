@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
-import SaveButton from "./SaveButton";
+import SaveButton from "./Misc/SaveButton";
 import { RootState } from "../reducers/rootReducer";
-import AuthModal from "./AuthModal";
+import AuthModal from "./Misc/AuthModal";
 const { connect } = require("react-redux");
 
 const {

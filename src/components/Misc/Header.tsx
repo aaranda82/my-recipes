@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
 import { Link } from "react-router-dom";
-import { RootState } from "../reducers/rootReducer";
+import { RootState } from "../../reducers/rootReducer";
 import HeaderButtons from "./HeaderButtons";
 
 const { useSelector } = require("react-redux");

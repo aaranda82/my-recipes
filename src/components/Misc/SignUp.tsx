@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Form, FormGroup, Label, Input, Button } from "./LogIn";
-import { clearAction } from "../actions/authActions";
-import { signInAction } from "../actions/userActions";
+import { clearAction } from "../../actions/authActions";
+import { signInAction } from "../../actions/userActions";
 import firebase from "firebase";
 
 const { connect } = require("react-redux");

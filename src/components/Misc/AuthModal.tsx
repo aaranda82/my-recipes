@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
-import { Styles } from "../Styles";
-import { clearAction } from "../actions/authActions";
-import { RootState } from "../reducers/rootReducer";
+import { Styles } from "../../Styles";
+import { clearAction } from "../../actions/authActions";
+import { RootState } from "../../reducers/rootReducer";
 
 const { useSelector, useDispatch } = require("react-redux");
 
