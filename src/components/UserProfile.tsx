@@ -2,14 +2,13 @@ import React from 'react';
 import { useParams, useHistory } from "react-router";
 import userData from "../data-users.json";
 import recipeData from "../data-recipes.json";
-import RecipeCard from "./Misc/RecipeCard";
+import RecipeCard from "./AllRecipesPage/RecipeCard";
 import styled from "styled-components";
 import { Styles } from "../Styles";
 import { ColorScheme } from "../ColorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { handleRecipeArrayLength } from "./AllRecipesPage/AllRecipesPage";
-
-const { useSelector } = require("react-redux");
+import { useSelector } from "react-redux";
 
 const Return = styled.button`
   font-family: ${Styles.primaryFont};
@@ -92,11 +91,10 @@ interface Users {
 
 function UserProfile() {
   const history = useHistory()
-  const { uid } = useSelector((state: RootState) => state.userReducer.uid)
+  const { uid } = useSelector((state: RootState) => state.userReducer)
   const { id } = useParams<{id: string}>();
-  const parsedId = id.split(":")[1]
   const userToViewInfo = userData.filter((u: Users)=> {
-    return u.uid === parsedId
+    return u.uid === id
   })[0];
   const { userName, favorites } = userToViewInfo
   return (
@@ -105,7 +103,7 @@ function UserProfile() {
       <Title>{userName}'s Favorites</Title>
       <RecipeContainer>{handleFavorites(favorites, uid)}</RecipeContainer>
       <Title>{userName}'s Recipes</Title>
-      <RecipeContainer>{handleUserCreatedRecipes(parsedId, uid)}</RecipeContainer>
+      <RecipeContainer>{handleUserCreatedRecipes(id, uid)}</RecipeContainer>
     </>
   )
 }

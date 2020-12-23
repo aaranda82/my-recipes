@@ -9,7 +9,7 @@ import userData from "../data-users.json";
 import SaveButton from "./Misc/SaveButton";
 import { RootState } from "../reducers/rootReducer";
 import AuthModal from "./Misc/AuthModal";
-const { connect } = require("react-redux");
+import { connect } from "react-redux";
 
 const {
   brownSugar,

@@ -7,8 +7,7 @@ import {Spacer} from "./Spacer";
 import { Link } from "react-router-dom";
 import { RootState } from "../../reducers/rootReducer";
 import { useHistory } from "react-router"
-
-const { useSelector, useDispatch } = require("react-redux");
+import { useSelector, useDispatch } from "react-redux";
 
 const { primaryColorOne, primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth } = Styles;
@@ -20,7 +19,6 @@ const NavMenuButton = styled.i`
     opacity: 0.6;
   }
 `;
-
 
 interface BCProps {
   w: string;
@@ -77,9 +75,8 @@ const AddRecipeButton = styled.button`
 function HeaderButtons() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const props = useSelector((state: RootState) => state);
-  const { showMenu, showLogIn, showSignUp } = props.authReducer;
-  const { displayName } = props.userReducer;
+  const { showMenu, showLogIn, showSignUp } = useSelector((state: RootState) => state.authReducer);
+  const { displayName } = useSelector((state: RootState) => state.userReducer);
   return displayName ? (
         <>
           <ButtonContainer id="add recipe button" w="20%"  mobileWidth="25%">

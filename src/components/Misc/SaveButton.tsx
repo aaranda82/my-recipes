@@ -5,8 +5,8 @@ import { Styles } from "../../Styles";
 import userData from "../../data-users.json";
 import { showLogInAction } from "../../actions/authActions";
 import { RootState } from "../../reducers/rootReducer";
+import { useSelector, useDispatch } from "react-redux";
 
-const { useSelector, useDispatch } = require("react-redux");
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { primaryFont } = Styles;
 
@@ -15,36 +15,34 @@ const SaveButtonCont = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
 `;
 
 const Button = styled.button`
-padding: 5px 10px 5px 10px;
-border: 2px solid ${gunmetal};
-border-radius: 20px;
-background-color: ${primaryColorTwo};
-color: ${gunmetal};
-cursor: pointer;
-font-family: ${primaryFont};
-font-weight: 400;
-outline: none;
-&:hover {
-  border: 2px solid ${accentColorOne};
-  background-color: ${accentColorOne};
-  color: ${primaryColorTwo};
-}
+  padding: 5px 10px 5px 10px;
+  border: 2px solid ${gunmetal};
+  border-radius: 20px;
+  background-color: ${primaryColorTwo};
+  color: ${gunmetal};
+  cursor: pointer;
+  font-family: ${primaryFont};
+  font-weight: 400;
+  outline: none;
+  &:hover {
+    border: 2px solid ${accentColorOne};
+    background-color: ${accentColorOne};
+    color: ${primaryColorTwo};
+  }
 `;
 
 const Icon = styled.i`
-margin-right: 5px;
-color: ${accentColorOne};
-${Button}:hover > & {
-  color: ${primaryColorTwo};
-}
+  font-size: 25px;
+  color: ${accentColorOne};
+  ${Button}:hover > & {
+    color: ${primaryColorTwo};
+  }
 `;
 
-function SaveButton(props: { recipeId: number }) {
-  const { recipeId } = props
+function SaveButton({ recipeId }: { recipeId: number }) {
   const dispatch = useDispatch()
   const uid = useSelector((state: RootState) => state.userReducer.uid)
 
@@ -70,8 +68,7 @@ function SaveButton(props: { recipeId: number }) {
     return (
       <SaveButtonCont>
         <Button onClick={uid ? () => console.log("SAVED") : () => dispatch(showLogInAction())}>
-          <Icon className="fas fa-star" />
-          Save
+          <Icon className="fas fa-carrot" />
         </Button>
       </SaveButtonCont>
     );

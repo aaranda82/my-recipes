@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
 import { Styles } from "../Styles";
 import { RootState } from "../reducers/rootReducer";
-
-const { connect } = require("react-redux");
+import { connect } from "react-redux";
 
 const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont, secondaryFont } = Styles;

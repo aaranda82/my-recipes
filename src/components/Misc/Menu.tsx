@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { RootState } from "../../reducers/rootReducer";
 import { signOutAction } from "../../actions/userActions";
 import { clearAction } from "../../actions/authActions";
-const { useDispatch, useSelector } = require("react-redux");
+import { useDispatch, useSelector } from "react-redux";
 
 const {
   primaryColorTwo,
@@ -44,9 +44,8 @@ const MContainer = styled.div<MProps>`
 
 const Menu = () => {
   const dispatch = useDispatch()
-  const props = useSelector((state: RootState) => state)
-  const { showMenu } = props.authReducer
-  const { uid, displayName } = props.userReducer
+  const { showMenu } = useSelector((state: RootState) => state.authReducer)
+  const { uid, displayName } = useSelector((state: RootState) => state.userReducer)
 
   const handleSignOut = () => {
     dispatch(clearAction());
