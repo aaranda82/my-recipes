@@ -5,8 +5,8 @@ import { Styles } from "../../Styles";
 import { Link } from "react-router-dom";
 import { RootState } from "../../reducers/rootReducer";
 import HeaderButtons from "./HeaderButtons";
+import { useSelector } from "react-redux";
 
-const { useSelector } = require("react-redux");
 const { primaryColorOne, primaryColorTwo } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
 

@@ -4,18 +4,19 @@ import styled from "styled-components";
 import { ColorScheme } from "../../ColorScheme";
 import { Styles } from "../../Styles";
 import Lunch from "../../assets/Lunch.jpg";
-import SaveButton from "./SaveButton";
+import SaveButton from "../Misc/SaveButton";
 import userData from "../../data-users.json";
 
 const { primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
 
-const RContainer = styled.div`
-  flex: 1 1 22%;
+const RecipeContainerDiv = styled.div`
+  width: 22%;
   margin: 10px;
   background-color: ${primaryColorTwo};
   height: auto;
   border: 1px solid lightgrey;
+  padding-bottom: 5px;
   @media screen and (max-width: 875px) {
     flex: 1 1 20%;
   }
@@ -27,7 +28,7 @@ const RContainer = styled.div`
   }
 `;
 
-const RImage = styled.img`
+const RecipeImageImg = styled.img`
   height: auto;
   width: 100%;
   background-image: url(${Lunch});
@@ -38,22 +39,23 @@ const RImage = styled.img`
   }
 `;
 
-const RInfoContainer = styled.div`
+const RecipeInfoContainerDiv = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   font-family: ${primaryFont};
   @media screen and (max-width: ${mobileMaxWidth}) {
     width: 60%;
   }
 `;
 
-interface RNProps {
-  view: string;
-}
-
-const RName = styled.div<RNProps>`
-  margin: ${(props) => (props.view !== "public" ? "20px 0" : "10px 0")};
+const RecipeNameDiv = styled.div`
+  height: 37px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   cursor: pointer;
   color: black;
@@ -62,22 +64,30 @@ const RName = styled.div<RNProps>`
   }
 `;
 
+const MoreInfoDiv = styled.div<{width?: string}>`
+  width: ${props => props ? props.width : null};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+
 interface IProps {
   name: string;
   recipeId: number;
   index: number;
-  view: string;
   uid: string;
   createdBy: string;
 }
 
 function RecipeCard(props: IProps) {
-  const { name, recipeId, index, view, createdBy } = props;
+  const { name, recipeId, index, createdBy } = props;
+  const userName = userData.filter((u) => createdBy === u.uid)[0].userName
   return (
     <>
-      <RContainer id="RecipeCard" key={index}>
-        <RImage src={Lunch} alt="Lunch" />
-        <RInfoContainer>
+      <RecipeContainerDiv id="RecipeCard" key={index}>
+        <RecipeImageImg src={Lunch} alt="Lunch" />
+        <RecipeInfoContainerDiv>
           <Link
             to={`/recipedetail/:${recipeId}`}
             style={{
@@ -85,40 +95,49 @@ function RecipeCard(props: IProps) {
               width: "100%",
             }}
           >
-            <RName view={view}>
+            <RecipeNameDiv>
               <strong>
                 {name}
               </strong>
-            </RName>
+            </RecipeNameDiv>
           </Link>
           <Link
             to={`/user/:${createdBy}`}
             style={{
               textDecoration: "none",
-              width: "100%",
+              width: "65%",
+              height: "45px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <RName view={view}>{userData.filter((u) => createdBy === u.uid)[0].userName}</RName>
+            <div>
+              {userName}
+            </div>
           </Link>
-          <SaveButton recipeId={recipeId} />
-        </RInfoContainer>
-      </RContainer>
+          
+          <MoreInfoDiv width="35%">
+            <SaveButton recipeId={recipeId} />
+          </MoreInfoDiv>
+        </RecipeInfoContainerDiv>
+      </RecipeContainerDiv>
     </>
   );
 }
 
 export function BlankRecipeCard(index: number) {
   return (
-    <RContainer
+    <RecipeContainerDiv
       key={index}
       style={{
         visibility: "hidden",
         transition: "none",
       }}
     >
-      <RImage src={Lunch} alt="Lunch" />
-      <RName view="blank"></RName>
-    </RContainer>
+      <RecipeImageImg src={Lunch} alt="Lunch" />
+      <RecipeNameDiv></RecipeNameDiv>
+    </RecipeContainerDiv>
   );
 }
 

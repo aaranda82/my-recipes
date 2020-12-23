@@ -4,25 +4,23 @@ import { ColorScheme } from "../../ColorScheme";
 import { Styles } from "../../Styles";
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
-import RecipeCard, { BlankRecipeCard } from "../Misc/RecipeCard";
+import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import Category from "./Category";
 import { withRouter, RouteComponentProps } from "react-router";
 
-const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
+const { gunmetal, accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
 const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
 
 const CategoriesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background: white;
 `;
 
 const CategoriesContent = styled.div`
   width: 800px;
   display: flex;
   flex-wrap: wrap;
-  background: white;
   @media screen and (max-width: ${tabletMaxWidth}) {
     width: 700px;
     overflow: auto;
@@ -75,10 +73,14 @@ const CatTitle = styled.div`
 `;
 
 const RVSCont = styled.div`
-  width: 100%;
+  width: 95%;
+  gap: 5px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${primaryColorOne};
+  padding: 5px 0;
 `;
 
 interface RVSProps {
@@ -87,17 +89,20 @@ interface RVSProps {
 }
 
 const RViewSelector = styled.div<RVSProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 20%;
-  height: 20px;
+  height: 35px;
   border: 1px solid lightgrey;
-  text-align: center;
-  padding: 10px;
   font-family: ${secondaryFont};
+  text-align: center;
   cursor: pointer;
   color: ${(props) => props.textColor};
   background-color: ${(props) => props.bgColor};
   @media (max-width: ${mobileMaxWidth}) {
     font-size: 10px;
+    padding: 0;
   } ;
 `;
 
@@ -204,7 +209,6 @@ class AllRecipesPage extends Component<
         name,
         recipeId,
         index,
-        view: "public",
         uid: this.props.match.params.id,
         createdBy,
       };
@@ -240,7 +244,6 @@ class AllRecipesPage extends Component<
           name,
           recipeId,
           index,
-          view: "user",
           uid: this.props.match.params.id,
           createdBy,
         };
@@ -265,10 +268,12 @@ class AllRecipesPage extends Component<
     return (
       <RViewSelector
         onClick={() => this.setState({ recipesToShow: type })}
-        bgColor={this.state.recipesToShow === type ? accentColorOne : null}
+        bgColor={this.state.recipesToShow === type ? accentColorOne : "white"}
         textColor={this.state.recipesToShow === type ? primaryColorTwo : null}
       >
-        {type}
+        <div>
+          {type}
+        </div>
       </RViewSelector>
     );
   }
