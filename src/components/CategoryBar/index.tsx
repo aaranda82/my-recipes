@@ -38,20 +38,20 @@ const CategoriesDisplayedCont = styled.div`
 
 const CategoryBar = ({
   categories,
-  categoryToShow,
+  categoryIndex,
   changeCategoryToShow,
 }: {
   categories: string[];
-  categoryToShow: string;
-  changeCategoryToShow: (c: string) => void;
+  categoryIndex: number;
+  changeCategoryToShow: (i: number) => void;
 }) => {
   const renderCategory = (category: string, index: number) => {
     return (
       <Button
         key={`category_button_${index}`}
         className="category"
-        onClick={() => changeCategoryToShow(category)}
-        selected={categoryToShow === category}>
+        onClick={() => changeCategoryToShow(index)}
+        selected={categoryIndex === index}>
         {category}
       </Button>
     );

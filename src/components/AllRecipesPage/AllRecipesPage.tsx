@@ -154,8 +154,7 @@ interface Recipe {
 
 interface IState {
   categories: string[];
-  categoryPage: number;
-  categoryToShow: string;
+  categoryIndex: number;
   recipesToShow: string;
 }
 
@@ -166,28 +165,24 @@ class AllRecipesPage extends Component<
   constructor(props: RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
-      categories: ["ALL"],
-      categoryPage: 0,
-      categoryToShow: "ALL",
+      categories: [],
+      categoryIndex: 0,
       recipesToShow: "ALL RECIPES",
     };
     this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
+    this.decrementCategoryIndex = this.decrementCategoryIndex.bind(this);
+    this.incrementCategoryIndex = this.incrementCategoryIndex.bind(this);
   }
 
-  changeCategoryToShow(categoryToShow: string) {
-    this.setState({ categoryToShow });
+  changeCategoryToShow(categoryIndex: number) {
+    this.setState({ categoryIndex });
   }
 
   filterRecipesByCat() {
-    let recipesByCat: Recipe[] = [];
-    if (this.state.categoryToShow === "ALL") {
-      recipesByCat = recipeData;
-    } else {
-      recipesByCat = recipeData.filter(
-        (r) => r.category === this.state.categoryToShow,
-      );
-    }
-    return recipesByCat;
+    const categoryToShow = this.state.categories[this.state.categoryIndex];
+    return categoryToShow === "ALL"
+      ? recipeData
+      : recipeData.filter((r) => r.category === categoryToShow);
   }
 
   renderPublicRecipes() {
@@ -262,21 +257,15 @@ class AllRecipesPage extends Component<
     );
   }
 
-  decrimentCategoryPage() {
-    let categoryPage;
-    if (this.state.categoryPage <= 0) {
-      categoryPage = 0;
-    } else {
-      categoryPage = this.state.categoryPage - 1;
+  decrementCategoryIndex() {
+    if (this.state.categoryIndex > 0) {
+      this.setState({ categoryIndex: this.state.categoryIndex - 1 });
     }
-    this.setState({ categoryPage });
   }
 
-  incrementCategoryPage() {
-    if (this.state.categoryPage + 1 >= this.state.categories.length / 8) {
-      return false;
-    } else {
-      this.setState({ categoryPage: this.state.categoryPage + 1 });
+  incrementCategoryIndex() {
+    if (this.state.categoryIndex < this.state.categories.length - 1) {
+      this.setState({ categoryIndex: this.state.categoryIndex + 1 });
     }
   }
 
@@ -292,25 +281,19 @@ class AllRecipesPage extends Component<
         <CategoriesContainer>
           <CategoriesContent>
             <CatButtonCont>
-              <CatButton
-                onClick={() => {
-                  this.decrimentCategoryPage();
-                }}>
-                <i className="fas fa-arrow-left"></i>
+              <CatButton onClick={this.decrementCategoryIndex}>
+                <i className="fas fa-arrow-left" />
               </CatButton>
             </CatButtonCont>
             <CatTitle>Categories</CatTitle>
             <CatButtonCont>
-              <CatButton
-                onClick={() => {
-                  this.incrementCategoryPage();
-                }}>
-                <i className="fas fa-arrow-right"></i>
+              <CatButton onClick={this.incrementCategoryIndex}>
+                <i className="fas fa-arrow-right" />
               </CatButton>
             </CatButtonCont>
             <CategoryBar
               categories={this.state.categories}
-              categoryToShow={this.state.categoryToShow}
+              categoryIndex={this.state.categoryIndex}
               changeCategoryToShow={this.changeCategoryToShow}
             />
           </CategoriesContent>
