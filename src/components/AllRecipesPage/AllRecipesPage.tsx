@@ -1,76 +1,76 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
-import Category from "./Category";
+import CategoryBar from "./CategoryBar";
 import { withRouter, RouteComponentProps } from "react-router";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
 
-const { gunmetal, accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
-const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
+const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
+const { secondaryFont, mobileMaxWidth } = Styles;
 
-const CategoriesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
+// const CategoriesContainer = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+// `;
 
-const CategoriesContent = styled.div`
-  width: 800px;
-  display: flex;
-  flex-wrap: wrap;
-  @media screen and (max-width: ${tabletMaxWidth}) {
-    width: 700px;
-    overflow: auto;
-  }
-  @media screen and (max-width: ${mobileMaxWidth}) {
-    width: 350px;
-  }
-`;
+// const CategoriesContent = styled.div`
+//   width: 800px;
+//   display: flex;
+//   flex-wrap: wrap;
+//   @media screen and (max-width: ${tabletMaxWidth}) {
+//     width: 700px;
+//     overflow: auto;
+//   }
+//   @media screen and (max-width: ${mobileMaxWidth}) {
+//     width: 350px;
+//   }
+// `;
 
-const CategoriesDisplayedCont = styled.div`
-  height: 30px;
-  overflow: hidden;
-  white-space: nowrap;
-  @media (max-width: ${mobileMaxWidth}) {
-    overflow: auto;
-  }
-`;
+// const CategoriesDisplayedCont = styled.div`
+//   height: 30px;
+//   overflow: hidden;
+//   white-space: nowrap;
+//   @media (max-width: ${mobileMaxWidth}) {
+//     overflow: auto;
+//   }
+// `;
 
-interface CDProps {
-  catPage: number;
-}
+// interface CDProps {
+//   catPage: number;
+// }
 
-const CategoriesDisplayed = styled.div<CDProps>`
-transform: translateX(-${(props) => props.catPage * 800}px);
-transition: all 0.7s ease;
-`;
+// const CategoriesDisplayed = styled.div<CDProps>`
+// transform: translateX(-${(props) => props.catPage * 800}px);
+// transition: all 0.7s ease;
+// `;
 
-const CatButtonCont = styled.div`
-  width: 15%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const CatButtonCont = styled.div`
+//   width: 15%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
-const CatButton = styled.button`
-  @media (max-width: ${tabletMaxWidth}) {
-    display: none;
-  }
-`;
+// const CatButton = styled.button`
+//   @media (max-width: ${tabletMaxWidth}) {
+//     display: none;
+//   }
+// `;
 
-const CatTitle = styled.div`
-  width: 70%;
-  font-family: ${secondaryFont};
-  font-size: 30px;
-  color: ${gunmetal};
-  text-align: center;
-  @media (max-width: ${mobileMaxWidth}) {
-    font-size: 20px;
-  }
-`;
+// const CatTitle = styled.div`
+//   width: 70%;
+//   font-family: ${secondaryFont};
+//   font-size: 30px;
+//   color: ${gunmetal};
+//   text-align: center;
+//   @media (max-width: ${mobileMaxWidth}) {
+//     font-size: 20px;
+//   }
+// `;
 
 const RVSCont = styled.div`
   width: 95%;
@@ -157,7 +157,6 @@ interface Recipe {
 
 interface IState {
   categories: string[];
-  categoryPage: number;
   categoryToShow: string;
   recipesToShow: string;
 }
@@ -170,25 +169,25 @@ class AllRecipesPage extends Component<
     super(props);
     this.state = {
       categories: ["ALL"],
-      categoryPage: 0,
+      // categoryPage: 0,
       categoryToShow: "ALL",
       recipesToShow: "ALL RECIPES",
     };
-    this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
+    // this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
   }
 
-  changeCategoryToShow(categoryToShow: string) {
-    this.setState({ categoryToShow });
-  }
+  // changeCategoryToShow(categoryToShow: string) {
+  //   this.setState({ categoryToShow });
+  // }
 
-  renderCategories() {
+  // renderCategories() {
     
-    const catElements = this.state.categories.map((cat, index) => {
-      let selected = this.state.categoryToShow === cat ? true : false;
-      return Category(index, this.changeCategoryToShow, selected, cat);
-    });
-    return catElements;
-  }
+  //   const catElements = this.state.categories.map((cat, index) => {
+  //     let selected = this.state.categoryToShow === cat ? true : false;
+  //     return Category(index, this.changeCategoryToShow, selected, cat);
+  //   });
+  //   return catElements;
+  // }
 
   filterRecipesByCat() {
     let recipesByCat: Recipe[] = [];
@@ -278,23 +277,23 @@ class AllRecipesPage extends Component<
     );
   }
 
-  decrimentCategoryPage() {
-    let categoryPage;
-    if(this.state.categoryPage <= 0) {
-      categoryPage = 0  
-    } else {
-      categoryPage = this.state.categoryPage - 1;
-    }
-    this.setState({ categoryPage })
-  }
+  // decrimentCategoryPage() {
+  //   let categoryPage;
+  //   if(this.state.categoryPage <= 0) {
+  //     categoryPage = 0  
+  //   } else {
+  //     categoryPage = this.state.categoryPage - 1;
+  //   }
+  //   this.setState({ categoryPage })
+  // }
 
-  incrementCategoryPage() {
-    if((this.state.categoryPage + 1) >= this.state.categories.length / 8 ){
-      return false;
-    } else {
-      this.setState({ categoryPage: this.state.categoryPage + 1})
-    }
-  }
+  // incrementCategoryPage() {
+  //   if((this.state.categoryPage + 1) >= this.state.categories.length / 8 ){
+  //     return false;
+  //   } else {
+  //     this.setState({ categoryPage: this.state.categoryPage + 1})
+  //   }
+  // }
 
   componentDidMount() {
     const state = {...this.state}
@@ -311,7 +310,7 @@ class AllRecipesPage extends Component<
   render() {
     return (
       <div id="PublicPage">
-        <CategoriesContainer>
+        {/* <CategoriesContainer>
           <CategoriesContent>
             <CatButtonCont>
               <CatButton onClick={()=>{this.decrimentCategoryPage()}}><i className="fas fa-arrow-left"></i></CatButton>
@@ -326,7 +325,8 @@ class AllRecipesPage extends Component<
               </CategoriesDisplayed>
             </CategoriesDisplayedCont>
           </CategoriesContent>
-        </CategoriesContainer>
+        </CategoriesContainer> */}
+        <CategoryBar categories={this.state.categories} categoryToShow={this.state.categoryToShow}/>
         <Recipes id="Recipes">
           {this.props.match.params.id ? (
             <>
