@@ -1,20 +1,17 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
-import { Link } from "react-router-dom";
-import { withRouter, RouteComponentProps } from "react-router";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
-import SaveButton from "./Misc/SaveButton";
 import { RootState } from "../reducers/rootReducer";
+import { Styles } from "../Styles";
 import AuthModal from "./Misc/AuthModal";
-import { connect } from "react-redux";
+import SaveButton from "./Misc/SaveButton";
 
-const {
-  brownSugar,
-  accentColorOne,
-} = ColorScheme;
+const { brownSugar, accentColorOne } = ColorScheme;
 const { primaryFont, secondaryFont } = Styles;
 
 const RecipeDetailDiv = styled.div`
@@ -64,7 +61,7 @@ const RecipeHeading = styled.div`
 
 const Author = styled.div`
   display: inline;
-  &:hover{
+  &:hover {
     color: ${accentColorOne};
   }
 `;
@@ -89,7 +86,7 @@ const Instruction = styled.div`
   margin-bottom: 10px;
 `;
 
-const Number = styled.div`
+const OrderNumber = styled.div`
   border-bottom: 1px solid black;
   text-align: center;
   font-size: 25px;
@@ -119,7 +116,6 @@ interface IState {
   showLogIn?: boolean;
 }
 
-
 class RecipeDetail extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -145,7 +141,7 @@ class RecipeDetail extends Component<IProps, IState> {
             {i.quantity} {i.unit === "-" ? null : i.unit} {i.name}
           </div>
         );
-      }
+      },
     );
     return ingredientsList;
   }
@@ -155,30 +151,30 @@ class RecipeDetail extends Component<IProps, IState> {
       (i: { number: number; instruction: string }, key: number) => {
         return (
           <Instruction key={key}>
-            <Number>{i.number}</Number>
+            <OrderNumber>{i.number}</OrderNumber>
             <div>{i.instruction}</div>
           </Instruction>
         );
-      }
+      },
     );
     return instructionsList;
   }
 
   handleAuthor() {
     if (this.state.createdBy) {
-      let user = userData.filter((u) => u.uid === this.state.createdBy);
+      const user = userData.filter((u) => u.uid === this.state.createdBy);
       return user[0].userName;
     }
   }
 
   toggleAuthView() {
-    this.setState({ showLogIn: !this.state.showLogIn })
+    this.setState({ showLogIn: !this.state.showLogIn });
   }
 
   componentDidMount() {
     const { id } = this.props.match.params;
     const idArr = id.split(":");
-    let parsedId = parseFloat(idArr[1]);
+    const parsedId = parseFloat(idArr[1]);
     const recipeArr = recipeData.filter((r: IState) => {
       return r.recipeId === parsedId;
     });
@@ -204,34 +200,36 @@ class RecipeDetail extends Component<IProps, IState> {
 
   render() {
     const { name, category, servings, createdBy, recipeId } = this.state;
-    const { uid, displayName } = this.props
+    const { uid, displayName } = this.props;
     return (
       <>
-      <RecipeDetailDiv>
-        <AuthModal />
-        <Image></Image>
-        <RecipeHeading>
-          <h1>{name}</h1>
-          <div>{category}</div>
-          <div>Servings: {servings}</div>
-          <div>Author: <Link to={`/user/${createdBy}`} style={{textDecoration: "none", color: "black"}}><Author>{this.handleAuthor()}</Author></Link></div>
-          <SaveButton recipeId={recipeId} />
-        </RecipeHeading>
-        <Exit id="Exit">
-          <Link
-            to={
-              displayName
-                ? `/userpage/${uid}`
-                : "/publicpage"
-            }
-            style={{ color: accentColorOne }}
-          >
-            <Icon className="fas fa-times"></Icon>
-          </Link>
-        </Exit>
-        <Ingredients>{this.handleIngredients()}</Ingredients>
-        <Instructions>{this.handleInstructions()}</Instructions>
-      </RecipeDetailDiv>
+        <RecipeDetailDiv>
+          <AuthModal />
+          <Image />
+          <RecipeHeading>
+            <h1>{name}</h1>
+            <div>{category}</div>
+            <div>Servings: {servings}</div>
+            <div>
+              Author:{" "}
+              <Link
+                to={`/user/${createdBy}`}
+                style={{ textDecoration: "none", color: "black" }}>
+                <Author>{this.handleAuthor()}</Author>
+              </Link>
+            </div>
+            <SaveButton recipeId={recipeId} />
+          </RecipeHeading>
+          <Exit id="Exit">
+            <Link
+              to={displayName ? `/userpage/${uid}` : "/publicpage"}
+              style={{ color: accentColorOne }}>
+              <Icon className="fas fa-times" />
+            </Link>
+          </Exit>
+          <Ingredients>{this.handleIngredients()}</Ingredients>
+          <Instructions>{this.handleInstructions()}</Instructions>
+        </RecipeDetailDiv>
       </>
     );
   }

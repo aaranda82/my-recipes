@@ -36,15 +36,6 @@ const CategoriesContent = styled.div`
   }
 `;
 
-const CategoriesDisplayedCont = styled.div`
-  height: 30px;
-  overflow: hidden;
-  white-space: nowrap;
-  @media (max-width: ${mobileMaxWidth}) {
-    overflow: auto;
-  }
-`;
-
 const CatButtonCont = styled.div`
   width: 15%;
   display: flex;
