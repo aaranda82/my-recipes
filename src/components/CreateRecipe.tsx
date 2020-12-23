@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import { ColorScheme } from "../ColorScheme";
-import { Styles } from "../Styles";
 import { RootState } from "../reducers/rootReducer";
-import { connect } from "react-redux";
+import { Styles } from "../Styles";
 
 const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont, secondaryFont } = Styles;
@@ -157,7 +157,7 @@ function HandleInputs(
   onInputFocusIn: (e?: any) => void,
   onInputFocusOut: () => void,
   onFocus: string | null,
-  type: string
+  type: string,
 ) {
   return (
     <InfoInput>
@@ -172,7 +172,7 @@ function HandleInputs(
         value={value}
         onFocus={() => onInputFocusIn(name)}
       />
-      <InputLine lineWidth={onFocus === name ? true : false}></InputLine>
+      <InputLine lineWidth={onFocus === name ? true : false} />
       <Error>{error}</Error>
     </InfoInput>
   );
@@ -186,7 +186,7 @@ function handleIngredientsInputs(
   onBlur: () => void,
   onInputFocusIn: (e?: any) => void,
   onInputFocusOut: () => void,
-  onFocus: string | null
+  onFocus: string | null,
 ) {
   return (
     <IngredientInput name={name}>
@@ -214,7 +214,7 @@ function handleIngredientsInputs(
           onFocus={() => onInputFocusIn(name)}
         />
       )}
-      <InputLine lineWidth={onFocus === name ? true : false}></InputLine>
+      <InputLine lineWidth={onFocus === name ? true : false} />
       <Error>{error}</Error>
     </IngredientInput>
   );
@@ -420,7 +420,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
 
   handleInstChange(e: any) {
     e.preventDefault();
-    let { instructionToAdd } = this.state;
+    const { instructionToAdd } = this.state;
     instructionToAdd.instruction = e.target.value;
     this.setState({ instructionToAdd }, () => this.validateInstToAdd());
   }
@@ -526,12 +526,12 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     if (instruction) {
       const { recipe } = { ...this.state };
       recipe.instructions.push(this.state.instructionToAdd);
-      const number = recipe.instructions.length + 1;
+      const orderNumber = recipe.instructions.length + 1;
       this.setState({
         recipe,
         instructionToAdd: {
           instruction: "",
-          number,
+          number: orderNumber,
         },
       });
     }
@@ -608,7 +608,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.onInputFocusIn,
             this.onInputFocusOut,
             this.state.onFocus,
-            "text"
+            "text",
           )}
           {HandleInputs(
             "SERVINGS",
@@ -619,7 +619,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.onInputFocusIn,
             this.onInputFocusOut,
             this.state.onFocus,
-            "number"
+            "number",
           )}
           {HandleInputs(
             "CATEGORY",
@@ -630,7 +630,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.onInputFocusIn,
             this.onInputFocusOut,
             this.state.onFocus,
-            "text"
+            "text",
           )}
         </AddRInfoCont>
         <StateIngCont>{this.handleStateIngredients()}</StateIngCont>
@@ -643,7 +643,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.validateIngToAdd,
             this.onInputFocusIn,
             this.onInputFocusOut,
-            this.state.onFocus
+            this.state.onFocus,
           )}
           {handleIngredientsInputs(
             "QUANTITY",
@@ -653,7 +653,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.validateQuantityToAdd,
             this.onInputFocusIn,
             this.onInputFocusOut,
-            this.state.onFocus
+            this.state.onFocus,
           )}
           {handleIngredientsInputs(
             "UNIT",
@@ -663,7 +663,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.validateUnitToAdd,
             this.onInputFocusIn,
             this.onInputFocusOut,
-            this.state.onFocus
+            this.state.onFocus,
           )}
         </AddIngredientCont>
         {handleButton(this.addIngredient, "ADD INGREDIENT")}
@@ -677,7 +677,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
             this.validateInstToAdd,
             this.onInputFocusIn,
             this.onInputFocusOut,
-            this.state.onFocus
+            this.state.onFocus,
           )}
         </AddIngredientCont>
         {handleButton(this.addInstruction, "ADD INSTRUCTION")}

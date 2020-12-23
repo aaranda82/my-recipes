@@ -47,7 +47,7 @@ interface IRecipe {
   showAuth?: boolean;
 }
 
-function handleFavorites( favs: number[], uid: string ) { //uid of user logged in or ""
+function handleFavorites( favs: number[], uid: string ) { // uid of user logged in or ""
   const favoriteRecipes = favs.map((f: number, index)=> {
     const fav = recipeData.filter((r: IRecipe)=> r.recipeId === f)
     const { name, recipeId, createdBy } = fav[0]
@@ -65,7 +65,7 @@ function handleFavorites( favs: number[], uid: string ) { //uid of user logged i
 }
 
 function handleUserCreatedRecipes(userToViewId: string, uid: string) {
-  let userCreatedRecipes: JSX.Element[] = []
+  const userCreatedRecipes: JSX.Element[] = []
   for(let x = 0; x < recipeData.length; x++) {
     if(recipeData[x].createdBy === userToViewId) {
       const { name, recipeId, createdBy } = recipeData[x]
@@ -99,7 +99,7 @@ function UserProfile() {
   const { userName, favorites } = userToViewInfo
   return (
     <>
-      <Return onClick={()=> {history.goBack()}}><i className={"fas fa-reply"}></i> RETURN</Return>
+      <Return onClick={()=> {history.goBack()}}><i className={"fas fa-reply"}/> RETURN</Return>
       <Title>{userName}'s Favorites</Title>
       <RecipeContainer>{handleFavorites(favorites, uid)}</RecipeContainer>
       <Title>{userName}'s Recipes</Title>

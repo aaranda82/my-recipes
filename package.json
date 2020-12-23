@@ -6,6 +6,7 @@
     "dotenv": "^8.2.0",
     "firebase": "^7.15.1",
     "firebaseui": "^4.5.1",
+    "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-firebaseui": "^4.1.0",
@@ -21,7 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettify": "pretty-quick"
+    "prettify": "pretty-quick",
+    "tslint": "tslint src/**/*.ts{,x} --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -43,6 +45,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
+    "@types/lodash": "^4.14.165",
     "@types/node": "^12.12.46",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
@@ -50,6 +53,9 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.1",
     "eslint-config-airbnb-typescript-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
     "husky": "^4.3.6",
     "prettier": "^2.2.1",
     "prettier-plugin-organize-imports": "^1.1.1",
@@ -62,7 +68,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "pretty-quick --staged"
+      "pre-push": "pretty-quick tslint --staged"
     }
   }
 }

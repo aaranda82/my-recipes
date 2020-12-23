@@ -23,6 +23,7 @@
     "no-var-requires": false,
     "no-implicit-dependencies": false,
     "jsx-boolean-value": false,
-    "array-type": false
+    "array-type": false,
+    "no-unused-variable": true
   }
 }
