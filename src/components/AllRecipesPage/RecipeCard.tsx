@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
 import Lunch from "../../assets/Lunch.jpg";
-import SaveButton from "../Misc/SaveButton";
+import { ColorScheme } from "../../ColorScheme";
 import userData from "../../data-users.json";
+import { Styles } from "../../Styles";
+import SaveButton from "../Misc/SaveButton";
 
 const { primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
@@ -64,13 +64,12 @@ const RecipeNameDiv = styled.div`
   }
 `;
 
-const MoreInfoDiv = styled.div<{width?: string}>`
-  width: ${props => props ? props.width : null};
+const MoreInfoDiv = styled.div<{ width?: string }>`
+  width: ${(props) => (props ? props.width : null)};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
 
 interface IProps {
   name: string;
@@ -82,7 +81,7 @@ interface IProps {
 
 function RecipeCard(props: IProps) {
   const { name, recipeId, index, createdBy } = props;
-  const userName = userData.filter((u) => createdBy === u.uid)[0].userName
+  const userName = userData.filter((u) => createdBy === u.uid)[0].userName;
   return (
     <>
       <RecipeContainerDiv id="RecipeCard" key={index}>
@@ -93,12 +92,9 @@ function RecipeCard(props: IProps) {
             style={{
               textDecoration: "none",
               width: "100%",
-            }}
-          >
+            }}>
             <RecipeNameDiv>
-              <strong>
-                {name}
-              </strong>
+              <strong>{name}</strong>
             </RecipeNameDiv>
           </Link>
           <Link
@@ -110,13 +106,10 @@ function RecipeCard(props: IProps) {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-            }}
-          >
-            <div>
-              {userName}
-            </div>
+            }}>
+            <div>{userName}</div>
           </Link>
-          
+
           <MoreInfoDiv width="35%">
             <SaveButton recipeId={recipeId} />
           </MoreInfoDiv>
@@ -133,8 +126,7 @@ export function BlankRecipeCard(index: number) {
       style={{
         visibility: "hidden",
         transition: "none",
-      }}
-    >
+      }}>
       <RecipeImageImg src={Lunch} alt="Lunch" />
       <RecipeNameDiv></RecipeNameDiv>
     </RecipeContainerDiv>

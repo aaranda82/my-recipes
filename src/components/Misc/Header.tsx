@@ -1,11 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
-import { Link } from "react-router-dom";
 import { RootState } from "../../reducers/rootReducer";
+import { Styles } from "../../Styles";
 import HeaderButtons from "./HeaderButtons";
-import { useSelector } from "react-redux";
 
 const { primaryColorOne, primaryColorTwo } = ColorScheme;
 const { mobileMaxWidth, primaryFont } = Styles;
@@ -20,8 +20,7 @@ const HeaderContainer = styled.header<LIProps>`
   flex-wrap: wrap;
   text-align: center;
   width: 100%;
-  background-color: ${(props) =>
-    props.loggedIn ? primaryColorOne : "white"};
+  background-color: ${(props) => (props.loggedIn ? primaryColorOne : "white")};
   z-index: 5;
   position: sticky;
   top: 0;
@@ -62,29 +61,26 @@ const LogoSpacer = styled.div`
 `;
 
 function Header() {
-  const displayName = useSelector((state: RootState) => state.userReducer.displayName)
+  const displayName = useSelector(
+    (state: RootState) => state.userReducer.displayName,
+  );
   const HandleLogo = () => {
     return (
       <>
-      {displayName ? null : <LogoSpacer/>}
-      <LogoContainer loggedIn={displayName} id="logo cont">
-        <Logo loggedIn={displayName}>
-          {displayName ? (
-            <Link to={"/"}>My Recipes</Link>
-            ) : (
-              "My Recipes"
-              )}
-        </Logo>
-      </LogoContainer>
+        {displayName ? null : <LogoSpacer />}
+        <LogoContainer loggedIn={displayName} id="logo cont">
+          <Logo loggedIn={displayName}>
+            {displayName ? <Link to={"/"}>My Recipes</Link> : "My Recipes"}
+          </Logo>
+        </LogoContainer>
       </>
     );
-  }
+  };
 
   return (
     <HeaderContainer id="Header" loggedIn={displayName ? "loggedIn" : null}>
       <HandleLogo />
-      <HeaderButtons/>
-      
+      <HeaderButtons />
     </HeaderContainer>
   );
 }
