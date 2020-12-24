@@ -13,69 +13,6 @@ import { Styles } from "../../Styles";
 const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
 const { secondaryFont, mobileMaxWidth } = Styles;
 
-
-// const CategoriesContainer = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: center;
-// `;
-
-// const CategoriesContent = styled.div`
-//   width: 800px;
-//   display: flex;
-//   flex-wrap: wrap;
-//   @media screen and (max-width: ${tabletMaxWidth}) {
-//     width: 700px;
-//     overflow: auto;
-//   }
-//   @media screen and (max-width: ${mobileMaxWidth}) {
-//     width: 350px;
-//   }
-// `;
-
-// const CategoriesDisplayedCont = styled.div`
-//   height: 30px;
-//   overflow: hidden;
-//   white-space: nowrap;
-//   @media (max-width: ${mobileMaxWidth}) {
-//     overflow: auto;
-//   }
-// `;
-
-// interface CDProps {
-//   catPage: number;
-// }
-
-// const CategoriesDisplayed = styled.div<CDProps>`
-// transform: translateX(-${(props) => props.catPage * 800}px);
-// transition: all 0.7s ease;
-// `;
-
-// const CatButtonCont = styled.div`
-//   width: 15%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
-
-// const CatButton = styled.button`
-//   @media (max-width: ${tabletMaxWidth}) {
-//     display: none;
-//   }
-// `;
-
-// const CatTitle = styled.div`
-//   width: 70%;
-//   font-family: ${secondaryFont};
-//   font-size: 30px;
-//   color: ${gunmetal};
-//   text-align: center;
-//   @media (max-width: ${mobileMaxWidth}) {
-//     font-size: 20px;
-//   }
-// `;
-
 const RVSCont = styled.div`
   width: 95%;
   gap: 5px;
@@ -177,8 +114,6 @@ class AllRecipesPage extends Component<
       recipesToShow: "ALL RECIPES",
     };
     this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
-    this.incrementCategoryPage = this.incrementCategoryPage.bind(this);
-    this.decrimentCategoryPage = this.decrimentCategoryPage.bind(this);
   }
 
   changeCategoryToShow(categoryToShow: string) {
@@ -263,18 +198,6 @@ class AllRecipesPage extends Component<
         <div>{type}</div>
       </RViewSelector>
     );
-  }
-
-  decrementCategoryIndex() {
-    if (this.state.categoryIndex > 0) {
-      this.setState({ categoryIndex: this.state.categoryIndex - 1 });
-    }
-  }
-
-  incrementCategoryIndex() {
-    if (this.state.categoryIndex < this.state.categories.length - 1) {
-      this.setState({ categoryIndex: this.state.categoryIndex + 1 });
-    }
   }
 
   componentDidMount() {
