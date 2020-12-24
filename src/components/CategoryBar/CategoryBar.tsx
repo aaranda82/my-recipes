@@ -25,7 +25,7 @@ const CategoriesContent = styled.div`
   }
 `;
 
-const CategoriesDisplayedCont = styled.div`
+const SlideContainer = styled.div`
   height: 30px;
   overflow: hidden;
   white-space: nowrap;
@@ -34,7 +34,7 @@ const CategoriesDisplayedCont = styled.div`
   }
 `;
 
-const CategoriesDisplayed = styled.div<{ catPage: number }>`
+const Slide = styled.div<{ catPage: number }>`
 transform: translateX(-${(props) => props.catPage * 800}px);
 transition: all 0.7s ease;
 `;
@@ -99,11 +99,8 @@ class CategoryBar extends Component<IProps, IState>{
         key={index}
         className="category"
         onClick={() => this.props.changeCategoryToShow(cat)}
-        selected={selected}
-      >
-        <div>
-          {cat}
-        </div>
+        selected={selected}>
+        <div>{cat}</div>
       </Button>
     );
   };
@@ -117,12 +114,7 @@ class CategoryBar extends Component<IProps, IState>{
   }
 
   decrimentCategoryPage() {
-    let categoryPage;
-    if(this.state.categoryPage <= 0) {
-      categoryPage = 0  
-    } else {
-      categoryPage = this.state.categoryPage - 1;
-    }
+    const categoryPage = this.state.categoryPage <= 0 ? 0 : this.state.categoryPage - 1;
     this.setState({ categoryPage })
   }
 
@@ -145,11 +137,11 @@ class CategoryBar extends Component<IProps, IState>{
           <CatButtonCont>
             <CatButton onClick={()=>{this.incrementCategoryPage()}}><i className="fas fa-arrow-right"></i></CatButton>
           </CatButtonCont>
-          <CategoriesDisplayedCont id="Categories">
-            <CategoriesDisplayed catPage={this.state.categoryPage}>
+          <SlideContainer id="Categories">
+            <Slide catPage={this.state.categoryPage}>
               {this.renderCategories()}
-            </CategoriesDisplayed>
-          </CategoriesDisplayedCont>
+            </Slide>
+          </SlideContainer>
         </CategoriesContent>
       </CategoryBarDiv>
     )
