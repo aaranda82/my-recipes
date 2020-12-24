@@ -6,7 +6,7 @@ import { ColorScheme } from "../../ColorScheme";
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
 import { Styles } from "../../Styles";
-import CategoryBar from "../CategoryBar/CategoryBar";
+import CategoryBar from "../CategoryBar/index";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 
 const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
