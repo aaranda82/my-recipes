@@ -35,8 +35,8 @@ const SlideContainer = styled.div`
 `;
 
 const Slide = styled.div<{ catPage: number }>`
-transform: translateX(-${(props) => props.catPage * 800}px);
-transition: all 0.7s ease;
+  transform: translateX(-${(props) => props.catPage * 800}px);
+  transition: all 0.7s ease;
 `;
 
 const CatButtonCont = styled.div`
@@ -63,14 +63,14 @@ const CatTitle = styled.div`
   }
 `;
 
-const Button = styled.div<{selected: boolean}>`
+const Button = styled.div<{ selected: boolean }>`
   width: 100px;
   display: inline-block;
   font-family: "Raleway", sans-serif;
   text-align: center;
   cursor: pointer;
-  background-color: ${(p) => p.selected? accentColorOne: ""};
-  color: ${(p) => p.selected? "white": ""};
+  background-color: ${(p) => (p.selected ? accentColorOne : "")};
+  color: ${(p) => (p.selected ? "white" : "")};
   border-radius: 50px;
   &:hover {
     background-color: lightgrey;
@@ -78,22 +78,22 @@ const Button = styled.div<{selected: boolean}>`
 `;
 
 interface IProps {
-  categories: string[],
-  categoryToShow: string,
-  changeCategoryToShow: (categoryToShow: string) => void, 
+  categories: string[];
+  categoryToShow: string;
+  changeCategoryToShow: (categoryToShow: string) => void;
 }
 
 interface IState {
-  categoryPage: number; 
+  categoryPage: number;
 }
 
-class CategoryBar extends Component<IProps, IState>{
-  constructor(props: IProps){
+class CategoryBar extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
-    this.state = { categoryPage: 0 }
-  }   
+    this.state = { categoryPage: 0 };
+  }
 
-  category( index: number, selected: boolean, cat: string) {
+  category(index: number, selected: boolean, cat: string) {
     return (
       <Button
         key={index}
@@ -103,7 +103,7 @@ class CategoryBar extends Component<IProps, IState>{
         <div>{cat}</div>
       </Button>
     );
-  };
+  }
 
   renderCategories() {
     const catElements = this.props.categories.map((cat, index) => {
@@ -114,28 +114,39 @@ class CategoryBar extends Component<IProps, IState>{
   }
 
   decrimentCategoryPage() {
-    const categoryPage = this.state.categoryPage <= 0 ? 0 : this.state.categoryPage - 1;
-    this.setState({ categoryPage })
+    const categoryPage =
+      this.state.categoryPage <= 0 ? 0 : this.state.categoryPage - 1;
+    this.setState({ categoryPage });
   }
 
   incrementCategoryPage() {
-    if((this.state.categoryPage + 1) >= this.props.categories.length / 8 ){
+    if (this.state.categoryPage + 1 >= this.props.categories.length / 8) {
       return false;
     } else {
-      this.setState({ categoryPage: this.state.categoryPage + 1})
+      this.setState({ categoryPage: this.state.categoryPage + 1 });
     }
   }
 
-  render(){
+  render() {
     return (
       <CategoryBarDiv>
         <CategoriesContent>
           <CatButtonCont>
-            <CatButton onClick={()=>{this.decrimentCategoryPage()}}><i className="fas fa-arrow-left"></i></CatButton>
+            <CatButton
+              onClick={() => {
+                this.decrimentCategoryPage();
+              }}>
+              <i className="fas fa-arrow-left"></i>
+            </CatButton>
           </CatButtonCont>
           <CatTitle>Categories</CatTitle>
           <CatButtonCont>
-            <CatButton onClick={()=>{this.incrementCategoryPage()}}><i className="fas fa-arrow-right"></i></CatButton>
+            <CatButton
+              onClick={() => {
+                this.incrementCategoryPage();
+              }}>
+              <i className="fas fa-arrow-right"></i>
+            </CatButton>
           </CatButtonCont>
           <SlideContainer id="Categories">
             <Slide catPage={this.state.categoryPage}>
@@ -144,7 +155,7 @@ class CategoryBar extends Component<IProps, IState>{
           </SlideContainer>
         </CategoriesContent>
       </CategoryBarDiv>
-    )
+    );
   }
 }
 
