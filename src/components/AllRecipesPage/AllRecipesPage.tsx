@@ -1,7 +1,12 @@
+import { uniq } from "lodash";
 import React, { Component } from "react";
+import { RouteComponentProps, withRouter } from "react-router";
 import styled from "styled-components";
+
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
+import { Styles } from "../../Styles";
+import CategoryBar from "../CategoryBar";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import CategoryBar from "../CategoryBar/CategoryBar";
 import { withRouter, RouteComponentProps } from "react-router";
@@ -10,6 +15,7 @@ import { Styles } from "../../Styles";
 
 const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
 const { secondaryFont, mobileMaxWidth } = Styles;
+
 
 // const CategoriesContainer = styled.div`
 //   display: flex;
@@ -54,6 +60,7 @@ const { secondaryFont, mobileMaxWidth } = Styles;
 //   justify-content: center;
 //   align-items: center;
 // `;
+
 
 // const CatButton = styled.button`
 //   @media (max-width: ${tabletMaxWidth}) {
@@ -126,7 +133,7 @@ const Recipes = styled.div`
   }
 `;
 
- export function handleRecipeArrayLength(allRecipes: JSX.Element[]) {
+export function handleRecipeArrayLength(allRecipes: JSX.Element[]) {
   if (window.screen.width < 500) {
     return allRecipes;
   } else {
@@ -157,8 +164,7 @@ interface Recipe {
 
 interface IState {
   categories: string[];
-  categoryPage: number;
-  categoryToShow: string;
+  categoryIndex: number;
   recipesToShow: string;
 }
 
@@ -169,9 +175,8 @@ class AllRecipesPage extends Component<
   constructor(props: RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
-      categories: ["ALL"],
-      categoryPage: 0,
-      categoryToShow: "ALL",
+      categories: [],
+      categoryIndex: 0,
       recipesToShow: "ALL RECIPES",
     };
     this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
@@ -181,18 +186,14 @@ class AllRecipesPage extends Component<
 
   changeCategoryToShow(categoryToShow: string) {
     this.setState({ categoryToShow });
+
   }
 
   filterRecipesByCat() {
-    let recipesByCat: Recipe[] = [];
-    if (this.state.categoryToShow === "ALL") {
-      recipesByCat = recipeData;
-    } else {
-      recipesByCat = recipeData.filter(
-        (r) => r.category === this.state.categoryToShow
-      );
-    }
-    return recipesByCat;
+    const categoryToShow = this.state.categories[this.state.categoryIndex];
+    return categoryToShow === "ALL"
+      ? recipeData
+      : recipeData.filter((r) => r.category === categoryToShow);
   }
 
   renderPublicRecipes() {
@@ -214,13 +215,12 @@ class AllRecipesPage extends Component<
     const recipesByCat = this.filterRecipesByCat();
     let recipes: Recipe[] = [];
     const uid = this.props.match.params.id;
-    const user = userData.filter((u) => u.uid === uid)
-    if(user.length) {
-
+    const user = userData.filter((u) => u.uid === uid);
+    if (user.length) {
       const userFavs = user[0].favorites;
       if (recipesToShow === "PERSONAL RECIPES") {
-      recipes = recipesByCat.filter(
-        (r) => r.createdBy === this.props.match.params.id
+        recipes = recipesByCat.filter(
+          (r) => r.createdBy === this.props.match.params.id,
         );
       } else if (recipesToShow === "FAVORITE RECIPES") {
         for (let x = 0; x < userFavs.length; x++) {
@@ -244,7 +244,7 @@ class AllRecipesPage extends Component<
       });
       return handleRecipeArrayLength(userRecipes);
     } else {
-      return "NO FAVORITES YET"
+      return "NO FAVORITES YET";
     }
   }
 
@@ -262,43 +262,28 @@ class AllRecipesPage extends Component<
       <RViewSelector
         onClick={() => this.setState({ recipesToShow: type })}
         bgColor={this.state.recipesToShow === type ? accentColorOne : "white"}
-        textColor={this.state.recipesToShow === type ? primaryColorTwo : null}
-      >
-        <div>
-          {type}
-        </div>
+        textColor={this.state.recipesToShow === type ? primaryColorTwo : null}>
+        <div>{type}</div>
       </RViewSelector>
     );
   }
 
-  decrimentCategoryPage() {
-    let categoryPage;
-    if(this.state.categoryPage <= 0) {
-      categoryPage = 0  
-    } else {
-      categoryPage = this.state.categoryPage - 1;
+  decrementCategoryIndex() {
+    if (this.state.categoryIndex > 0) {
+      this.setState({ categoryIndex: this.state.categoryIndex - 1 });
     }
-    this.setState({ categoryPage })
   }
 
-  incrementCategoryPage() {
-    if((this.state.categoryPage + 1) >= this.state.categories.length / 8 ){
-      return false;
-    } else {
-      this.setState({ categoryPage: this.state.categoryPage + 1})
+  incrementCategoryIndex() {
+    if (this.state.categoryIndex < this.state.categories.length - 1) {
+      this.setState({ categoryIndex: this.state.categoryIndex + 1 });
     }
   }
 
   componentDidMount() {
-    const state = {...this.state}
-    const categories = state.categories
-    for (let x = 0; x < recipeData.length; x++) {
-      let cat = recipeData[x].category;
-      if (!categories.includes(cat)) {
-        categories.push(cat);
-      }
-    }
-    this.setState({ categories })
+    const categoriesFromRecipes = uniq(recipeData.map((r) => r.category));
+    const categories = ["ALL", ...categoriesFromRecipes];
+    this.setState({ categories });
   }
 
   render() {
