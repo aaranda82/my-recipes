@@ -124,10 +124,10 @@ class AllRecipesPage extends Component<
   }
 
   filterRecipesByCat() {
-    const categoryToShow = this.state.categories[this.state.categoryIndex];
-    return categoryToShow === "ALL"
-      ? recipeData
-      : recipeData.filter((r) => r.category === categoryToShow);
+    let recipesByCat = this.state.categoryToShow === "ALL" 
+      ? recipeData 
+      : recipeData.filter((r) => r.category === this.state.categoryToShow);
+    return recipesByCat;
   }
 
   renderPublicRecipes() {
