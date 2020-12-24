@@ -98,7 +98,8 @@ interface Recipe {
 
 interface IState {
   categories: string[];
-  categoryIndex: number;
+  categoryPage: number;
+  categoryToShow: string;
   recipesToShow: string;
 }
 
@@ -109,8 +110,9 @@ class AllRecipesPage extends Component<
   constructor(props: RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
-      categories: [],
-      categoryIndex: 0,
+      categories: ["ALL"],
+      categoryPage: 0,
+      categoryToShow: "ALL",
       recipesToShow: "ALL RECIPES",
     };
     this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
