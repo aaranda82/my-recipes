@@ -925,5 +925,51 @@
         "instruction": "Garnish with cilantro (coriander) and serve with hot garlic butter rice and fresh homemade Naan bread!"
       }
     ]
+  },
+  {
+    "recipeId": 12,
+    "createdBy": "SW1T9FNUxecYoDBv7IWqGil9lAW2",
+    "name": "Scrammbled Eggs 3",
+    "category": "EGGS",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "eggs",
+        "quantity": "4",
+        "unit": "-"
+      },
+      {
+        "name": "butter",
+        "quantity": "1",
+        "unit": "tbsp"
+      },
+      {
+        "name": "salt",
+        "quantity": "1/4",
+        "unit": "tsp"
+      }
+    ],
+    "instructions": [
+      {
+        "number": 1,
+        "instruction": "beat eggs and salt in medium bowl"
+      },
+      {
+        "number": 2,
+        "instruction": "melt butter over medium heat in a medium sized non-stick pan"
+      },
+      {
+        "number": 3,
+        "instruction": "add beaten eggs to pan moving constantly with wooden spoon"
+      },
+      {
+        "number": 4,
+        "instruction": "remove eggs from heat just before they are fully cooked"
+      },
+      {
+        "number": 5,
+        "instruction": "serve"
+      }
+    ]
   }
 ]

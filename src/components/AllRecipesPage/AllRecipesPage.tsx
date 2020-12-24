@@ -2,63 +2,16 @@ import { uniq } from "lodash";
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
+
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
-import { Styles } from "../../Styles";
-import CategoryBar from "../CategoryBar";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
+import CategoryBar from "../CategoryBar/CategoryBar";
+import { ColorScheme } from "../../ColorScheme";
+import { Styles } from "../../Styles";
 
-const {
-  gunmetal,
-  accentColorOne,
-  primaryColorTwo,
-  primaryColorOne,
-} = ColorScheme;
-const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
-
-const CategoriesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const CategoriesContent = styled.div`
-  width: 800px;
-  display: flex;
-  flex-wrap: wrap;
-  @media screen and (max-width: ${tabletMaxWidth}) {
-    width: 700px;
-    overflow: auto;
-  }
-  @media screen and (max-width: ${mobileMaxWidth}) {
-    width: 350px;
-  }
-`;
-
-const CatButtonCont = styled.div`
-  width: 15%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CatButton = styled.button`
-  @media (max-width: ${tabletMaxWidth}) {
-    display: none;
-  }
-`;
-
-const CatTitle = styled.div`
-  width: 70%;
-  font-family: ${secondaryFont};
-  font-size: 30px;
-  color: ${gunmetal};
-  text-align: center;
-  @media (max-width: ${mobileMaxWidth}) {
-    font-size: 20px;
-  }
-`;
+const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
+const { secondaryFont, mobileMaxWidth } = Styles;
 
 const RVSCont = styled.div`
   width: 95%;
@@ -145,7 +98,8 @@ interface Recipe {
 
 interface IState {
   categories: string[];
-  categoryIndex: number;
+  categoryPage: number;
+  categoryToShow: string;
   recipesToShow: string;
 }
 
@@ -156,24 +110,24 @@ class AllRecipesPage extends Component<
   constructor(props: RouteComponentProps<{ id: string }>) {
     super(props);
     this.state = {
-      categories: [],
-      categoryIndex: 0,
+      categories: ["ALL"],
+      categoryPage: 0,
+      categoryToShow: "ALL",
       recipesToShow: "ALL RECIPES",
     };
     this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
-    this.decrementCategoryIndex = this.decrementCategoryIndex.bind(this);
-    this.incrementCategoryIndex = this.incrementCategoryIndex.bind(this);
   }
 
-  changeCategoryToShow(categoryIndex: number) {
-    this.setState({ categoryIndex });
+  changeCategoryToShow(categoryToShow: string) {
+    this.setState({ categoryToShow });
+
   }
 
   filterRecipesByCat() {
-    const categoryToShow = this.state.categories[this.state.categoryIndex];
-    return categoryToShow === "ALL"
-      ? recipeData
-      : recipeData.filter((r) => r.category === categoryToShow);
+    let recipesByCat = this.state.categoryToShow === "ALL" 
+      ? recipeData 
+      : recipeData.filter((r) => r.category === this.state.categoryToShow);
+    return recipesByCat;
   }
 
   renderPublicRecipes() {
@@ -248,18 +202,6 @@ class AllRecipesPage extends Component<
     );
   }
 
-  decrementCategoryIndex() {
-    if (this.state.categoryIndex > 0) {
-      this.setState({ categoryIndex: this.state.categoryIndex - 1 });
-    }
-  }
-
-  incrementCategoryIndex() {
-    if (this.state.categoryIndex < this.state.categories.length - 1) {
-      this.setState({ categoryIndex: this.state.categoryIndex + 1 });
-    }
-  }
-
   componentDidMount() {
     const categoriesFromRecipes = uniq(recipeData.map((r) => r.category));
     const categories = ["ALL", ...categoriesFromRecipes];
@@ -268,27 +210,12 @@ class AllRecipesPage extends Component<
 
   render() {
     return (
-      <div id="PublicPage">
-        <CategoriesContainer>
-          <CategoriesContent>
-            <CatButtonCont>
-              <CatButton onClick={this.decrementCategoryIndex}>
-                <i className="fas fa-arrow-left" />
-              </CatButton>
-            </CatButtonCont>
-            <CatTitle>Categories</CatTitle>
-            <CatButtonCont>
-              <CatButton onClick={this.incrementCategoryIndex}>
-                <i className="fas fa-arrow-right" />
-              </CatButton>
-            </CatButtonCont>
-            <CategoryBar
-              categories={this.state.categories}
-              categoryIndex={this.state.categoryIndex}
-              changeCategoryToShow={this.changeCategoryToShow}
-            />
-          </CategoriesContent>
-        </CategoriesContainer>
+      <div id="AllRecipesPage">
+        <CategoryBar
+          categories={this.state.categories}
+          categoryToShow={this.state.categoryToShow}
+          changeCategoryToShow={this.changeCategoryToShow}
+        ></CategoryBar>
         <Recipes id="Recipes">
           {this.props.match.params.id ? (
             <>
