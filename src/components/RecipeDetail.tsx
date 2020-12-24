@@ -8,7 +8,6 @@ import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 import { Styles } from "../Styles";
-import AuthModal from "./Misc/AuthModal";
 import SaveButton from "./Misc/SaveButton";
 
 const { brownSugar, accentColorOne } = ColorScheme;
@@ -204,7 +203,6 @@ class RecipeDetail extends Component<IProps, IState> {
     return (
       <>
         <RecipeDetailDiv>
-          <AuthModal />
           <Image />
           <RecipeHeading>
             <h1>{name}</h1>

@@ -1,11 +1,11 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import LogIn from "./LogIn";
-import SignUp from "./SignUp";
-import { Styles } from "../../Styles";
 import { clearAction } from "../../actions/authActions";
 import { RootState } from "../../reducers/rootReducer";
-import { useSelector, useDispatch } from "react-redux";
+import { Styles } from "../../Styles";
+import LogIn from "./LogIn";
+import SignUp from "./SignUp";
 
 const { mobileMaxWidth } = Styles;
 
@@ -28,23 +28,22 @@ export const Shadow = styled.div<LIProps>`
 
 function AuthModal() {
   const dispatch = useDispatch();
-  const { showLogIn, showSignUp } = useSelector((state: RootState) => state.authReducer)
-  const { uid } = useSelector((state: RootState) => state.userReducer)
+  const { showLogIn, showSignUp } = useSelector(
+    (state: RootState) => state.authReducer,
+  );
+  const { uid } = useSelector((state: RootState) => state.userReducer);
   let auth;
-  if(showLogIn) {
-    auth = <LogIn />
-  } else if(showSignUp) {
-    auth = <SignUp />
-  } 
+  if (showLogIn) {
+    auth = <LogIn />;
+  } else if (showSignUp) {
+    auth = <SignUp />;
+  }
   return (
     <>
-    <Shadow
-      loggedIn={uid}
-      onClick={() => dispatch(clearAction())}
-      ></Shadow>
-    {auth}
+      <Shadow loggedIn={uid} onClick={() => dispatch(clearAction())}></Shadow>
+      {auth}
     </>
-  );   
+  );
 }
 
 export default AuthModal;

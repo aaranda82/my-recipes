@@ -9,5 +9,4 @@ const SpacerDiv = styled.div`
   width: 100%;
 `;
 
-export const Spacer = () => <SpacerDiv/>;
-
+export const Spacer = () => <SpacerDiv />;

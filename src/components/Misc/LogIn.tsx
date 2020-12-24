@@ -1,18 +1,24 @@
-import React, { ChangeEvent, Component } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import styled from "styled-components";
-import { signInAction, signOutAction } from "../../actions/userActions";
-import { clearAction } from "../../actions/authActions";
-import { RootState } from "../../reducers/rootReducer";
-import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
+import React, { ChangeEvent, Component } from "react";
 import { withRouter } from "react-router";
+import styled from "styled-components";
+import { clearAction } from "../../actions/authActions";
+import { signInAction, signOutAction } from "../../actions/userActions";
+import { ColorScheme } from "../../ColorScheme";
+import { RootState } from "../../reducers/rootReducer";
+import { Styles } from "../../Styles";
 
 const { connect } = require("react-redux");
 
 const { mobileMaxWidth, primaryFont } = Styles;
-const { gunmetal, redOrange, primaryColorTwo, primaryColorOne, accentColorOne } = ColorScheme;
+const {
+  gunmetal,
+  redOrange,
+  primaryColorTwo,
+  primaryColorOne,
+  accentColorOne,
+} = ColorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -56,7 +62,7 @@ export const Form = styled.form`
 
 export const FormGroup = styled.div<IProps>`
   margin: 10px 0;
-  background-color: ${(props) => props.error ? redOrange : accentColorOne};
+  background-color: ${(props) => (props.error ? redOrange : accentColorOne)};
   display: flex;
   flex-wrap: wrap;
   padding: 10px 0;
@@ -91,7 +97,7 @@ interface AuthProps {
   displayName: string;
   uid: string;
   isSignedIn: boolean;
-  history: { push: any}
+  history: { push: any };
   signIn: (d: string | null, e: string | null, u: string | null) => void;
   signOut: () => void;
   clear: () => void;
@@ -105,56 +111,61 @@ interface IState {
 
 class LogIn extends Component<AuthProps, IState> {
   constructor(props: AuthProps) {
-    super(props)
+    super(props);
     this.state = {
-      email: '',
-      password: '',
-      error: '',
-    }
+      email: "",
+      password: "",
+      error: "",
+    };
     this.handleUserNameChange = this.handleUserNameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleUserNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ email: e.target.value })
+    this.setState({ email: e.target.value });
   }
-  
+
   handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ password: e.target.value })
+    this.setState({ password: e.target.value });
   }
 
   handleSubmit(e: any) {
     e.preventDefault();
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    .then((user) => {
-      if(user?.user?.displayName && user?.user?.email && user?.user?.uid) {
-        const { displayName, email, uid } = user?.user
-        this.props.signIn(displayName, email, uid);
-        this.props.clear();
-        this.props.history.push("/");
-      }
-    })
-    .catch((error) => {
-      this.setState({ error: error.message })
-    });
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((user) => {
+        if (user?.user?.displayName && user?.user?.email && user?.user?.uid) {
+          const { displayName, email, uid } = user?.user;
+          this.props.signIn(displayName, email, uid);
+          this.props.clear();
+          this.props.history.push("/");
+        }
+      })
+      .catch((error) => {
+        this.setState({ error: error.message });
+      });
   }
 
-  handleFormGroups(name: string, value: string, onChange: (e: ChangeEvent<HTMLInputElement>) => void, type: string) {
+  handleFormGroups(
+    name: string,
+    value: string,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    type: string,
+  ) {
     return (
       <FormGroup error="">
-            <Label htmlFor="name">
-              {name} 
-            </Label>
-            <Input 
-              autoComplete="name"  
-              type={type} 
-              value={value} 
-              onChange={onChange}
-              placeholder={`Your ${name}`}
-            />
-          </FormGroup>
-    )
+        <Label htmlFor="name">{name}</Label>
+        <Input
+          autoComplete="name"
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={`Your ${name}`}
+        />
+      </FormGroup>
+    );
   }
 
   render() {
@@ -162,9 +173,19 @@ class LogIn extends Component<AuthProps, IState> {
       <Container id="Auth">
         <h3>LOG IN</h3>
         <Form onSubmit={this.handleSubmit}>
-          {this.handleFormGroups("Email", this.state.email, this.handleUserNameChange, "text")}
-          {this.handleFormGroups("Password", this.state.password, this.handlePasswordChange, "password")}
-          <div style={{color: "red"}}>{this.state.error}</div>
+          {this.handleFormGroups(
+            "Email",
+            this.state.email,
+            this.handleUserNameChange,
+            "text",
+          )}
+          {this.handleFormGroups(
+            "Password",
+            this.state.password,
+            this.handlePasswordChange,
+            "password",
+          )}
+          <div style={{ color: "red" }}>{this.state.error}</div>
           <Button type="submit">Submit</Button>
         </Form>
       </Container>
@@ -190,7 +211,7 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     clear: () => {
       dispatch(clearAction());
-    }
+    },
   };
 };
 
