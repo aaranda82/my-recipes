@@ -1,13 +1,18 @@
 import React from "react";
-import styled from "styled-components";
-import { showMenuAction, showLogInAction, showSignUpAction, clearAction } from "../../actions/authActions";
-import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
-import {Spacer} from "./Spacer";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import {
+  clearAction,
+  showLogInAction,
+  showMenuAction,
+  showSignUpAction,
+} from "../../actions/authActions";
+import { ColorScheme } from "../../ColorScheme";
 import { RootState } from "../../reducers/rootReducer";
-import { useHistory } from "react-router"
-import { useSelector, useDispatch } from "react-redux";
+import { Styles } from "../../Styles";
+import { Spacer } from "./Spacer";
 
 const { primaryColorOne, primaryColorTwo, accentColorOne } = ColorScheme;
 const { mobileMaxWidth } = Styles;
@@ -75,41 +80,48 @@ const AddRecipeButton = styled.button`
 function HeaderButtons() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { showMenu, showLogIn, showSignUp } = useSelector((state: RootState) => state.authReducer);
+  const { showMenu, showLogIn, showSignUp } = useSelector(
+    (state: RootState) => state.authReducer,
+  );
   const { displayName } = useSelector((state: RootState) => state.userReducer);
   return displayName ? (
-        <>
-          <ButtonContainer id="add recipe button" w="20%"  mobileWidth="25%">
-            {history.location.pathname === "/createrecipe" ? null : (
-              <Link to={"/createrecipe"}>
-                <AddRecipeButton
-                  onClick={() => dispatch(clearAction())}
-                >
-                  ADD RECIPE
-                </AddRecipeButton>
-              </Link>
-            )}
-          </ButtonContainer>
-          <ButtonContainer id="nav menu button" w="10%" mobileWidth="15%">
-            <NavMenuButton
-              className={showMenu ? "fas fa-times" : "fas fa-bars"}
-              onClick={() => showMenu ? dispatch(clearAction()) : dispatch(showMenuAction())}
-            ></NavMenuButton>
-          </ButtonContainer>
-        </>
-      ) : (
-        <>
-          <ButtonContainer w="20%" mobileWidth="40%">
-            <LogInButton onClick={() => showSignUp ? dispatch(clearAction()) : dispatch(showSignUpAction())}>
-              {showSignUp ? "CANCEL" : "SIGN UP"}
-            </LogInButton>
-            <LogInButton onClick={() => showLogIn ? dispatch(clearAction()) : dispatch(showLogInAction())}>
-              {showLogIn ? "CANCEL" : "LOG IN"}
-            </LogInButton>
-          </ButtonContainer>
-          <Spacer />
-        </>
-      )
+    <>
+      <ButtonContainer id="add recipe button" w="20%" mobileWidth="25%">
+        {history.location.pathname === "/createrecipe" ? null : (
+          <Link to={"/createrecipe"}>
+            <AddRecipeButton onClick={() => dispatch(clearAction())}>
+              ADD RECIPE
+            </AddRecipeButton>
+          </Link>
+        )}
+      </ButtonContainer>
+      <ButtonContainer id="nav menu button" w="10%" mobileWidth="15%">
+        <NavMenuButton
+          className={showMenu ? "fas fa-times" : "fas fa-bars"}
+          onClick={() =>
+            showMenu ? dispatch(clearAction()) : dispatch(showMenuAction())
+          }></NavMenuButton>
+      </ButtonContainer>
+    </>
+  ) : (
+    <>
+      <ButtonContainer w="20%" mobileWidth="40%">
+        <LogInButton
+          onClick={() =>
+            showSignUp ? dispatch(clearAction()) : dispatch(showSignUpAction())
+          }>
+          {showSignUp ? "CANCEL" : "SIGN UP"}
+        </LogInButton>
+        <LogInButton
+          onClick={() =>
+            showLogIn ? dispatch(clearAction()) : dispatch(showLogInAction())
+          }>
+          {showLogIn ? "CANCEL" : "LOG IN"}
+        </LogInButton>
+      </ButtonContainer>
+      <Spacer />
+    </>
+  );
 }
 
 export default HeaderButtons;

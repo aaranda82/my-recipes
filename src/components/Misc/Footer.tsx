@@ -22,8 +22,7 @@ function Footer() {
       <Anchor
         href="https:/alex-aranda.com"
         target="_blank"
-        rel="noopener noreferrer"
-      >
+        rel="noopener noreferrer">
         Alex Aranda
       </Anchor>
     </Nav>

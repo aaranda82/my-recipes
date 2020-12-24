@@ -1,8 +1,8 @@
+import firebase from "firebase";
 import React, { Component } from "react";
-import { Container, Form, FormGroup, Label, Input, Button } from "./LogIn";
 import { clearAction } from "../../actions/authActions";
 import { signInAction } from "../../actions/userActions";
-import firebase from "firebase";
+import { Button, Container, Form, FormGroup, Input, Label } from "./LogIn";
 
 const { connect } = require("react-redux");
 
@@ -19,26 +19,32 @@ interface IState {
 
 interface IProps {
   clear: () => void;
-  signIn: (displayName: string | null | undefined, email: string | null | undefined, uid: string | null | undefined) => void;
+  signIn: (
+    displayName: string | null | undefined,
+    email: string | null | undefined,
+    uid: string | null | undefined,
+  ) => void;
 }
 
 class SignUp extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      userName: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
-      userNameError: '',
-      passwordError: '',
-      confirmPasswordError: '',
-      emailError: '',
-    }
+      userName: "",
+      password: "",
+      confirmPassword: "",
+      email: "",
+      userNameError: "",
+      passwordError: "",
+      confirmPasswordError: "",
+      emailError: "",
+    };
     this.handleUserNameChange = this.handleUserNameChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
+    this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(
+      this,
+    );
     this.validateUserName = this.validateUserName.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
@@ -52,11 +58,11 @@ class SignUp extends Component<IProps, IState> {
   }
 
   validateUserName() {
-    let userNameError = ''
-    if(this.state.userName.length < 3) {
-      userNameError = "Must be at least 3 letters"
+    let userNameError = "";
+    if (this.state.userName.length < 3) {
+      userNameError = "Must be at least 3 letters";
     }
-    this.setState({ userNameError })
+    this.setState({ userNameError });
   }
 
   handleEmailChange(e: any) {
@@ -65,12 +71,12 @@ class SignUp extends Component<IProps, IState> {
   }
 
   validateEmail() {
-    let emailError = ''
+    let emailError = "";
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(!regex.test(this.state.email)){
-      emailError = 'Invalid Email'
+    if (!regex.test(this.state.email)) {
+      emailError = "Invalid Email";
     }
-    this.setState({ emailError })
+    this.setState({ emailError });
   }
 
   handlePasswordChange(e: any) {
@@ -79,54 +85,72 @@ class SignUp extends Component<IProps, IState> {
   }
 
   validatePassword() {
-    let passwordError = ''
+    let passwordError = "";
     const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
     if (!regex.test(this.state.password)) {
-      passwordError = 'Invlaid Password'
+      passwordError = "Invlaid Password";
     }
-    this.setState({ passwordError })
+    this.setState({ passwordError });
   }
 
   handleConfirmPasswordChange(e: any) {
     e.preventDefault();
-    this.setState({confirmPassword: e.target.value}, () => this.validateConfirmPassword())
+    this.setState({ confirmPassword: e.target.value }, () =>
+      this.validateConfirmPassword(),
+    );
   }
 
   validateConfirmPassword() {
-    let confirmPasswordError = ''
-    if(this.state.password !== this.state.confirmPassword) {
-      confirmPasswordError = 'Passwords do not match'
+    let confirmPasswordError = "";
+    if (this.state.password !== this.state.confirmPassword) {
+      confirmPasswordError = "Passwords do not match";
     }
-    this.setState({ confirmPasswordError })
+    this.setState({ confirmPasswordError });
   }
 
   submitNewUser() {
-    const { userName, password, email, userNameError, passwordError, confirmPasswordError, emailError } = this.state
-    if(!userNameError && !passwordError && !emailError && !confirmPasswordError) {
-      console.log(`New user: ${email}`)
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        if(user) {
-          firebase.auth().onAuthStateChanged(user => {
-            if(user) {
-              user.updateProfile({
-                displayName: userName
-              })
-            }
-          })
-          this.props.signIn(userName, user.user?.email, user.user?.uid)
-          this.setState({ 
-            userName: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-          })
-          this.props.clear();
-        }
-      }).catch(error => console.log(error))
+    const {
+      userName,
+      password,
+      email,
+      userNameError,
+      passwordError,
+      confirmPasswordError,
+      emailError,
+    } = this.state;
+    if (
+      !userNameError &&
+      !passwordError &&
+      !emailError &&
+      !confirmPasswordError
+    ) {
+      console.log(`New user: ${email}`);
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+          if (user) {
+            firebase.auth().onAuthStateChanged((user) => {
+              if (user) {
+                user.updateProfile({
+                  displayName: userName,
+                });
+              }
+            });
+            this.props.signIn(userName, user.user?.email, user.user?.uid);
+            this.setState({
+              userName: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+            });
+            this.props.clear();
+          }
+        })
+        .catch((error) => console.log(error));
     }
   }
-  
+
   async handleSubmit(e: any) {
     e.preventDefault();
     await this.validateUserName();
@@ -136,26 +160,78 @@ class SignUp extends Component<IProps, IState> {
     this.submitNewUser();
   }
 
-  renderInput(name: string, type: string, value: string, error: string, onChange: (e: any) => void, onBlur: () => void) {
+  renderInput(
+    name: string,
+    type: string,
+    value: string,
+    error: string,
+    onChange: (e: any) => void,
+    onBlur: () => void,
+  ) {
     return (
       <FormGroup error={error}>
         <Label htmlFor={name}>{name}</Label>
-        <Input type={type} placeholder={name === 'Confirm Password'? 'Confirm Password': `Enter ${name}`} value={value} onChange={onChange} onBlur={onBlur} />
-        <div style={{ width: "100%"}}>{error}</div>
+        <Input
+          type={type}
+          placeholder={
+            name === "Confirm Password" ? "Confirm Password" : `Enter ${name}`
+          }
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+        <div style={{ width: "100%" }}>{error}</div>
       </FormGroup>
-    )
+    );
   }
 
   render() {
-    const { userName, password, confirmPassword, email, userNameError, passwordError, confirmPasswordError, emailError } = this.state
+    const {
+      userName,
+      password,
+      confirmPassword,
+      email,
+      userNameError,
+      passwordError,
+      confirmPasswordError,
+      emailError,
+    } = this.state;
     return (
       <Container>
         <h3>CREATE ACCOUNT</h3>
         <Form onSubmit={this.handleSubmit}>
-          {this.renderInput('User Name', 'text', userName, userNameError, this.handleUserNameChange, this.validateUserName)}
-          {this.renderInput('Email', 'text', email, emailError, this.handleEmailChange, this.validateEmail)}
-          {this.renderInput('Password', 'password', password, passwordError, this.handlePasswordChange, this.validatePassword)}
-          {this.renderInput('Confirm Password', 'password', confirmPassword, confirmPasswordError, this.handleConfirmPasswordChange, this.validateConfirmPassword)}
+          {this.renderInput(
+            "User Name",
+            "text",
+            userName,
+            userNameError,
+            this.handleUserNameChange,
+            this.validateUserName,
+          )}
+          {this.renderInput(
+            "Email",
+            "text",
+            email,
+            emailError,
+            this.handleEmailChange,
+            this.validateEmail,
+          )}
+          {this.renderInput(
+            "Password",
+            "password",
+            password,
+            passwordError,
+            this.handlePasswordChange,
+            this.validatePassword,
+          )}
+          {this.renderInput(
+            "Confirm Password",
+            "password",
+            confirmPassword,
+            confirmPasswordError,
+            this.handleConfirmPasswordChange,
+            this.validateConfirmPassword,
+          )}
           <Button type="submit">SUBMIT</Button>
         </Form>
       </Container>
@@ -170,8 +246,8 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     clear: () => {
       dispatch(clearAction());
-    }
+    },
   };
 };
 
-export default connect('', mapDispatchToProps)(SignUp);
+export default connect("", mapDispatchToProps)(SignUp);

@@ -1,15 +1,14 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
-import userData from "../../data-users.json";
 import { showLogInAction } from "../../actions/authActions";
+import { ColorScheme } from "../../ColorScheme";
+import userData from "../../data-users.json";
 import { RootState } from "../../reducers/rootReducer";
-import { useSelector, useDispatch } from "react-redux";
+import { Styles } from "../../Styles";
 
 const { gunmetal, accentColorOne, primaryColorTwo } = ColorScheme;
 const { primaryFont } = Styles;
-
 
 const SaveButtonCont = styled.div`
   width: 100%;
@@ -43,14 +42,14 @@ const Icon = styled.i`
 `;
 
 function SaveButton({ recipeId }: { recipeId: number }) {
-  const dispatch = useDispatch()
-  const uid = useSelector((state: RootState) => state.userReducer.uid)
+  const dispatch = useDispatch();
+  const uid = useSelector((state: RootState) => state.userReducer.uid);
 
   const isRecipeInFavs = () => {
     let boolIsInFavs = false;
     if (uid) {
       let user = userData.filter((u) => u.uid === uid);
-      if(user.length) {
+      if (user.length) {
         const userFavs = user[0].favorites;
         for (let x = 0; x < userFavs.length; x++) {
           if (userFavs[x] === recipeId) {
@@ -60,20 +59,23 @@ function SaveButton({ recipeId }: { recipeId: number }) {
       }
     }
     return boolIsInFavs;
-  }
+  };
 
   const isInFavs = recipeId ? isRecipeInFavs() : false;
-  
+
   if (!uid || (uid && !isInFavs)) {
     return (
       <SaveButtonCont>
-        <Button onClick={uid ? () => console.log("SAVED") : () => dispatch(showLogInAction())}>
+        <Button
+          onClick={
+            uid ? () => console.log("SAVED") : () => dispatch(showLogInAction())
+          }>
           <Icon className="fas fa-carrot" />
         </Button>
       </SaveButtonCont>
     );
   } else {
-    return <div/>
+    return <div />;
   }
 }
 

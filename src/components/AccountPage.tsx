@@ -1,8 +1,8 @@
 import React from "react";
-import styled from "styled-components";
-import { RootState } from "../reducers/rootReducer";
-import { ColorScheme } from "../ColorScheme";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+import { ColorScheme } from "../ColorScheme";
+import { RootState } from "../reducers/rootReducer";
 
 const AccountContainer = styled.div`
   color: ${ColorScheme.gunmetal};
@@ -26,7 +26,9 @@ const Email = styled.p`
 `;
 
 function AccountPage() {
-  const { displayName, email } = useSelector((state: RootState) => state.userReducer)
+  const { displayName, email } = useSelector(
+    (state: RootState) => state.userReducer,
+  );
   return (
     <AccountContainer>
       <h1>ACCOUNT PAGE</h1>

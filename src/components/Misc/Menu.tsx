@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
 import firebase from "firebase";
-import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
-import { Link } from "react-router-dom";
-import { RootState } from "../../reducers/rootReducer";
-import { signOutAction } from "../../actions/userActions";
-import { clearAction } from "../../actions/authActions";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { clearAction } from "../../actions/authActions";
+import { signOutAction } from "../../actions/userActions";
+import { ColorScheme } from "../../ColorScheme";
+import { RootState } from "../../reducers/rootReducer";
+import { Styles } from "../../Styles";
 
 const {
   primaryColorTwo,
@@ -27,7 +27,7 @@ const MContainer = styled.div<MProps>`
   color: ${primaryColorOne};
   position: absolute;
   top: 55px;
-  right: ${(props) => props.showMenu ? "0" : "-315px"};
+  right: ${(props) => (props.showMenu ? "0" : "-315px")};
   padding: 20px 70px 20px 70px;
   background: ${primaryColorTwo};
   border: 1px solid ${gunmetal};
@@ -43,28 +43,30 @@ const MContainer = styled.div<MProps>`
 `;
 
 const Menu = () => {
-  const dispatch = useDispatch()
-  const { showMenu } = useSelector((state: RootState) => state.authReducer)
-  const { uid, displayName } = useSelector((state: RootState) => state.userReducer)
+  const dispatch = useDispatch();
+  const { showMenu } = useSelector((state: RootState) => state.authReducer);
+  const { uid, displayName } = useSelector(
+    (state: RootState) => state.userReducer,
+  );
 
   const handleSignOut = () => {
     dispatch(clearAction());
     dispatch(signOutAction());
     firebase.auth().signOut();
-  }
+  };
 
   const handleMenuItems = (to: string, name: string) => {
     return (
-      <Link
-        to={to}
-        style={{ textDecoration: "none", color: primaryColorOne }}
-      >
-        <div onClick={() => name === "SIGN OUT" ? handleSignOut() : dispatch(clearAction())}>
+      <Link to={to} style={{ textDecoration: "none", color: primaryColorOne }}>
+        <div
+          onClick={() =>
+            name === "SIGN OUT" ? handleSignOut() : dispatch(clearAction())
+          }>
           {name}
         </div>
       </Link>
     );
-  }
+  };
 
   return (
     <>
@@ -76,6 +78,6 @@ const Menu = () => {
       </MContainer>
     </>
   );
-}
+};
 
 export default Menu;

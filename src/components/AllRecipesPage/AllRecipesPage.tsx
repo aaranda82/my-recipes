@@ -2,13 +2,12 @@ import { uniq } from "lodash";
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import styled from "styled-components";
-
+import { ColorScheme } from "../../ColorScheme";
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
-import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
-import CategoryBar from "../CategoryBar/CategoryBar";
-import { ColorScheme } from "../../ColorScheme";
 import { Styles } from "../../Styles";
+import CategoryBar from "../CategoryBar/CategoryBar";
+import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 
 const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
 const { secondaryFont, mobileMaxWidth } = Styles;
@@ -120,13 +119,13 @@ class AllRecipesPage extends Component<
 
   changeCategoryToShow(categoryToShow: string) {
     this.setState({ categoryToShow });
-
   }
 
   filterRecipesByCat() {
-    let recipesByCat = this.state.categoryToShow === "ALL" 
-      ? recipeData 
-      : recipeData.filter((r) => r.category === this.state.categoryToShow);
+    let recipesByCat =
+      this.state.categoryToShow === "ALL"
+        ? recipeData
+        : recipeData.filter((r) => r.category === this.state.categoryToShow);
     return recipesByCat;
   }
 
@@ -214,8 +213,7 @@ class AllRecipesPage extends Component<
         <CategoryBar
           categories={this.state.categories}
           categoryToShow={this.state.categoryToShow}
-          changeCategoryToShow={this.changeCategoryToShow}
-        ></CategoryBar>
+          changeCategoryToShow={this.changeCategoryToShow}></CategoryBar>
         <Recipes id="Recipes">
           {this.props.match.params.id ? (
             <>
