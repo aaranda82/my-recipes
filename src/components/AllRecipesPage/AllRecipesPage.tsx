@@ -6,7 +6,6 @@ import styled from "styled-components";
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
 import { Styles } from "../../Styles";
-import CategoryBar from "../CategoryBar";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
 import CategoryBar from "../CategoryBar/CategoryBar";
 import { withRouter, RouteComponentProps } from "react-router";
