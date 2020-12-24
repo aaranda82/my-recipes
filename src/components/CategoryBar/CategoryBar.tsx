@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ColorScheme } from "../../ColorScheme";
 import { Styles } from "../../Styles";
-import Category from "./Category";
 
-const { gunmetal } = ColorScheme;
+const { gunmetal, accentColorOne } = ColorScheme;
 const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
 
 const CategoryBarDiv = styled.div`
@@ -35,11 +34,7 @@ const CategoriesDisplayedCont = styled.div`
   }
 `;
 
-interface CDProps {
-  catPage: number;
-}
-
-const CategoriesDisplayed = styled.div<CDProps>`
+const CategoriesDisplayed = styled.div<{ catPage: number }>`
 transform: translateX(-${(props) => props.catPage * 800}px);
 transition: all 0.7s ease;
 `;
@@ -68,30 +63,57 @@ const CatTitle = styled.div`
   }
 `;
 
+const Button = styled.div<{selected: boolean}>`
+  width: 100px;
+  display: inline-block;
+  font-family: "Raleway", sans-serif;
+  text-align: center;
+  cursor: pointer;
+  background-color: ${(p) => p.selected? accentColorOne: ""};
+  color: ${(p) => p.selected? "white": ""};
+  border-radius: 50px;
+  &:hover {
+    background-color: lightgrey;
+  }
+`;
+
 interface IProps {
-  categories: string[];
-  categoryToShow: string;
+  categories: string[],
+  categoryToShow: string,
+  changeCategoryToShow: (categoryToShow: string) => void, 
 }
 
 interface IState {
-  categories: string[];
-  categoryPage: number;
-  categoryToShow: string;
+  categoryPage: number; 
 }
 
-class CategoryBar extends Component<IProps, IState> {
-  constructor(props: IState) {
+class CategoryBar extends Component<IProps, IState>{
+  constructor(props: IProps){
     super(props);
-    this.state = {
-      categories: ["ALL"],
-      categoryPage: 0,
-      categoryToShow: "ALL",
-    };
-    this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
-  }
+    this.state = { categoryPage: 0 }
+  }   
 
-  changeCategoryToShow(categoryToShow: string) {
-    this.setState({ categoryToShow });
+  category( index: number, selected: boolean, cat: string) {
+    return (
+      <Button
+        key={index}
+        className="category"
+        onClick={() => this.props.changeCategoryToShow(cat)}
+        selected={selected}
+      >
+        <div>
+          {cat}
+        </div>
+      </Button>
+    );
+  };
+
+  renderCategories() {
+    const catElements = this.props.categories.map((cat, index) => {
+      let selected = this.props.categoryToShow === cat ? true : false;
+      return this.category(index, selected, cat);
+    });
+    return catElements;
   }
 
   decrimentCategoryPage() {
@@ -105,32 +127,14 @@ class CategoryBar extends Component<IProps, IState> {
   }
 
   incrementCategoryPage() {
-    if((this.state.categoryPage + 1) >= this.state.categories.length / 8 ){
+    if((this.state.categoryPage + 1) >= this.props.categories.length / 8 ){
       return false;
     } else {
       this.setState({ categoryPage: this.state.categoryPage + 1})
     }
   }
 
-  renderCategories() {
-    
-    const catElements = this.state.categories.map((cat, index) => {
-      let selected = this.state.categoryToShow === cat ? true : false;
-      return Category(index, this.changeCategoryToShow, selected, cat);
-    });
-    return catElements;
-  }
-
-  componentDidMount() {
-    const { categories } = this.props;
-    const { categoryToShow } = this.props;
-    this.setState({
-      categories,
-      categoryToShow
-    })
-  }
-
-  render() {
+  render(){
     return (
       <CategoryBarDiv>
         <CategoriesContent>
@@ -148,7 +152,6 @@ class CategoryBar extends Component<IProps, IState> {
           </CategoriesDisplayedCont>
         </CategoriesContent>
       </CategoryBarDiv>
-
     )
   }
 }

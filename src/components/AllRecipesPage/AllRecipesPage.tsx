@@ -3,7 +3,7 @@ import styled from "styled-components";
 import recipeData from "../../data-recipes.json";
 import userData from "../../data-users.json";
 import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
-import CategoryBar from "./CategoryBar";
+import CategoryBar from "../CategoryBar/CategoryBar";
 import { withRouter, RouteComponentProps } from "react-router";
 import { ColorScheme } from "../../ColorScheme";
 import { Styles } from "../../Styles";
@@ -157,6 +157,7 @@ interface Recipe {
 
 interface IState {
   categories: string[];
+  categoryPage: number;
   categoryToShow: string;
   recipesToShow: string;
 }
@@ -169,25 +170,18 @@ class AllRecipesPage extends Component<
     super(props);
     this.state = {
       categories: ["ALL"],
-      // categoryPage: 0,
+      categoryPage: 0,
       categoryToShow: "ALL",
       recipesToShow: "ALL RECIPES",
     };
-    // this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
+    this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
+    this.incrementCategoryPage = this.incrementCategoryPage.bind(this);
+    this.decrimentCategoryPage = this.decrimentCategoryPage.bind(this);
   }
 
-  // changeCategoryToShow(categoryToShow: string) {
-  //   this.setState({ categoryToShow });
-  // }
-
-  // renderCategories() {
-    
-  //   const catElements = this.state.categories.map((cat, index) => {
-  //     let selected = this.state.categoryToShow === cat ? true : false;
-  //     return Category(index, this.changeCategoryToShow, selected, cat);
-  //   });
-  //   return catElements;
-  // }
+  changeCategoryToShow(categoryToShow: string) {
+    this.setState({ categoryToShow });
+  }
 
   filterRecipesByCat() {
     let recipesByCat: Recipe[] = [];
@@ -277,23 +271,23 @@ class AllRecipesPage extends Component<
     );
   }
 
-  // decrimentCategoryPage() {
-  //   let categoryPage;
-  //   if(this.state.categoryPage <= 0) {
-  //     categoryPage = 0  
-  //   } else {
-  //     categoryPage = this.state.categoryPage - 1;
-  //   }
-  //   this.setState({ categoryPage })
-  // }
+  decrimentCategoryPage() {
+    let categoryPage;
+    if(this.state.categoryPage <= 0) {
+      categoryPage = 0  
+    } else {
+      categoryPage = this.state.categoryPage - 1;
+    }
+    this.setState({ categoryPage })
+  }
 
-  // incrementCategoryPage() {
-  //   if((this.state.categoryPage + 1) >= this.state.categories.length / 8 ){
-  //     return false;
-  //   } else {
-  //     this.setState({ categoryPage: this.state.categoryPage + 1})
-  //   }
-  // }
+  incrementCategoryPage() {
+    if((this.state.categoryPage + 1) >= this.state.categories.length / 8 ){
+      return false;
+    } else {
+      this.setState({ categoryPage: this.state.categoryPage + 1})
+    }
+  }
 
   componentDidMount() {
     const state = {...this.state}
@@ -309,24 +303,12 @@ class AllRecipesPage extends Component<
 
   render() {
     return (
-      <div id="PublicPage">
-        {/* <CategoriesContainer>
-          <CategoriesContent>
-            <CatButtonCont>
-              <CatButton onClick={()=>{this.decrimentCategoryPage()}}><i className="fas fa-arrow-left"></i></CatButton>
-            </CatButtonCont>
-            <CatTitle>Categories</CatTitle>
-            <CatButtonCont>
-              <CatButton onClick={()=>{this.incrementCategoryPage()}}><i className="fas fa-arrow-right"></i></CatButton>
-            </CatButtonCont>
-            <CategoriesDisplayedCont id="Categories">
-              <CategoriesDisplayed catPage={this.state.categoryPage}>
-                {this.renderCategories()}
-              </CategoriesDisplayed>
-            </CategoriesDisplayedCont>
-          </CategoriesContent>
-        </CategoriesContainer> */}
-        <CategoryBar categories={this.state.categories} categoryToShow={this.state.categoryToShow}/>
+      <div id="AllRecipesPage">
+        <CategoryBar
+          categories={this.state.categories}
+          categoryToShow={this.state.categoryToShow}
+          changeCategoryToShow={this.changeCategoryToShow}
+        ></CategoryBar>
         <Recipes id="Recipes">
           {this.props.match.params.id ? (
             <>
