@@ -64,14 +64,15 @@ const CatTitle = styled.div`
 `;
 
 const Button = styled.div<{ selected: boolean }>`
-  width: 100px;
+  width: 90px;
+  margin: 0 5px;
   display: inline-block;
   font-family: "Raleway", sans-serif;
   text-align: center;
   cursor: pointer;
   background-color: ${(p) => (p.selected ? accentColorOne : "")};
   color: ${(p) => (p.selected ? "white" : "")};
-  border-radius: 50px;
+  border-radius: 5px;
   &:hover {
     background-color: lightgrey;
   }
