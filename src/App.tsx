@@ -7,17 +7,17 @@ import {
   Switch,
 } from "react-router-dom";
 import styled from "styled-components";
-import AccountPage from "./components/AccountPage";
-import AllRecipesPage from "./components/AllRecipesPage/AllRecipesPage";
-import CreateRecipe from "./components/CreateRecipe";
-import AuthModal from "./components/Misc/AuthModal";
-import Footer from "./components/Misc/Footer";
-import Header from "./components/Misc/Header";
-import Menu from "./components/Misc/Menu";
-import ScrollToTop from "./components/Misc/ScrollToTop";
-import RecipeDetail from "./components/RecipeDetail";
-import UserProfile from "./components/UserProfile";
+import AuthModal from "./components/AuthModal";
+import Menu from "./components/Menu";
+import ScrollToTop from "./components/ScrollToTop";
+import Footer from "./Layout/Footer";
+import Header from "./Layout/Header";
 import { RootState } from "./reducers/rootReducer";
+import AccountPage from "./Routes/AccountPage";
+import AllRecipesPage from "./Routes/AllRecipesPage";
+import CreateRecipe from "./Routes/CreateRecipe";
+import RecipeDetail from "./Routes/RecipeDetail";
+import UserProfile from "./Routes/UserProfile";
 
 const Main = styled.main`
   max-width: 900px;

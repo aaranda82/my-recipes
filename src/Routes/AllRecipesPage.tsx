@@ -2,15 +2,15 @@ import { uniq } from "lodash";
 import React, { Component } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
-import recipeData from "../../data-recipes.json";
-import userData from "../../data-users.json";
-import { Styles } from "../../Styles";
-import CategoryBar from "../CategoryBar/index";
-import RecipeCard, { BlankRecipeCard } from "./RecipeCard";
+import { colorScheme } from "../colorScheme";
+import CategoryBar from "../components/CategoryBar";
+import RecipeCard, { BlankRecipeCard } from "../components/RecipeCard";
+import recipeData from "../data-recipes.json";
+import userData from "../data-users.json";
+import { styles } from "../styles";
 
-const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
-const { secondaryFont, mobileMaxWidth } = Styles;
+const { accentColorOne, primaryColorTwo, primaryColorOne } = colorScheme;
+const { secondaryFont, mobileMaxWidth } = styles;
 
 const RVSCont = styled.div`
   width: 95%;

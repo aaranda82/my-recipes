@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
+import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
 
 const AccountContainer = styled.div`
-  color: ${ColorScheme.gunmetal};
+  color: ${colorScheme.gunmetal};
   text-align: center;
 `;
 

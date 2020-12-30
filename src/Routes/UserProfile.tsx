@@ -2,29 +2,32 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
+import { colorScheme } from "../colorScheme";
+import RecipeCard from "../components/RecipeCard";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
-import { Styles } from "../Styles";
-import { handleRecipeArrayLength } from "./AllRecipesPage/AllRecipesPage";
-import RecipeCard from "./AllRecipesPage/RecipeCard";
+import { styles } from "../styles";
+import { handleRecipeArrayLength } from "./AllRecipesPage";
+
+const { primaryFont, secondaryFont, mobileMaxWidth } = styles;
+const { accentColorOne } = colorScheme;
 
 const Return = styled.button`
-  font-family: ${Styles.primaryFont};
+  font-family: ${primaryFont};
   border: none;
   cursor: pointer;
   &:hover {
-    color: ${ColorScheme.accentColorOne};
+    color: ${accentColorOne};
   }
 `;
 
 const Title = styled.div`
-  font-family: ${Styles.secondaryFont};
+  font-family: ${secondaryFont};
   font-size: 30px;
   text-align: center;
   border-bottom: 1px solid black;
-  @media screen and (max-width: ${Styles.mobileMaxWidth}) {
+  @media screen and (max-width: ${mobileMaxWidth}) {
     font-size: 20px;
   }
 `;
@@ -94,9 +97,12 @@ function UserProfile() {
   const history = useHistory();
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { id } = useParams<{ id: string }>();
-  const userToViewInfo = userData.filter((u: Users) => {
+  const userToViewInfo = userData.find((u: Users) => {
     return u.uid === id;
-  })[0];
+  });
+  if (!userToViewInfo) {
+    return null;
+  }
   const { userName, favorites } = userToViewInfo;
   return (
     <>

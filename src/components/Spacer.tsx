@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
+import { colorScheme } from "../colorScheme";
 
-const { primaryColorOne } = ColorScheme;
+const { primaryColorOne } = colorScheme;
 const SpacerDiv = styled.div`
   background: ${primaryColorOne};
   height: 3px;

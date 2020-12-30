@@ -3,18 +3,18 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { clearAction } from "../../actions/authActions";
-import { signOutAction } from "../../actions/userActions";
-import { ColorScheme } from "../../ColorScheme";
-import { RootState } from "../../reducers/rootReducer";
-import { Styles } from "../../Styles";
+import { clearAction } from "../actions/authActions";
+import { signOutAction } from "../actions/userActions";
+import { colorScheme } from "../colorScheme";
+import { RootState } from "../reducers/rootReducer";
+import { styles } from "../styles";
 
 const {
   primaryColorTwo,
   primaryColorOne,
   accentColorOne,
   gunmetal,
-} = ColorScheme;
+} = colorScheme;
 
 interface MProps {
   showMenu: boolean;
@@ -22,7 +22,7 @@ interface MProps {
 
 const MContainer = styled.div<MProps>`
   font-size: 2em;
-  font-family: ${Styles.secondaryFont};
+  font-family: ${styles.secondaryFont};
   font-weight: 600;
   color: ${primaryColorOne};
   position: absolute;

@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { clearAction } from "../../actions/authActions";
-import { RootState } from "../../reducers/rootReducer";
-import { Styles } from "../../Styles";
+import { clearAction } from "../actions/authActions";
+import { RootState } from "../reducers/rootReducer";
+import { styles } from "../styles";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 
-const { mobileMaxWidth } = Styles;
+const { mobileMaxWidth } = styles;
 
 interface LIProps {
   loggedIn: string | null;

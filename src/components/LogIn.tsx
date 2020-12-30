@@ -1,24 +1,23 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import React, { ChangeEvent, Component } from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import styled from "styled-components";
-import { clearAction } from "../../actions/authActions";
-import { signInAction, signOutAction } from "../../actions/userActions";
-import { ColorScheme } from "../../ColorScheme";
-import { RootState } from "../../reducers/rootReducer";
-import { Styles } from "../../Styles";
+import { clearAction } from "../actions/authActions";
+import { signInAction, signOutAction } from "../actions/userActions";
+import { colorScheme } from "../colorScheme";
+import { RootState } from "../reducers/rootReducer";
+import { styles } from "../styles";
 
-const { connect } = require("react-redux");
-
-const { mobileMaxWidth, primaryFont } = Styles;
+const { mobileMaxWidth, primaryFont } = styles;
 const {
   gunmetal,
   redOrange,
   primaryColorTwo,
   primaryColorOne,
   accentColorOne,
-} = ColorScheme;
+} = colorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -96,9 +95,8 @@ export const Button = styled.button`
 interface AuthProps {
   displayName: string;
   uid: string;
-  isSignedIn: boolean;
   history: { push: any };
-  signIn: (d: string | null, e: string | null, u: string | null) => void;
+  signIn: (d: string, e: string, u: string) => void;
   signOut: () => void;
   clear: () => void;
 }
