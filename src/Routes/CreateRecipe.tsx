@@ -1,12 +1,13 @@
+import firebase from "firebase";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
+import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
-import { Styles } from "../Styles";
+import { styles } from "../styles";
 
-const { accentColorOne, primaryColorTwo, primaryColorOne } = ColorScheme;
-const { mobileMaxWidth, primaryFont, secondaryFont } = Styles;
+const { accentColorOne, primaryColorTwo, primaryColorOne } = colorScheme;
+const { mobileMaxWidth, primaryFont, secondaryFont } = styles;
 
 const CRCont = styled.div`
   font-family: ${primaryFont};
@@ -228,6 +229,11 @@ function handleButton(cb: () => void, title: string) {
   );
 }
 
+interface IProps {
+  uid: string;
+  displayName: string;
+}
+
 interface IState {
   recipe: {
     recipeId: number;
@@ -256,13 +262,13 @@ interface IState {
   ingredientsError: string;
 }
 
-class CreateRecipe extends Component<{ displayName: string }, IState> {
-  constructor(props: { displayName: string }) {
+class CreateRecipe extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       recipe: {
         recipeId: 0,
-        createdBy: this.props.displayName,
+        createdBy: this.props.uid,
         name: "",
         category: "",
         servings: 0,
@@ -560,7 +566,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
     });
   }
 
-  addRecipe() {
+  async addRecipe() {
     this.validateName();
     this.validateServings();
     this.validateCategory();
@@ -580,19 +586,49 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
       ingredients.length > 0 &&
       instructions.length > 0
     ) {
-      console.log("RECIPE ADDED", this.state.recipe);
+      const key = firebase.database().ref().child("recipes").push().key;
+      console.log(key);
+      const {
+        createdBy,
+        name,
+        category,
+        servings,
+        ingredients,
+        instructions,
+      } = this.state.recipe;
+      const response = await firebase
+        .database()
+        .ref("recipes/" + key)
+        .set(
+          {
+            createdBy,
+            name,
+            category,
+            servings,
+            ingredients,
+            instructions,
+            favorites: [],
+          },
+          (error) => {
+            if (error) {
+              console.log(error);
+            }
+          },
+        );
+
+      console.log("RECIPE ADDED", response);
     }
-    // this.setState({
-    //   recipe: {
-    //     recipeId: 0,
-    //     createdBy: this.props.displayName,
-    //     name: "",
-    //     category: "",
-    //     servings: 0,
-    //     ingredients: [],
-    //     instructions: [],
-    //   },
-    // });
+    this.setState({
+      recipe: {
+        recipeId: 0,
+        createdBy: this.props.uid,
+        name: "",
+        category: "",
+        servings: 0,
+        ingredients: [],
+        instructions: [],
+      },
+    });
   }
 
   render() {
@@ -689,6 +725,7 @@ class CreateRecipe extends Component<{ displayName: string }, IState> {
 
 const mapStateToProps = (state: RootState) => {
   return {
+    uid: state.userReducer.uid,
     displayName: state.userReducer.displayName,
   };
 };

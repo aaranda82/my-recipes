@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Lunch from "../../assets/Lunch.jpg";
-import { ColorScheme } from "../../ColorScheme";
-import userData from "../../data-users.json";
-import { Styles } from "../../Styles";
-import SaveButton from "../Misc/SaveButton";
+import Lunch from "../assets/Lunch.jpg";
+import { colorScheme } from "../colorScheme";
+import userData from "../data-users.json";
+import { styles } from "../styles";
+import SaveButton from "./SaveButton";
 
-const { primaryColorTwo, accentColorOne } = ColorScheme;
-const { mobileMaxWidth, primaryFont } = Styles;
+const { primaryColorTwo, accentColorOne } = colorScheme;
+const { mobileMaxWidth, primaryFont } = styles;
 
 const RecipeContainerDiv = styled.div`
   width: 22%;
@@ -98,7 +98,7 @@ function RecipeCard(props: IProps) {
             </RecipeNameDiv>
           </Link>
           <Link
-            to={`/user/:${createdBy}`}
+            to={`/user/${createdBy}`}
             style={{
               textDecoration: "none",
               width: "65%",

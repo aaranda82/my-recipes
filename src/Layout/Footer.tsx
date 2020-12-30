@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
+import { colorScheme } from "../colorScheme";
 
 const Nav = styled.footer`
   height: 100px;
@@ -12,7 +12,7 @@ const Nav = styled.footer`
 const Anchor = styled.a`
   padding-left: 5px;
   text-decoration: none;
-  color: ${ColorScheme.accentColorOne};
+  color: ${colorScheme.accentColorOne};
 `;
 
 function Footer() {

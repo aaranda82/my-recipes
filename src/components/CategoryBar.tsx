@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
-import { Styles } from "../../Styles";
+import { colorScheme } from "../colorScheme";
+import { styles } from "../styles";
 
-const { gunmetal, accentColorOne } = ColorScheme;
-const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = Styles;
+const { gunmetal, accentColorOne } = colorScheme;
+const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = styles;
 
 const CategoryBarDiv = styled.div`
   display: flex;

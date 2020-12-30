@@ -4,20 +4,20 @@ import React, { ChangeEvent, Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import styled from "styled-components";
-import { clearAction } from "../../actions/authActions";
-import { signInAction, signOutAction } from "../../actions/userActions";
-import { ColorScheme } from "../../ColorScheme";
-import { RootState } from "../../reducers/rootReducer";
-import { Styles } from "../../Styles";
+import { clearAction } from "../actions/authActions";
+import { signInAction, signOutAction } from "../actions/userActions";
+import { colorScheme } from "../colorScheme";
+import { RootState } from "../reducers/rootReducer";
+import { styles } from "../styles";
 
-const { mobileMaxWidth, primaryFont } = Styles;
+const { mobileMaxWidth, primaryFont } = styles;
 const {
   gunmetal,
   redOrange,
   primaryColorTwo,
   primaryColorOne,
   accentColorOne,
-} = ColorScheme;
+} = colorScheme;
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -147,8 +147,8 @@ class LogIn extends Component<AuthProps, IState> {
   }
 
   handleFormGroups(
-    // name: string,
-    // value: string,
+    name: string,
+    value: string,
     onChange: (e: ChangeEvent<HTMLInputElement>) => void,
     type: string,
   ) {

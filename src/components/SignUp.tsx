@@ -1,10 +1,9 @@
 import firebase from "firebase";
 import React, { Component } from "react";
-import { clearAction } from "../../actions/authActions";
-import { signInAction } from "../../actions/userActions";
+import { clearAction } from "../actions/authActions";
+import { signInAction } from "../actions/userActions";
 import { Button, Container, Form, FormGroup, Input, Label } from "./LogIn";
-
-const { connect } = require("react-redux");
+import { connect } from "react-redux";
 
 interface IState {
   userName: string;
@@ -19,11 +18,7 @@ interface IState {
 
 interface IProps {
   clear: () => void;
-  signIn: (
-    displayName: string | null | undefined,
-    email: string | null | undefined,
-    uid: string | null | undefined,
-  ) => void;
+  signIn: (displayName: string, email: string, uid: string) => void;
 }
 
 class SignUp extends Component<IProps, IState> {
@@ -137,14 +132,16 @@ class SignUp extends Component<IProps, IState> {
                 });
               }
             });
-            this.props.signIn(userName, user.user?.email, user.user?.uid);
-            this.setState({
-              userName: "",
-              email: "",
-              password: "",
-              confirmPassword: "",
-            });
-            this.props.clear();
+            if (user.user && typeof user.user.email === "string") {
+              this.props.signIn(userName, user.user.email, user.user.uid);
+              this.setState({
+                userName: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+              });
+              this.props.clear();
+            }
           }
         })
         .catch((error) => console.log(error));
@@ -250,4 +247,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect("", mapDispatchToProps)(SignUp);
+export default connect(mapDispatchToProps)(SignUp);

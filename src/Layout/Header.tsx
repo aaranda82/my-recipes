@@ -2,13 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ColorScheme } from "../../ColorScheme";
-import { RootState } from "../../reducers/rootReducer";
-import { Styles } from "../../Styles";
-import HeaderButtons from "./HeaderButtons";
+import { colorScheme } from "../colorScheme";
+import HeaderButtons from "../components/HeaderButtons";
+import { RootState } from "../reducers/rootReducer";
+import { styles } from "../styles";
 
-const { primaryColorOne, primaryColorTwo } = ColorScheme;
-const { mobileMaxWidth, primaryFont } = Styles;
+const { primaryColorOne, primaryColorTwo } = colorScheme;
+const { mobileMaxWidth, primaryFont } = styles;
 
 interface LIProps {
   loggedIn: string | null;

@@ -8,14 +8,14 @@ import {
   showLogInAction,
   showMenuAction,
   showSignUpAction,
-} from "../../actions/authActions";
-import { ColorScheme } from "../../ColorScheme";
-import { RootState } from "../../reducers/rootReducer";
-import { Styles } from "../../Styles";
+} from "../actions/authActions";
+import { colorScheme } from "../colorScheme";
+import { RootState } from "../reducers/rootReducer";
+import { styles } from "../styles";
 import { Spacer } from "./Spacer";
 
-const { primaryColorOne, primaryColorTwo, accentColorOne } = ColorScheme;
-const { mobileMaxWidth } = Styles;
+const { primaryColorOne, primaryColorTwo, accentColorOne } = colorScheme;
+const { mobileMaxWidth } = styles;
 
 const NavMenuButton = styled.i`
   font-size: 2em;

@@ -1,4 +1,4 @@
-export const ColorScheme = {
+export const colorScheme = {
   gunmetal: "#1C3041",
   blueMunsell: "#2C8C99",
   mintCream: "#EFFFFA",

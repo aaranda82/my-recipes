@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ColorScheme } from "../ColorScheme";
+import { colorScheme } from "../colorScheme";
+import SaveButton from "../components/SaveButton";
 import recipeData from "../data-recipes.json";
 import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
-import { Styles } from "../Styles";
-import SaveButton from "./Misc/SaveButton";
+import { styles } from "../styles";
 
-const { brownSugar, accentColorOne } = ColorScheme;
-const { primaryFont, secondaryFont } = Styles;
+const { brownSugar, accentColorOne } = colorScheme;
+const { primaryFont, secondaryFont } = styles;
 
 const RecipeDetailDiv = styled.div`
   font-family: ${primaryFont};
