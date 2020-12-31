@@ -107,7 +107,7 @@ function RecipeCard(props: IProps) {
               justifyContent: "center",
               alignItems: "center",
             }}>
-            <div>{userName}</div>
+            <RecipeNameDiv>{userName}</RecipeNameDiv>
           </Link>
 
           <MoreInfoDiv width="35%">
