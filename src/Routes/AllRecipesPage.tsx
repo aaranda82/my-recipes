@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import CategoryBar from "../components/CategoryBar";
 import RecipeCard, { BlankRecipeCard } from "../components/RecipeCard";
+import SpinnerLoader from "../components/SpinnerLoader";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
@@ -244,15 +245,7 @@ class AllRecipesPage extends Component<IProps, IState> {
         </Recipes>
       </div>
     ) : (
-      <div
-        style={{
-          textAlign: "center",
-          fontSize: "30px",
-          fontFamily: secondaryFont,
-          margin: "30px",
-        }}>
-        ...LOADING
-      </div>
+      <SpinnerLoader />
     );
   }
 }
