@@ -3,19 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { showLogInAction } from "../actions/authActions";
 import { colorScheme } from "../colorScheme";
-import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
-const { gunmetal, primaryColorTwo } = colorScheme;
+const { gunmetal, primaryColorTwo, saveButton1, saveButton2 } = colorScheme;
 const { primaryFont } = styles;
 
 const SVG = styled.svg`
-  fill: red;
-  fill-opacity: 0.6;
+  fill: ${saveButton2};
   transition: all ease 0.2s;
   &:hover {
-    fill-opacity: 1;
+    fill: ${saveButton1};
   }
   &:active {
     transform: scale(1.2);
@@ -40,14 +38,26 @@ const Button = styled.button`
   outline: none;
 `;
 
-function SaveButton({ recipeId }: { recipeId: number }) {
+function SaveButton({ recipeId }: { recipeId: string }) {
   const dispatch = useDispatch();
   const uid = useSelector((state: RootState) => state.userReducer.uid);
+  const user_Data = [
+    {
+      uid: "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
+      userName: "Bill",
+      favorites: ["1", "2", "3", "4"],
+    },
+    {
+      uid: "SW1T9FNUxecYoDBv7IWqGil9lAW2",
+      userName: "Mike",
+      favorites: ["7", "8", "9", "10"],
+    },
+  ];
 
   const isRecipeInFavs = () => {
     let boolIsInFavs = false;
     if (uid) {
-      let user = userData.filter((u) => u.uid === uid);
+      let user = user_Data.filter((u) => u.uid === uid);
       if (user.length) {
         const userFavs = user[0].favorites;
         for (let x = 0; x < userFavs.length; x++) {

@@ -1,11 +1,10 @@
-import React from "react";
+import firebase from "firebase";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import RecipeCard from "../components/RecipeCard";
-import recipeData from "../data-recipes.json";
-import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 import { handleRecipeArrayLength } from "./AllRecipesPage";
@@ -40,71 +39,105 @@ const RecipeContainer = styled.div`
 `;
 
 interface IRecipe {
-  recipeId: number;
+  recipeId: string;
   createdBy: string;
   name: string;
   category: string;
   servings: number;
   ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
-  showAuth?: boolean;
 }
 
-function handleFavorites(favs: number[], uid: string) {
-  // uid of user logged in or ""
-  const favoriteRecipes = favs.map((f: number, index) => {
-    const fav = recipeData.filter((r: IRecipe) => r.recipeId === f);
-    const { name, recipeId, createdBy } = fav[0];
-    const RCProps = {
-      name,
-      recipeId,
-      index,
-      view: "public",
-      uid,
-      createdBy,
-    };
-    return <RecipeCard key={index} {...RCProps} />;
-  });
-  return handleRecipeArrayLength(favoriteRecipes);
-}
-
-function handleUserCreatedRecipes(userToViewId: string, uid: string) {
-  const userCreatedRecipes: JSX.Element[] = [];
-  for (let x = 0; x < recipeData.length; x++) {
-    if (recipeData[x].createdBy === userToViewId) {
-      const { name, recipeId, createdBy } = recipeData[x];
-      const RCProps = {
-        name,
-        recipeId,
-        index: x,
-        view: "public",
-        uid,
-        createdBy,
-      };
-      userCreatedRecipes.push(<RecipeCard key={x + 1000} {...RCProps} />);
-    }
-  }
-  return handleRecipeArrayLength(userCreatedRecipes);
-}
-
-interface Users {
+interface IUsers {
   uid: string;
   userName: string;
   favorites: number[];
 }
 
 function UserProfile() {
+  const [recipes, setRecipes] = useState<any[]>([]);
+
+  const fetchRecipes = async () => {
+    await firebase
+      .database()
+      .ref("/recipes")
+      .once("value")
+      .then((snapshot) => {
+        setRecipes(snapshot.val());
+      });
+  };
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
+  const user_Data = [
+    {
+      uid: "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
+      userName: "Bill",
+      favorites: ["1", "2", "3", "4"],
+    },
+    {
+      uid: "SW1T9FNUxecYoDBv7IWqGil9lAW2",
+      userName: "Mike",
+      favorites: ["7", "8", "9", "10"],
+    },
+  ];
+
   const history = useHistory();
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { id } = useParams<{ id: string }>();
-  const userToViewInfo = userData.find((u: Users) => {
+  const userToViewInfo = user_Data.find((u) => {
     return u.uid === id;
   });
   if (!userToViewInfo) {
     return null;
   }
   const { userName, favorites } = userToViewInfo;
-  return (
+
+  function handleUserCreatedRecipes() {
+    const userCreatedRecipes: JSX.Element[] = [];
+    for (let x = 0; x < recipes.length; x++) {
+      if (recipes[x].createdBy === id) {
+        const { name, recipeId, createdBy } = recipes[x];
+        const RCProps = {
+          name,
+          recipeId,
+          index: x,
+          view: "public",
+          uid,
+          createdBy,
+        };
+        userCreatedRecipes.push(<RecipeCard key={x + 1000} {...RCProps} />);
+      }
+    }
+    return handleRecipeArrayLength(userCreatedRecipes);
+  }
+
+  function handleFavorites() {
+    let favoriteRecipes = [];
+    if (recipes.length) {
+      favoriteRecipes = favorites.map((f: string, index) => {
+        const fav = recipes.filter((r) => r.recipeId === f);
+        const { name, recipeId, createdBy } = fav[0];
+        const RCProps = {
+          name,
+          recipeId,
+          index,
+          view: "public",
+          uid,
+          createdBy,
+        };
+        return <RecipeCard key={index} {...RCProps} />;
+      });
+    } else {
+      return null;
+    }
+
+    return handleRecipeArrayLength(favoriteRecipes);
+  }
+
+  return recipes.length ? (
     <>
       <Return
         onClick={() => {
@@ -113,10 +146,20 @@ function UserProfile() {
         <i className={"fas fa-reply"} /> RETURN
       </Return>
       <Title>{userName}'s Favorites</Title>
-      <RecipeContainer>{handleFavorites(favorites, uid)}</RecipeContainer>
+      <RecipeContainer>{handleFavorites()}</RecipeContainer>
       <Title>{userName}'s Recipes</Title>
-      <RecipeContainer>{handleUserCreatedRecipes(id, uid)}</RecipeContainer>
+      <RecipeContainer>{handleUserCreatedRecipes()}</RecipeContainer>
     </>
+  ) : (
+    <div
+      style={{
+        textAlign: "center",
+        fontSize: "30px",
+        fontFamily: secondaryFont,
+        margin: "30px",
+      }}>
+      GETTING RECIPES...
+    </div>
   );
 }
 
