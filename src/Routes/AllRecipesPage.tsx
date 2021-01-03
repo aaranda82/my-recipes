@@ -1,12 +1,12 @@
 import { uniq } from "lodash";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import CategoryBar from "../components/CategoryBar";
 import RecipeCard, { BlankRecipeCard } from "../components/RecipeCard";
-import recipeData from "../data-recipes.json";
-import userData from "../data-users.json";
+import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
 const { accentColorOne, primaryColorTwo, primaryColorOne } = colorScheme;
@@ -85,32 +85,30 @@ export function handleRecipeArrayLength(allRecipes: JSX.Element[]) {
   }
 }
 
-interface Recipe {
-  recipeId: number;
+interface IRecipe {
+  recipeId: string;
   createdBy: string;
   name: string;
   category: string;
   servings: number;
+  favoritedBy: string[];
   ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
 }
 
+interface IProps extends RouteComponentProps<{ id: string }> {
+  recipes: IRecipe[];
+}
+
 interface IState {
-  categories: string[];
-  categoryPage: number;
   categoryToShow: string;
   recipesToShow: string;
 }
 
-class AllRecipesPage extends Component<
-  RouteComponentProps<{ id: string }>,
-  IState
-> {
-  constructor(props: RouteComponentProps<{ id: string }>) {
+class AllRecipesPage extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      categories: ["ALL"],
-      categoryPage: 0,
       categoryToShow: "ALL",
       recipesToShow: "ALL RECIPES",
     };
@@ -124,48 +122,17 @@ class AllRecipesPage extends Component<
   filterRecipesByCat() {
     let recipesByCat =
       this.state.categoryToShow === "ALL"
-        ? recipeData
-        : recipeData.filter((r) => r.category === this.state.categoryToShow);
+        ? this.props.recipes
+        : this.props.recipes.filter(
+            (r) => r.category === this.state.categoryToShow,
+          );
     return recipesByCat;
   }
 
   renderPublicRecipes() {
-    const allRecipes = this.filterRecipesByCat().map((recipeData, index) => {
-      const { recipeId, name, createdBy } = recipeData;
-      const RCProps = {
-        name,
-        recipeId,
-        index,
-        uid: this.props.match.params.id,
-        createdBy,
-      };
-      return <RecipeCard key={index} {...RCProps} />;
-    });
-    return handleRecipeArrayLength(allRecipes);
-  }
-
-  renderUserRecipes(recipesToShow: string) {
-    const recipesByCat = this.filterRecipesByCat();
-    let recipes: Recipe[] = [];
-    const uid = this.props.match.params.id;
-    const user = userData.filter((u) => u.uid === uid);
-    if (user.length) {
-      const userFavs = user[0].favorites;
-      if (recipesToShow === "PERSONAL RECIPES") {
-        recipes = recipesByCat.filter(
-          (r) => r.createdBy === this.props.match.params.id,
-        );
-      } else if (recipesToShow === "FAVORITE RECIPES") {
-        for (let x = 0; x < userFavs.length; x++) {
-          for (let y = 0; y < recipesByCat.length; y++) {
-            if (recipesByCat[y].recipeId === userFavs[x]) {
-              recipes.push(recipesByCat[y]);
-            }
-          }
-        }
-      }
-      const userRecipes = recipes.map((recipeData, index) => {
-        const { recipeId, name, createdBy } = recipeData;
+    if (this.filterRecipesByCat()) {
+      const allRecipes = this.filterRecipesByCat().map((r: IRecipe, index) => {
+        const { recipeId, name, createdBy } = r;
         const RCProps = {
           name,
           recipeId,
@@ -175,10 +142,52 @@ class AllRecipesPage extends Component<
         };
         return <RecipeCard key={index} {...RCProps} />;
       });
-      return handleRecipeArrayLength(userRecipes);
-    } else {
-      return "NO FAVORITES YET";
+      return handleRecipeArrayLength(allRecipes);
     }
+  }
+
+  renderUserRecipes(recipesToShow: string) {
+    const recipesByCat = this.filterRecipesByCat();
+    let recipes: IRecipe[] = [];
+    const uid = this.props.match.params.id;
+
+    let userFavorites2: IRecipe[] = [];
+
+    if (recipesToShow === "PERSONAL RECIPES") {
+      recipes = recipesByCat.filter(
+        (r) => r.createdBy === this.props.match.params.id,
+      );
+    } else if (recipesToShow === "FAVORITE RECIPES") {
+      this.props.recipes.map((r) => {
+        if (r.favoritedBy && r.favoritedBy.length) {
+          r.favoritedBy.map((stringUserId) => {
+            if (stringUserId === uid) {
+              userFavorites2.push(r);
+            }
+            return false;
+          });
+        }
+        return false;
+      });
+      if (userFavorites2.length) {
+        recipes = userFavorites2;
+      } else {
+        return "NO FAVORITES YET";
+      }
+    }
+
+    const userRecipes = recipes.map((r, index) => {
+      const { recipeId, name, createdBy } = r;
+      const RCProps = {
+        name,
+        recipeId,
+        index,
+        uid: this.props.match.params.id,
+        createdBy,
+      };
+      return <RecipeCard key={index} {...RCProps} />;
+    });
+    return handleRecipeArrayLength(userRecipes);
   }
 
   handleRecipes() {
@@ -201,17 +210,22 @@ class AllRecipesPage extends Component<
     );
   }
 
-  componentDidMount() {
-    const categoriesFromRecipes = uniq(recipeData.map((r) => r.category));
-    const categories = ["ALL", ...categoriesFromRecipes];
-    this.setState({ categories });
+  getCategories() {
+    if (this.props.recipes) {
+      const categoriesFromRecipes: string[] = uniq(
+        this.props.recipes.map((r: IRecipe) => r.category),
+      );
+      return ["ALL", ...categoriesFromRecipes];
+    } else {
+      return ["ALL"];
+    }
   }
 
   render() {
-    return (
+    return this.props.recipes ? (
       <div id="AllRecipesPage">
         <CategoryBar
-          categories={this.state.categories}
+          categories={this.getCategories()}
           categoryToShow={this.state.categoryToShow}
           changeCategoryToShow={this.changeCategoryToShow}></CategoryBar>
         <Recipes id="Recipes">
@@ -229,8 +243,24 @@ class AllRecipesPage extends Component<
           )}
         </Recipes>
       </div>
+    ) : (
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: "30px",
+          fontFamily: secondaryFont,
+          margin: "30px",
+        }}>
+        ...LOADING
+      </div>
     );
   }
 }
 
-export default withRouter(AllRecipesPage);
+const mapStateToProps = (state: RootState) => {
+  return {
+    recipes: state.recipeReducer.recipes,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(AllRecipesPage));

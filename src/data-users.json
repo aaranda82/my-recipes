@@ -2,11 +2,11 @@
   {
     "uid": "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
     "userName": "Bill",
-    "favorites": [1, 2, 3, 4]
+    "favorites": ["1", "2", "3", "4"]
   },
   {
     "uid": "SW1T9FNUxecYoDBv7IWqGil9lAW2",
     "userName": "Mike",
-    "favorites": [7, 8, 9, 10]
+    "favorites": ["7", "8", "9", "10"]
   }
 ]

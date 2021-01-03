@@ -1,9 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Lunch from "../assets/Lunch.jpg";
 import { colorScheme } from "../colorScheme";
-import userData from "../data-users.json";
+import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 import SaveButton from "./SaveButton";
 
@@ -73,7 +74,7 @@ const MoreInfoDiv = styled.div<{ width?: string }>`
 
 interface IProps {
   name: string;
-  recipeId: number;
+  recipeId: string;
   index: number;
   uid: string;
   createdBy: string;
@@ -81,7 +82,11 @@ interface IProps {
 
 function RecipeCard(props: IProps) {
   const { name, recipeId, index, createdBy } = props;
-  const userName = userData.filter((u) => createdBy === u.uid)[0].userName;
+  const { users }: any = useSelector((state: RootState) => state.usersReducer);
+  let userName = "";
+  if (users) {
+    userName = users[createdBy].userName;
+  }
   return (
     <>
       <RecipeContainerDiv id="RecipeCard" key={index}>
@@ -107,7 +112,7 @@ function RecipeCard(props: IProps) {
               justifyContent: "center",
               alignItems: "center",
             }}>
-            <div>{userName}</div>
+            <RecipeNameDiv>{userName}</RecipeNameDiv>
           </Link>
 
           <MoreInfoDiv width="35%">

@@ -91,16 +91,18 @@ const OrderNumber = styled.div`
   font-size: 25px;
 `;
 
+interface IRecipe {
+  recipeId: number;
+  name: string;
+  category: string;
+  servings: number;
+  ingredients: { name: string; quantity: number; unit: string }[];
+  instructions: { number: number; instruction: string }[];
+}
+
 interface IProps extends RouteComponentProps<{ id: string }> {
   c: () => void;
-  recipe: {
-    recipeId: number;
-    name: string;
-    category: string;
-    servings: number;
-    ingredients: { name: string; quantity: number; unit: string }[];
-    instructions: { number: number; instruction: string }[];
-  };
+  recipe: IRecipe;
   displayName: string;
   uid: string;
 }
@@ -112,7 +114,6 @@ interface IState {
   servings: number;
   ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
-  showLogIn?: boolean;
 }
 
 class RecipeDetail extends Component<IProps, IState> {
@@ -126,10 +127,8 @@ class RecipeDetail extends Component<IProps, IState> {
       servings: 0,
       ingredients: [],
       instructions: [],
-      showLogIn: false,
     };
     this.handleAuthor = this.handleAuthor.bind(this);
-    this.toggleAuthView = this.toggleAuthView.bind(this);
   }
 
   handleIngredients() {
@@ -166,39 +165,37 @@ class RecipeDetail extends Component<IProps, IState> {
     }
   }
 
-  toggleAuthView() {
-    this.setState({ showLogIn: !this.state.showLogIn });
-  }
-
   componentDidMount() {
     const { id } = this.props.match.params;
     const idArr = id.split(":");
     const parsedId = parseFloat(idArr[1]);
-    const recipeArr = recipeData.filter((r: IState) => {
+    const foundRecipe = recipeData.find((r) => {
       return r.recipeId === parsedId;
     });
-    const {
-      recipeId,
-      createdBy,
-      name,
-      category,
-      servings,
-      ingredients,
-      instructions,
-    } = recipeArr[0];
-    this.setState({
-      recipeId,
-      createdBy,
-      name,
-      category,
-      servings,
-      ingredients,
-      instructions,
-    });
+    if (foundRecipe !== undefined) {
+      const {
+        recipeId,
+        createdBy,
+        name,
+        category,
+        servings,
+        ingredients,
+        instructions,
+      } = foundRecipe;
+      this.setState({
+        recipeId,
+        createdBy,
+        name,
+        category,
+        servings,
+        ingredients,
+        instructions,
+      });
+    }
   }
 
   render() {
-    const { name, category, servings, createdBy, recipeId } = this.state;
+    const { name, category, servings, createdBy } = this.state;
     const { uid, displayName } = this.props;
     return (
       <>
@@ -216,7 +213,7 @@ class RecipeDetail extends Component<IProps, IState> {
                 <Author>{this.handleAuthor()}</Author>
               </Link>
             </div>
-            <SaveButton recipeId={recipeId} />
+            <SaveButton recipeId={"recipeId"} />
           </RecipeHeading>
           <Exit id="Exit">
             <Link
@@ -237,6 +234,7 @@ const mapStateToProps = (state: RootState) => {
   return {
     displayName: state.userReducer.displayName,
     uid: state.userReducer.uid,
+    users: state.usersReducer.users,
   };
 };
 

@@ -11,4 +11,6 @@ export const colorScheme = {
   // ivory
   primaryColorTwo: "#ecf0f1",
   accentColorOne: "#1abc9c",
+  saveButton1: "#f53b57",
+  saveButton2: "#fab1a0",
 };

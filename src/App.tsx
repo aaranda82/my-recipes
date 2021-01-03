@@ -1,5 +1,6 @@
+import firebase from "firebase";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -7,6 +8,8 @@ import {
   Switch,
 } from "react-router-dom";
 import styled from "styled-components";
+import { recipeAction } from "./actions/recipeActions";
+import { usersAction } from "./actions/usersAction";
 import AuthModal from "./components/AuthModal";
 import Menu from "./components/Menu";
 import ScrollToTop from "./components/ScrollToTop";
@@ -28,6 +31,16 @@ function App() {
     (state: RootState) => state.authReducer,
   );
   const { uid } = useSelector((state: RootState) => state.userReducer);
+  const dispatch = useDispatch();
+  firebase
+    .database()
+    .ref("/")
+    .once("value")
+    .then((snapshot) => {
+      dispatch(recipeAction(snapshot.val().recipes));
+      dispatch(usersAction(snapshot.val().users));
+    });
+
   return (
     <div
       style={{
