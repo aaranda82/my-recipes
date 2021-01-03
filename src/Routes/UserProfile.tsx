@@ -5,6 +5,7 @@ import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import RecipeCard from "../components/RecipeCard";
+import SpinnerLoader from "../components/SpinnerLoader";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 import { handleRecipeArrayLength } from "./AllRecipesPage";
@@ -151,15 +152,7 @@ function UserProfile() {
       <RecipeContainer>{handleUserCreatedRecipes()}</RecipeContainer>
     </>
   ) : (
-    <div
-      style={{
-        textAlign: "center",
-        fontSize: "30px",
-        fontFamily: secondaryFont,
-        margin: "30px",
-      }}>
-      GETTING RECIPES...
-    </div>
+    <SpinnerLoader />
   );
 }
 
