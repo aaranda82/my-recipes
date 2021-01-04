@@ -1,5 +1,4 @@
-import firebase from "firebase";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
@@ -56,21 +55,9 @@ interface IUsers {
 }
 
 function UserProfile() {
-  const [recipes, setRecipes] = useState<any[]>([]);
-
-  const fetchRecipes = async () => {
-    await firebase
-      .database()
-      .ref("/recipes")
-      .once("value")
-      .then((snapshot) => {
-        setRecipes(snapshot.val());
-      });
-  };
-
-  useEffect(() => {
-    fetchRecipes();
-  }, []);
+  const recipes = useSelector(
+    (state: RootState) => state.recipeReducer.recipes,
+  );
 
   const user_Data = [
     {
@@ -97,6 +84,7 @@ function UserProfile() {
   const { userName, favorites } = userToViewInfo;
 
   function handleUserCreatedRecipes() {
+    console.log(recipes);
     const userCreatedRecipes: JSX.Element[] = [];
     for (let x = 0; x < recipes.length; x++) {
       if (recipes[x].createdBy === id) {
@@ -138,7 +126,7 @@ function UserProfile() {
     return handleRecipeArrayLength(favoriteRecipes);
   }
 
-  return recipes.length ? (
+  return recipes ? (
     <>
       <Return
         onClick={() => {

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router";
+import React from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import SaveButton from "../components/SaveButton";
-import recipeData from "../data-recipes.json";
+import SpinnerLoader from "../components/SpinnerLoader";
 import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
@@ -92,47 +92,41 @@ const OrderNumber = styled.div`
 `;
 
 interface IRecipe {
-  recipeId: number;
-  name: string;
-  category: string;
-  servings: number;
-  ingredients: { name: string; quantity: number; unit: string }[];
-  instructions: { number: number; instruction: string }[];
-}
-
-interface IProps extends RouteComponentProps<{ id: string }> {
-  c: () => void;
-  recipe: IRecipe;
-  displayName: string;
-  uid: string;
-}
-interface IState {
-  recipeId: number;
+  recipeId: string;
   createdBy: string;
   name: string;
   category: string;
   servings: number;
+  favoritedBy: string[];
   ingredients: { name: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
 }
 
-class RecipeDetail extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      recipeId: 0,
-      createdBy: "",
-      name: "",
-      category: "",
-      servings: 0,
-      ingredients: [],
-      instructions: [],
-    };
-    this.handleAuthor = this.handleAuthor.bind(this);
+const RecipeDetail = () => {
+  const { uid, displayName } = useSelector(
+    (state: RootState) => state.userReducer,
+  );
+  const { recipes } = useSelector((state: RootState) => state.recipeReducer);
+  const { id } = useParams<{ id: string }>();
+  const idArr = id.split(":");
+  let foundRecipe: IRecipe | undefined;
+  if (recipes) {
+    foundRecipe = recipes.find((r) => {
+      return r.recipeId === idArr[1];
+    });
   }
 
-  handleIngredients() {
-    const ingredientsList = this.state.ingredients.map(
+  const handleAuthor = (author: string) => {
+    if (author) {
+      const user = userData.filter((u) => u.uid === author);
+      return user[0].userName;
+    }
+  };
+
+  const handleIngredients = (
+    ing: { name: string; quantity: string; unit: string }[],
+  ) => {
+    const ingredientsList = ing.map(
       (i: { name: string; quantity: string; unit: string }, index: number) => {
         return (
           <div key={index}>
@@ -142,10 +136,12 @@ class RecipeDetail extends Component<IProps, IState> {
       },
     );
     return ingredientsList;
-  }
+  };
 
-  handleInstructions() {
-    const instructionsList = this.state.instructions.map(
+  const handleInstructions = (
+    inst: { number: number; instruction: string }[],
+  ) => {
+    const instructionsList = inst.map(
       (i: { number: number; instruction: string }, key: number) => {
         return (
           <Instruction key={key}>
@@ -156,47 +152,19 @@ class RecipeDetail extends Component<IProps, IState> {
       },
     );
     return instructionsList;
-  }
+  };
 
-  handleAuthor() {
-    if (this.state.createdBy) {
-      const user = userData.filter((u) => u.uid === this.state.createdBy);
-      return user[0].userName;
-    }
-  }
+  if (foundRecipe) {
+    const {
+      recipeId,
+      createdBy,
+      name,
+      category,
+      servings,
+      ingredients,
+      instructions,
+    } = foundRecipe;
 
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    const idArr = id.split(":");
-    const parsedId = parseFloat(idArr[1]);
-    const foundRecipe = recipeData.find((r) => {
-      return r.recipeId === parsedId;
-    });
-    if (foundRecipe !== undefined) {
-      const {
-        recipeId,
-        createdBy,
-        name,
-        category,
-        servings,
-        ingredients,
-        instructions,
-      } = foundRecipe;
-      this.setState({
-        recipeId,
-        createdBy,
-        name,
-        category,
-        servings,
-        ingredients,
-        instructions,
-      });
-    }
-  }
-
-  render() {
-    const { name, category, servings, createdBy } = this.state;
-    const { uid, displayName } = this.props;
     return (
       <>
         <RecipeDetailDiv>
@@ -210,10 +178,10 @@ class RecipeDetail extends Component<IProps, IState> {
               <Link
                 to={`/user/${createdBy}`}
                 style={{ textDecoration: "none", color: "black" }}>
-                <Author>{this.handleAuthor()}</Author>
+                <Author>{handleAuthor(createdBy)}</Author>
               </Link>
             </div>
-            <SaveButton recipeId={"recipeId"} />
+            <SaveButton recipeId={recipeId} />
           </RecipeHeading>
           <Exit id="Exit">
             <Link
@@ -222,20 +190,14 @@ class RecipeDetail extends Component<IProps, IState> {
               <Icon className="fas fa-times" />
             </Link>
           </Exit>
-          <Ingredients>{this.handleIngredients()}</Ingredients>
-          <Instructions>{this.handleInstructions()}</Instructions>
+          <Ingredients>{handleIngredients(ingredients)}</Ingredients>
+          <Instructions>{handleInstructions(instructions)}</Instructions>
         </RecipeDetailDiv>
       </>
     );
+  } else {
+    return <SpinnerLoader />;
   }
-}
-
-const mapStateToProps = (state: RootState) => {
-  return {
-    displayName: state.userReducer.displayName,
-    uid: state.userReducer.uid,
-    users: state.usersReducer.users,
-  };
 };
 
-export default withRouter(connect(mapStateToProps)(RecipeDetail));
+export default RecipeDetail;
