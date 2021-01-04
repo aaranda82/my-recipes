@@ -20,7 +20,7 @@ function Footer() {
     <Nav>
       Created by
       <Anchor
-        href="https:/alex-aranda.com"
+        href="https://alex-aranda.com/"
         target="_blank"
         rel="noopener noreferrer">
         Alex Aranda
