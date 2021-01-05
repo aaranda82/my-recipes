@@ -38,22 +38,6 @@ const RecipeContainer = styled.div`
   margin-top: 10px;
 `;
 
-interface IRecipe {
-  recipeId: string;
-  createdBy: string;
-  name: string;
-  category: string;
-  servings: number;
-  ingredients: { name: string; quantity: string; unit: string }[];
-  instructions: { number: number; instruction: string }[];
-}
-
-interface IUsers {
-  uid: string;
-  userName: string;
-  favorites: number[];
-}
-
 function UserProfile() {
   const recipes = useSelector(
     (state: RootState) => state.recipeReducer.recipes,

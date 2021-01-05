@@ -1,7 +1,7 @@
 import { uniq } from "lodash";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { RouteComponentProps, useParams } from "react-router";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import CategoryBar from "../components/CategoryBar";
@@ -106,60 +106,74 @@ interface IState {
   recipesToShow: string;
 }
 
-class AllRecipesPage extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      categoryToShow: "ALL",
-      recipesToShow: "ALL RECIPES",
-    };
-    this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
-  }
+const AllRecipesPage = () => {
+  const { recipes } = useSelector((state: RootState) => state.recipeReducer);
+  const [categoryToShow, setCategoryToShow] = useState("ALL");
+  const [recipesToShow, setRecipesToShow] = useState("ALL RECIPES");
+  const { id } = useParams<{ id: string }>();
 
-  changeCategoryToShow(categoryToShow: string) {
-    this.setState({ categoryToShow });
-  }
+  const getCategories = () => {
+    if (recipes) {
+      const categoriesFromRecipes: string[] = uniq(
+        recipes.map((r: IRecipe) => r.category),
+      );
+      return ["ALL", ...categoriesFromRecipes];
+    } else {
+      return ["ALL"];
+    }
+  };
 
-  filterRecipesByCat() {
+  const changeCategoryToShow = (categoryToShow: string) => {
+    setCategoryToShow(categoryToShow);
+  };
+
+  const handleRViewSelector = (type: string) => {
+    return (
+      <RViewSelector
+        onClick={() => setRecipesToShow(type)}
+        bgColor={recipesToShow === type ? accentColorOne : "white"}
+        textColor={recipesToShow === type ? primaryColorTwo : null}>
+        <div>{type}</div>
+      </RViewSelector>
+    );
+  };
+
+  const filterRecipesByCat = () => {
     let recipesByCat =
-      this.state.categoryToShow === "ALL"
-        ? this.props.recipes
-        : this.props.recipes.filter(
-            (r) => r.category === this.state.categoryToShow,
-          );
+      categoryToShow === "ALL"
+        ? recipes
+        : recipes.filter((r) => r.category === categoryToShow);
     return recipesByCat;
-  }
+  };
 
-  renderPublicRecipes() {
-    if (this.filterRecipesByCat()) {
-      const allRecipes = this.filterRecipesByCat().map((r: IRecipe, index) => {
+  const renderPublicRecipes = () => {
+    if (filterRecipesByCat()) {
+      const allRecipes = filterRecipesByCat().map((r: IRecipe, index) => {
         const { recipeId, name, createdBy } = r;
         const RCProps = {
           name,
           recipeId,
           index,
-          uid: this.props.match.params.id,
+          uid: id,
           createdBy,
         };
         return <RecipeCard key={index} {...RCProps} />;
       });
       return handleRecipeArrayLength(allRecipes);
     }
-  }
+  };
 
-  renderUserRecipes(recipesToShow: string) {
-    const recipesByCat = this.filterRecipesByCat();
+  const renderUserRecipes = (recipesToShow: string) => {
+    const recipesByCat = filterRecipesByCat();
     let recipes: IRecipe[] = [];
-    const uid = this.props.match.params.id;
+    const uid = id;
 
     let userFavorites2: IRecipe[] = [];
 
     if (recipesToShow === "PERSONAL RECIPES") {
-      recipes = recipesByCat.filter(
-        (r) => r.createdBy === this.props.match.params.id,
-      );
+      recipes = recipesByCat.filter((r) => r.createdBy === id);
     } else if (recipesToShow === "FAVORITE RECIPES") {
-      this.props.recipes.map((r) => {
+      recipes.map((r) => {
         if (r.favoritedBy && r.favoritedBy.length) {
           r.favoritedBy.map((stringUserId) => {
             if (stringUserId === uid) {
@@ -183,77 +197,198 @@ class AllRecipesPage extends Component<IProps, IState> {
         name,
         recipeId,
         index,
-        uid: this.props.match.params.id,
+        uid: id,
         createdBy,
       };
       return <RecipeCard key={index} {...RCProps} />;
     });
     return handleRecipeArrayLength(userRecipes);
-  }
-
-  handleRecipes() {
-    const { recipesToShow } = this.state;
-    if (recipesToShow === "ALL RECIPES") {
-      return this.renderPublicRecipes();
-    } else {
-      return this.renderUserRecipes(recipesToShow);
-    }
-  }
-
-  handleRViewSelector(type: string) {
-    return (
-      <RViewSelector
-        onClick={() => this.setState({ recipesToShow: type })}
-        bgColor={this.state.recipesToShow === type ? accentColorOne : "white"}
-        textColor={this.state.recipesToShow === type ? primaryColorTwo : null}>
-        <div>{type}</div>
-      </RViewSelector>
-    );
-  }
-
-  getCategories() {
-    if (this.props.recipes) {
-      const categoriesFromRecipes: string[] = uniq(
-        this.props.recipes.map((r: IRecipe) => r.category),
-      );
-      return ["ALL", ...categoriesFromRecipes];
-    } else {
-      return ["ALL"];
-    }
-  }
-
-  render() {
-    return this.props.recipes ? (
-      <div id="AllRecipesPage">
-        <CategoryBar
-          categories={this.getCategories()}
-          categoryToShow={this.state.categoryToShow}
-          changeCategoryToShow={this.changeCategoryToShow}></CategoryBar>
-        <Recipes id="Recipes">
-          {this.props.match.params.id ? (
-            <>
-              <RVSCont>
-                {this.handleRViewSelector("ALL RECIPES")}
-                {this.handleRViewSelector("FAVORITE RECIPES")}
-                {this.handleRViewSelector("PERSONAL RECIPES")}
-              </RVSCont>
-              <SectionContainer>{this.handleRecipes()}</SectionContainer>
-            </>
-          ) : (
-            this.renderPublicRecipes()
-          )}
-        </Recipes>
-      </div>
-    ) : (
-      <SpinnerLoader />
-    );
-  }
-}
-
-const mapStateToProps = (state: RootState) => {
-  return {
-    recipes: state.recipeReducer.recipes,
   };
+
+  const handleRecipes = () => {
+    if (recipesToShow === "ALL RECIPES") {
+      return renderPublicRecipes();
+    } else {
+      return renderUserRecipes(recipesToShow);
+    }
+  };
+
+  return recipes ? (
+    <div id="AllRecipesPage">
+      <CategoryBar
+        categories={getCategories()}
+        categoryToShow={categoryToShow}
+        changeCategoryToShow={changeCategoryToShow}></CategoryBar>
+      <Recipes id="Recipes">
+        {id ? (
+          <>
+            <RVSCont>
+              {handleRViewSelector("ALL RECIPES")}
+              {handleRViewSelector("FAVORITE RECIPES")}
+              {handleRViewSelector("PERSONAL RECIPES")}
+            </RVSCont>
+            <SectionContainer>{handleRecipes()}</SectionContainer>
+          </>
+        ) : (
+          renderPublicRecipes()
+        )}
+      </Recipes>
+    </div>
+  ) : (
+    <SpinnerLoader />
+  );
 };
 
-export default withRouter(connect(mapStateToProps)(AllRecipesPage));
+export default AllRecipesPage;
+
+// class AllRecipesPage extends Component<IProps, IState> {
+//   constructor(props: IProps) {
+//     super(props);
+//     this.state = {
+//       categoryToShow: "ALL",
+//       recipesToShow: "ALL RECIPES",
+//     };
+//     this.changeCategoryToShow = this.changeCategoryToShow.bind(this);
+//   }
+
+//   changeCategoryToShow(categoryToShow: string) {
+//     this.setState({ categoryToShow });
+//   }
+
+//   filterRecipesByCat() {
+//     let recipesByCat =
+//       this.state.categoryToShow === "ALL"
+//         ? this.props.recipes
+//         : this.props.recipes.filter(
+//             (r) => r.category === this.state.categoryToShow,
+//           );
+//     return recipesByCat;
+//   }
+
+//   renderPublicRecipes() {
+//     if (this.filterRecipesByCat()) {
+//       const allRecipes = this.filterRecipesByCat().map((r: IRecipe, index) => {
+//         const { recipeId, name, createdBy } = r;
+//         const RCProps = {
+//           name,
+//           recipeId,
+//           index,
+//           uid: this.props.match.params.id,
+//           createdBy,
+//         };
+//         return <RecipeCard key={index} {...RCProps} />;
+//       });
+//       return handleRecipeArrayLength(allRecipes);
+//     }
+//   }
+
+//   renderUserRecipes(recipesToShow: string) {
+//     const recipesByCat = this.filterRecipesByCat();
+//     let recipes: IRecipe[] = [];
+//     const uid = this.props.match.params.id;
+
+//     let userFavorites2: IRecipe[] = [];
+
+//     if (recipesToShow === "PERSONAL RECIPES") {
+//       recipes = recipesByCat.filter(
+//         (r) => r.createdBy === this.props.match.params.id,
+//       );
+//     } else if (recipesToShow === "FAVORITE RECIPES") {
+//       this.props.recipes.map((r) => {
+//         if (r.favoritedBy && r.favoritedBy.length) {
+//           r.favoritedBy.map((stringUserId) => {
+//             if (stringUserId === uid) {
+//               userFavorites2.push(r);
+//             }
+//             return false;
+//           });
+//         }
+//         return false;
+//       });
+//       if (userFavorites2.length) {
+//         recipes = userFavorites2;
+//       } else {
+//         return "NO FAVORITES YET";
+//       }
+//     }
+
+//     const userRecipes = recipes.map((r, index) => {
+//       const { recipeId, name, createdBy } = r;
+//       const RCProps = {
+//         name,
+//         recipeId,
+//         index,
+//         uid: this.props.match.params.id,
+//         createdBy,
+//       };
+//       return <RecipeCard key={index} {...RCProps} />;
+//     });
+//     return handleRecipeArrayLength(userRecipes);
+//   }
+
+//   handleRecipes() {
+//     const { recipesToShow } = this.state;
+//     if (recipesToShow === "ALL RECIPES") {
+//       return this.renderPublicRecipes();
+//     } else {
+//       return this.renderUserRecipes(recipesToShow);
+//     }
+//   }
+
+//   handleRViewSelector(type: string) {
+//     return (
+//       <RViewSelector
+//         onClick={() => this.setState({ recipesToShow: type })}
+//         bgColor={this.state.recipesToShow === type ? accentColorOne : "white"}
+//         textColor={this.state.recipesToShow === type ? primaryColorTwo : null}>
+//         <div>{type}</div>
+//       </RViewSelector>
+//     );
+//   }
+
+//   getCategories() {
+//     if (this.props.recipes) {
+//       const categoriesFromRecipes: string[] = uniq(
+//         this.props.recipes.map((r: IRecipe) => r.category),
+//       );
+//       return ["ALL", ...categoriesFromRecipes];
+//     } else {
+//       return ["ALL"];
+//     }
+//   }
+
+//   render() {
+//     return this.props.recipes ? (
+//       <div id="AllRecipesPage">
+//         <CategoryBar
+//           categories={this.getCategories()}
+//           categoryToShow={this.state.categoryToShow}
+//           changeCategoryToShow={this.changeCategoryToShow}></CategoryBar>
+//         <Recipes id="Recipes">
+//           {this.props.match.params.id ? (
+//             <>
+//               <RVSCont>
+//                 {this.handleRViewSelector("ALL RECIPES")}
+//                 {this.handleRViewSelector("FAVORITE RECIPES")}
+//                 {this.handleRViewSelector("PERSONAL RECIPES")}
+//               </RVSCont>
+//               <SectionContainer>{this.handleRecipes()}</SectionContainer>
+//             </>
+//           ) : (
+//             this.renderPublicRecipes()
+//           )}
+//         </Recipes>
+//       </div>
+//     ) : (
+//       <SpinnerLoader />
+//     );
+//   }
+// }
+
+// const mapStateToProps = (state: RootState) => {
+//   return {
+//     recipes: state.recipeReducer.recipes,
+//   };
+// };
+
+// export default withRouter(connect(mapStateToProps)(AllRecipesPage));
