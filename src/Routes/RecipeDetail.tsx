@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import SaveButton from "../components/SaveButton";
 import SpinnerLoader from "../components/SpinnerLoader";
-import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
@@ -105,8 +104,9 @@ interface IRecipe {
 const RecipeDetail = () => {
   const { uid, displayName } = useSelector(
     (state: RootState) => state.userReducer,
-  );
+  ); // user that is logged in
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
+  const users = useSelector((state: RootState) => state.usersReducer.users);
   const { id } = useParams<{ id: string }>();
   const idArr = id.split(":");
   let foundRecipe: IRecipe | undefined;
@@ -117,10 +117,10 @@ const RecipeDetail = () => {
   }
 
   const handleAuthor = (author: string) => {
-    if (author) {
-      const user = userData.filter((u) => u.uid === author);
-      return user[0].userName;
+    if (users) {
+      return users[author].userName;
     }
+    return null;
   };
 
   const handleIngredients = (
