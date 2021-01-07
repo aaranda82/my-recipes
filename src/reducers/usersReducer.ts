@@ -4,7 +4,7 @@ interface Info {
 }
 
 export interface UsersState {
-  [name: string]: Info;
+  users: { [name: string]: Info };
 }
 
 const usersReducer = (

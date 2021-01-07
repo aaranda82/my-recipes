@@ -26,6 +26,7 @@ const Main = styled.main`
   max-width: 900px;
   margin: auto;
 `;
+
 function App() {
   const { showLogIn, showSignUp, showMenu } = useSelector(
     (state: RootState) => state.authReducer,

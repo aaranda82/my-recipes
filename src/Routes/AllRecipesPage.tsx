@@ -173,10 +173,12 @@ const AllRecipesPage = () => {
     if (recipesToShow === "PERSONAL RECIPES") {
       recipes = recipesByCat.filter((r) => r.createdBy === id);
     } else if (recipesToShow === "FAVORITE RECIPES") {
-      recipes.map((r) => {
+      recipesByCat.map((r) => {
+        console.log(r);
         if (r.favoritedBy && r.favoritedBy.length) {
           r.favoritedBy.map((stringUserId) => {
             if (stringUserId === uid) {
+              console.log();
               userFavorites2.push(r);
             }
             return false;
