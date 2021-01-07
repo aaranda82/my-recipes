@@ -42,33 +42,12 @@ function UserProfile() {
   const recipes = useSelector(
     (state: RootState) => state.recipeReducer.recipes,
   );
-
-  const user_Data = [
-    {
-      uid: "1AOXgSwGE1eGQZgZQYo9vqVgqP12",
-      userName: "Bill",
-      favorites: ["1", "2", "3", "4"],
-    },
-    {
-      uid: "SW1T9FNUxecYoDBv7IWqGil9lAW2",
-      userName: "Mike",
-      favorites: ["7", "8", "9", "10"],
-    },
-  ];
-
+  const users = useSelector((state: RootState) => state.usersReducer.users);
   const history = useHistory();
-  const { uid } = useSelector((state: RootState) => state.userReducer);
-  const { id } = useParams<{ id: string }>();
-  const userToViewInfo = user_Data.find((u) => {
-    return u.uid === id;
-  });
-  if (!userToViewInfo) {
-    return null;
-  }
-  const { userName, favorites } = userToViewInfo;
+  const { uid } = useSelector((state: RootState) => state.userReducer); // user that is logged in
+  const { id } = useParams<{ id: string }>(); // user whose profile is being viewed
 
   function handleUserCreatedRecipes() {
-    console.log(recipes);
     const userCreatedRecipes: JSX.Element[] = [];
     for (let x = 0; x < recipes.length; x++) {
       if (recipes[x].createdBy === id) {
@@ -87,30 +66,37 @@ function UserProfile() {
     return handleRecipeArrayLength(userCreatedRecipes);
   }
 
-  function handleFavorites() {
-    let favoriteRecipes = [];
-    if (recipes.length) {
-      favoriteRecipes = favorites.map((f: string, index) => {
-        const fav = recipes.filter((r) => r.recipeId === f);
-        const { name, recipeId, createdBy } = fav[0];
-        const RCProps = {
-          name,
-          recipeId,
-          index,
-          view: "public",
-          uid,
-          createdBy,
-        };
-        return <RecipeCard key={index} {...RCProps} />;
-      });
-    } else {
+  function handleFavorites_2() {
+    const favoriteRecipes: JSX.Element[] = [];
+    recipes.map((r, index) => {
+      if (r.favoritedBy) {
+        for (let x = 0; x < r.favoritedBy.length; x++) {
+          if (r.favoritedBy[x] === id) {
+            const { name, recipeId, createdBy } = r;
+            const RCProps = {
+              name,
+              recipeId,
+              index,
+              view: "public",
+              uid,
+              createdBy,
+            };
+            favoriteRecipes.push(
+              <RecipeCard key={index + 10000} {...RCProps} />,
+            );
+          }
+        }
+      }
       return null;
-    }
-
+    });
     return handleRecipeArrayLength(favoriteRecipes);
   }
 
-  return recipes ? (
+  function userName() {
+    return users[id].userName;
+  }
+
+  return recipes && users ? (
     <>
       <Return
         onClick={() => {
@@ -118,9 +104,9 @@ function UserProfile() {
         }}>
         <i className={"fas fa-reply"} /> RETURN
       </Return>
-      <Title>{userName}'s Favorites</Title>
-      <RecipeContainer>{handleFavorites()}</RecipeContainer>
-      <Title>{userName}'s Recipes</Title>
+      <Title>{`${userName()}'s Favorites`}</Title>
+      <RecipeContainer>{handleFavorites_2()}</RecipeContainer>
+      <Title>{`${userName()}'s Recipes  `}</Title>
       <RecipeContainer>{handleUserCreatedRecipes()}</RecipeContainer>
     </>
   ) : (

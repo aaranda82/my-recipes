@@ -22,18 +22,12 @@ const HeaderContainer = styled.header<LIProps>`
   width: 100%;
   background-color: ${(props) => (props.loggedIn ? primaryColorOne : "white")};
   z-index: 5;
-  position: sticky;
-  top: 0;
-  height: auto;
 `;
 
 const LogoContainer = styled.div<LIProps>`
   width: 60%;
   display: flex;
   justify-content: ${(props) => (props.loggedIn ? "left" : "center")};
-  @media (max-width: ${mobileMaxWidth}) {
-    width: 60%;
-  }
 `;
 
 const Logo = styled.div<LIProps>`
