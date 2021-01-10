@@ -26,7 +26,7 @@ export const Shadow = styled.div<LIProps>`
   }
 `;
 
-function AuthModal() {
+const AuthModal = () => {
   const dispatch = useDispatch();
   const { showLogIn, showSignUp } = useSelector(
     (state: RootState) => state.authReducer,
@@ -44,6 +44,6 @@ function AuthModal() {
       {auth}
     </>
   );
-}
+};
 
 export default AuthModal;

@@ -41,7 +41,7 @@ export const Button = styled.button`
   outline: none;
 `;
 
-function SaveButton({ recipeId }: { recipeId: string }) {
+const SaveButton = ({ recipeId }: { recipeId: string }) => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
@@ -138,6 +138,6 @@ function SaveButton({ recipeId }: { recipeId: string }) {
       </ButtonContainer>
     );
   }
-}
+};
 
 export default SaveButton;

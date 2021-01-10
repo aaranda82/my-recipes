@@ -38,7 +38,7 @@ const RecipeContainer = styled.div`
   margin-top: 10px;
 `;
 
-function UserProfile() {
+const UserProfile = () => {
   const recipes = useSelector(
     (state: RootState) => state.recipeReducer.recipes,
   );
@@ -47,7 +47,7 @@ function UserProfile() {
   const { uid } = useSelector((state: RootState) => state.userReducer); // user that is logged in
   const { id } = useParams<{ id: string }>(); // user whose profile is being viewed
 
-  function handleUserCreatedRecipes() {
+  const handleUserCreatedRecipes = () => {
     const userCreatedRecipes: JSX.Element[] = [];
     let startingIndex = 0;
     for (const recipeId in recipes) {
@@ -66,9 +66,9 @@ function UserProfile() {
       }
     }
     return handleRecipeArrayLength(userCreatedRecipes);
-  }
+  };
 
-  function handleFavorites() {
+  const handleFavorites = () => {
     const favoriteRecipes: JSX.Element[] = [];
     let startingIndex = 0;
     for (const recipeId in recipes) {
@@ -88,11 +88,11 @@ function UserProfile() {
       }
     }
     return handleRecipeArrayLength(favoriteRecipes);
-  }
+  };
 
-  function userName() {
+  const userName = () => {
     return users[id].userName;
-  }
+  };
 
   return recipes && users ? (
     <>
@@ -110,6 +110,6 @@ function UserProfile() {
   ) : (
     <SpinnerLoader />
   );
-}
+};
 
 export default UserProfile;

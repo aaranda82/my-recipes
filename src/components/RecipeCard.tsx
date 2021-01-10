@@ -80,7 +80,7 @@ interface IProps {
   createdBy: string;
 }
 
-function RecipeCard(props: IProps) {
+const RecipeCard = (props: IProps) => {
   const { name, recipeId, index, createdBy } = props;
   const { users }: any = useSelector((state: RootState) => state.usersReducer);
 
@@ -125,9 +125,9 @@ function RecipeCard(props: IProps) {
       </RecipeContainerDiv>
     </>
   );
-}
+};
 
-export function BlankRecipeCard(index: number) {
+export const BlankRecipeCard = (index: number) => {
   return (
     <RecipeContainerDiv
       key={index}
@@ -139,6 +139,6 @@ export function BlankRecipeCard(index: number) {
       <RecipeNameDiv></RecipeNameDiv>
     </RecipeContainerDiv>
   );
-}
+};
 
 export default RecipeCard;

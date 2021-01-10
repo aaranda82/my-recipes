@@ -67,7 +67,7 @@ const Recipes = styled.div`
   }
 `;
 
-export function handleRecipeArrayLength(allRecipes: JSX.Element[]) {
+export const handleRecipeArrayLength = (allRecipes: JSX.Element[]) => {
   if (window.screen.width < 500) {
     return allRecipes;
   } else {
@@ -84,7 +84,7 @@ export function handleRecipeArrayLength(allRecipes: JSX.Element[]) {
     }
     return allRecipes;
   }
-}
+};
 
 interface IRecipe {
   [name: string]: {

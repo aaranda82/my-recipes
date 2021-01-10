@@ -15,7 +15,7 @@ const Anchor = styled.a`
   color: ${colorScheme.accentColorOne};
 `;
 
-function Footer() {
+const Footer = () => {
   return (
     <Nav>
       Created by
@@ -27,6 +27,6 @@ function Footer() {
       </Anchor>
     </Nav>
   );
-}
+};
 
 export default Footer;

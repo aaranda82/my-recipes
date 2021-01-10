@@ -54,7 +54,7 @@ const LogoSpacer = styled.div`
   } ;
 `;
 
-function Header() {
+const Header = () => {
   const displayName = useSelector(
     (state: RootState) => state.userReducer.displayName,
   );
@@ -77,6 +77,6 @@ function Header() {
       <HeaderButtons />
     </HeaderContainer>
   );
-}
+};
 
 export default Header;
