@@ -107,6 +107,7 @@ const RecipeDetail = () => {
   );
   const { users } = useSelector((state: RootState) => state.usersReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
+  const users = useSelector((state: RootState) => state.usersReducer.users);
   const { id } = useParams<{ id: string }>();
   let foundRecipe: IRecipe | undefined;
   if (recipes) {
@@ -115,6 +116,7 @@ const RecipeDetail = () => {
 
   const handleAuthor = (author: string) =>
     users ? users[author].userName : null;
+
 
   const handleIngredients = (
     ing: { ingName: string; quantity: string; unit: string }[],
