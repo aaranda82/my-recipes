@@ -25,7 +25,7 @@ const Email = styled.p`
   margin: auto;
 `;
 
-function AccountPage() {
+const AccountPage = () => {
   const { displayName, email } = useSelector(
     (state: RootState) => state.userReducer,
   );
@@ -38,6 +38,6 @@ function AccountPage() {
       </InfoContainer>
     </AccountContainer>
   );
-}
+};
 
 export default AccountPage;

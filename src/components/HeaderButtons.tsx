@@ -77,7 +77,7 @@ const AddRecipeButton = styled.button`
   }
 `;
 
-function HeaderButtons() {
+const HeaderButtons = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { showMenu, showLogIn, showSignUp } = useSelector(
@@ -122,6 +122,6 @@ function HeaderButtons() {
       <Spacer />
     </>
   );
-}
+};
 
 export default HeaderButtons;
