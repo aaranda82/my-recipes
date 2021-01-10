@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import SaveButton from "../components/SaveButton";
 import SpinnerLoader from "../components/SpinnerLoader";
-import userData from "../data-users.json";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
@@ -98,7 +97,7 @@ interface IRecipe {
   category: string;
   servings: number;
   favoritedBy: string[];
-  ingredients: { name: string; quantity: string; unit: string }[];
+  ingredients: { ingName: string; quantity: string; unit: string }[];
   instructions: { number: number; instruction: string }[];
 }
 
@@ -106,31 +105,28 @@ const RecipeDetail = () => {
   const { uid, displayName } = useSelector(
     (state: RootState) => state.userReducer,
   );
+  const { users } = useSelector((state: RootState) => state.usersReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const { id } = useParams<{ id: string }>();
-  const idArr = id.split(":");
   let foundRecipe: IRecipe | undefined;
   if (recipes) {
-    foundRecipe = recipes.find((r) => {
-      return r.recipeId === idArr[1];
-    });
+    foundRecipe = recipes[id];
   }
 
-  const handleAuthor = (author: string) => {
-    if (author) {
-      const user = userData.filter((u) => u.uid === author);
-      return user[0].userName;
-    }
-  };
+  const handleAuthor = (author: string) =>
+    users ? users[author].userName : null;
 
   const handleIngredients = (
-    ing: { name: string; quantity: string; unit: string }[],
+    ing: { ingName: string; quantity: string; unit: string }[],
   ) => {
     const ingredientsList = ing.map(
-      (i: { name: string; quantity: string; unit: string }, index: number) => {
+      (
+        i: { ingName: string; quantity: string; unit: string },
+        index: number,
+      ) => {
         return (
           <div key={index}>
-            {i.quantity} {i.unit === "-" ? null : i.unit} {i.name}
+            {i.quantity} {i.unit === "-" ? null : i.unit} {i.ingName}
           </div>
         );
       },

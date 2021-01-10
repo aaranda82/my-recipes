@@ -33,11 +33,11 @@ function App() {
   );
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const dispatch = useDispatch();
+
   firebase
     .database()
     .ref("/")
-    .once("value")
-    .then((snapshot) => {
+    .on("value", (snapshot) => {
       dispatch(recipeAction(snapshot.val().recipes));
       dispatch(usersAction(snapshot.val().users));
     });

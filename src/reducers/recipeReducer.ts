@@ -1,14 +1,16 @@
 export interface RecipeState {
   recipes: {
-    recipeId: string;
-    createdBy: string;
-    name: string;
-    category: string;
-    servings: number;
-    favoritedBy: string[];
-    ingredients: { name: string; quantity: string; unit: string }[];
-    instructions: { number: number; instruction: string }[];
-  }[];
+    [name: string]: {
+      recipeId: string;
+      createdBy: string;
+      name: string;
+      category: string;
+      servings: number;
+      favoritedBy: string[];
+      ingredients: { ingName: string; quantity: string; unit: string }[];
+      instructions: { number: number; instruction: string }[];
+    };
+  };
 }
 
 const recipeReducer = (
