@@ -49,46 +49,44 @@ function UserProfile() {
 
   function handleUserCreatedRecipes() {
     const userCreatedRecipes: JSX.Element[] = [];
-    for (let x = 0; x < recipes.length; x++) {
-      if (recipes[x].createdBy === id) {
-        const { name, recipeId, createdBy } = recipes[x];
+    let startingIndex = 0;
+    for (const recipeId in recipes) {
+      if (recipes[recipeId].createdBy === id) {
+        const index = startingIndex++;
+        const { name, createdBy } = recipes[recipeId];
         const RCProps = {
           name,
           recipeId,
-          index: x,
+          index,
           view: "public",
           uid,
           createdBy,
         };
-        userCreatedRecipes.push(<RecipeCard key={x + 1000} {...RCProps} />);
+        userCreatedRecipes.push(<RecipeCard key={index + 1000} {...RCProps} />);
       }
     }
     return handleRecipeArrayLength(userCreatedRecipes);
   }
 
-  function handleFavorites_2() {
+  function handleFavorites() {
     const favoriteRecipes: JSX.Element[] = [];
-    recipes.map((r, index) => {
-      if (r.favoritedBy) {
-        for (let x = 0; x < r.favoritedBy.length; x++) {
-          if (r.favoritedBy[x] === id) {
-            const { name, recipeId, createdBy } = r;
-            const RCProps = {
-              name,
-              recipeId,
-              index,
-              view: "public",
-              uid,
-              createdBy,
-            };
-            favoriteRecipes.push(
-              <RecipeCard key={index + 10000} {...RCProps} />,
-            );
-          }
-        }
+    let startingIndex = 0;
+    for (const recipeId in recipes) {
+      const favedBy = recipes[recipeId].favoritedBy;
+      if (favedBy && favedBy.includes(id)) {
+        const { name, createdBy } = recipes[recipeId];
+        const index = startingIndex++;
+        const RCProps = {
+          name,
+          recipeId,
+          index,
+          view: "public",
+          uid,
+          createdBy,
+        };
+        favoriteRecipes.push(<RecipeCard key={index + 10000} {...RCProps} />);
       }
-      return null;
-    });
+    }
     return handleRecipeArrayLength(favoriteRecipes);
   }
 
@@ -105,7 +103,7 @@ function UserProfile() {
         <i className={"fas fa-reply"} /> RETURN
       </Return>
       <Title>{`${userName()}'s Favorites`}</Title>
-      <RecipeContainer>{handleFavorites_2()}</RecipeContainer>
+      <RecipeContainer>{handleFavorites()}</RecipeContainer>
       <Title>{`${userName()}'s Recipes  `}</Title>
       <RecipeContainer>{handleUserCreatedRecipes()}</RecipeContainer>
     </>

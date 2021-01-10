@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
@@ -232,6 +233,7 @@ function handleButton(cb: () => void, title: string) {
 interface IProps {
   uid: string;
   displayName: string;
+  history: { push: any };
 }
 
 interface IState {
@@ -631,6 +633,12 @@ class CreateRecipe extends Component<IProps, IState> {
     });
   }
 
+  componentDidMount() {
+    if (!this.props.uid) {
+      this.props.history.push("/");
+    }
+  }
+
   render() {
     return (
       <CRCont id="create recipe cont">
@@ -730,4 +738,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default connect(mapStateToProps)(CreateRecipe);
+export default withRouter(connect(mapStateToProps)(CreateRecipe));

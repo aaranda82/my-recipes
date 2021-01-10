@@ -6,6 +6,7 @@ import Lunch from "../assets/Lunch.jpg";
 import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
+import DeleteRecipeButton from "./DeleteRecipeButton";
 import SaveButton from "./SaveButton";
 
 const { primaryColorTwo, accentColorOne } = colorScheme;
@@ -76,24 +77,25 @@ interface IProps {
   name: string;
   recipeId: string;
   index: number;
-  uid: string;
   createdBy: string;
 }
 
 function RecipeCard(props: IProps) {
   const { name, recipeId, index, createdBy } = props;
   const { users }: any = useSelector((state: RootState) => state.usersReducer);
+
   let userName = "";
   if (users) {
     userName = users[createdBy].userName;
   }
+
   return (
     <>
       <RecipeContainerDiv id="RecipeCard" key={index}>
         <RecipeImageImg src={Lunch} alt="Lunch" />
         <RecipeInfoContainerDiv>
           <Link
-            to={`/recipedetail/:${recipeId}`}
+            to={`/recipedetail/${recipeId}`}
             style={{
               textDecoration: "none",
               width: "100%",
@@ -118,6 +120,7 @@ function RecipeCard(props: IProps) {
           <MoreInfoDiv width="35%">
             <SaveButton recipeId={recipeId} />
           </MoreInfoDiv>
+          <DeleteRecipeButton recipeId={recipeId} />
         </RecipeInfoContainerDiv>
       </RecipeContainerDiv>
     </>
