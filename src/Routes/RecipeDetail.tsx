@@ -91,14 +91,14 @@ const OrderNumber = styled.div`
 `;
 
 interface IRecipe {
-  recipeId: string;
   createdBy: string;
   name: string;
   category: string;
+  description: string;
   servings: number;
   favoritedBy: string[];
-  ingredients: { ingName: string; quantity: string; unit: string }[];
-  instructions: { number: number; instruction: string }[];
+  ingredients: string;
+  instructions: string;
 }
 
 const RecipeDetail = () => {
@@ -116,44 +116,39 @@ const RecipeDetail = () => {
   const handleAuthor = (author: string) =>
     users ? users[author].userName : null;
 
-
-  const handleIngredients = (
-    ing: { ingName: string; quantity: string; unit: string }[],
-  ) => {
-    const ingredientsList = ing.map(
-      (
-        i: { ingName: string; quantity: string; unit: string },
-        index: number,
-      ) => {
-        return (
-          <div key={index}>
-            {i.quantity} {i.unit === "-" ? null : i.unit} {i.ingName}
-          </div>
-        );
-      },
-    );
+  const handleIngredients = (ing: string) => {
+    console.log(ing);
+    const ingredientsList = ing.split("\n").map((i, index) => {
+      return <div key={index}>{i}</div>;
+    });
     return ingredientsList;
   };
 
-  const handleInstructions = (
-    inst: { number: number; instruction: string }[],
-  ) => {
-    const instructionsList = inst.map(
-      (i: { number: number; instruction: string }, key: number) => {
-        return (
-          <Instruction key={key}>
-            <OrderNumber>{i.number}</OrderNumber>
-            <div>{i.instruction}</div>
-          </Instruction>
-        );
-      },
-    );
+  const handleInstructions = (inst: string) => {
+    console.log(inst);
+    const instructionsList = inst.split("\n").map((i, index) => {
+      return (
+        <Instruction key={index}>
+          <OrderNumber>{index + 1}</OrderNumber>
+          <div>{i}</div>
+        </Instruction>
+      );
+    });
+    // const instructionsList = inst.map(
+    //   (i: { number: number; instruction: string }, key: number) => {
+    //     return (
+    //       <Instruction key={key}>
+    //         <OrderNumber>{i.number}</OrderNumber>
+    //         <div>{i.instruction}</div>
+    //       </Instruction>
+    //     );
+    //   },
+    // );
     return instructionsList;
   };
 
   if (foundRecipe) {
     const {
-      recipeId,
       createdBy,
       name,
       category,
@@ -178,7 +173,7 @@ const RecipeDetail = () => {
                 <Author>{handleAuthor(createdBy)}</Author>
               </Link>
             </div>
-            <SaveButton recipeId={recipeId} />
+            <SaveButton recipeId={id} />
           </RecipeHeading>
           <Exit id="Exit">
             <Link

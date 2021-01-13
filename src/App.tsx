@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -23,7 +23,7 @@ import RecipeDetail from "./Routes/RecipeDetail";
 import UserProfile from "./Routes/UserProfile";
 
 const Main = styled.main`
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
 `;
 
@@ -34,13 +34,14 @@ function App() {
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const dispatch = useDispatch();
 
-  firebase
-    .database()
-    .ref("/")
-    .on("value", (snapshot) => {
+  useEffect(() => {
+    const ref = firebase.database().ref("/");
+    ref.on("value", (snapshot) => {
       dispatch(recipeAction(snapshot.val().recipes));
       dispatch(usersAction(snapshot.val().users));
     });
+    return () => ref.off();
+  }, [dispatch]);
 
   return (
     <div

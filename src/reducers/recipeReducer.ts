@@ -1,14 +1,14 @@
 export interface RecipeState {
   recipes: {
     [name: string]: {
-      recipeId: string;
       createdBy: string;
       name: string;
       category: string;
+      description: string;
       servings: number;
       favoritedBy: string[];
-      ingredients: { ingName: string; quantity: string; unit: string }[];
-      instructions: { number: number; instruction: string }[];
+      ingredients: string;
+      instructions: string;
     };
   };
 }

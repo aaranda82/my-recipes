@@ -6,7 +6,7 @@ import Lunch from "../assets/Lunch.jpg";
 import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
-import DeleteRecipeButton from "./DeleteRecipeButton";
+import ModifyRecipeButtons from "./ModifyRecipeButtons";
 import SaveButton from "./SaveButton";
 
 const { primaryColorTwo, accentColorOne } = colorScheme;
@@ -120,7 +120,7 @@ const RecipeCard = (props: IProps) => {
           <MoreInfoDiv width="35%">
             <SaveButton recipeId={recipeId} />
           </MoreInfoDiv>
-          <DeleteRecipeButton recipeId={recipeId} />
+          <ModifyRecipeButtons recipeId={recipeId} />
         </RecipeInfoContainerDiv>
       </RecipeContainerDiv>
     </>

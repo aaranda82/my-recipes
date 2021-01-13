@@ -1,741 +1,242 @@
 import firebase from "firebase";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
-const { accentColorOne, primaryColorTwo, primaryColorOne } = colorScheme;
-const { mobileMaxWidth, primaryFont, secondaryFont } = styles;
+const { primaryFont, mobileMaxWidth } = styles;
 
-const CRCont = styled.div`
+const ContainerDiv = styled.div`
   font-family: ${primaryFont};
   display: flex;
   flex-wrap: wrap;
-`;
-
-const AddRInfoCont = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding-top: 10px;
-`;
-
-const InfoInput = styled.div`
-  height: 100%;
-  width: 30%;
-  @media (max-width: ${mobileMaxWidth}) {
-    width: 80%;
-    height: unset;
+  flex-direction: row-reverse;
+  background: lightblue;
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    flex-direction: unset;
   }
 `;
 
-const Input = styled.input`
-  width: 90%;
-  outline: none;
-  border: 1px solid lightgrey;
-  box-sizing: border-box;
-`;
-
-const TextArea = styled.textarea`
-  width: 90%;
-  outline: none;
-  border: 1px solid lightgrey;
-  box-sizing: border-box;
-`;
-
-const Label = styled.label`
-  font-family: ${secondaryFont};
-  margin-top: 10px;
-  display: block;
-  font-size: 15px;
-`;
-
-const Error = styled.div`
-  font-family: ${primaryFont};
-  margin-bottom: 10px;
-  color: red;
-  width: 100%;
-`;
-
-const AddIngredientCont = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
-
-interface IIProps {
-  name?: string;
+interface IProps {
+  width: string;
+  float: string;
 }
-
-const IngredientInput = styled.div<IIProps>`
-  width: ${(props) =>
-    props.name === "NAME"
-      ? "40%"
-      : props.name === "INSTRUCTION"
-      ? "77%"
-      : "15%"};
-  height: 100%;
-  @media (max-width: ${mobileMaxWidth}) {
-    width: ${(props) =>
-      props.name === "NAME"
-        ? "80%"
-        : props.name === "INSTRUCTION"
-        ? "80%"
-        : "35%"};
-    height: unset;
-  }
-`;
-
-const ButtonCont = styled.div`
-  width: 100%;
+const SubContainer = styled.div<IProps>`
+  padding: 20px 0;
+  width: ${(props) => props.width};
   display: flex;
-  align-items: start;
-  margin-bottom: 20px;
-`;
-
-const AddIngButton = styled.button`
-  font-family: ${primaryFont};
-  border: none;
-  border-radius: 3px;
-  min-width: 150px;
-  cursor: pointer;
-  background-color: orange;
-  color: ${primaryColorTwo};
-  padding: 5px;
-  &:hover {
-    background-color: black;
+  flex-wrap: wrap;
+  justify-content: center;
+  float: ${(props) => props.float};
+  height: fit-content;
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 100%;
   }
 `;
 
-const StateIngCont = styled.div`
-  width: 75%;
+const Item = styled.div<{ height?: string; width?: string }>`
+  width: 60%;
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
+  margin-bottom: 20px;
+  & > textarea {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    height: ${(props) => props.height};
+    width: 100%;
+    font-family: ${primaryFont};
+    font-weight: 600;
+    outline: none;
+  }
+  & > input {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    height: 2.5rem;
+    width: ${(props) => props.width};
+    outline: none;
+  }
+  & > label {
+    margin: 5px 0;
+    width: 100%;
+  }
+`;
+
+const FileDiv = styled.div`
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-`;
-
-interface ILProps {
-  lineWidth: boolean;
-}
-
-const InputLine = styled.div<ILProps>`
-  width: ${(props) => (props.lineWidth ? "90%" : "0")};
-  height: 2px;
-  background-color: ${primaryColorOne};
-  transition: width ease 0.5s;
-`;
-
-const Icon = styled.i`
-  cursor: pointer;
-  color: ${accentColorOne};
-  width: 5%;
-  @media screen and (max-width: ${mobileMaxWidth}) {
-    width: 10%;
-  }
-`;
-
-const Ing = styled.div`
-  width: 95%;
+  border: 1px solid grey;
   margin: 10px 0;
-  word-wrap: break-word;
-  text-align: left;
-  @media screen and (max-width: ${mobileMaxWidth}) {
-    width: 90%;
+`;
+
+const FileLabel = styled.label`
+  cursor: pointer;
+  text-align: center;
+  width: 200px;
+  height: 200px;
+  & > input {
+    opacity: 0;
+    width: 100%;
+    cursor: pointer;
   }
 `;
 
-function HandleInputs(
-  name: string,
-  onChange: (e?: any) => void,
-  value: string | number,
-  validateName: () => void,
-  error: string,
-  onInputFocusIn: (e?: any) => void,
-  onInputFocusOut: () => void,
-  onFocus: string | null,
-  type: string,
-) {
-  return (
-    <InfoInput>
-      <Label>{name}</Label>
-      <Input
-        type={type}
-        onChange={onChange}
-        onBlur={() => {
-          validateName();
-          onInputFocusOut();
-        }}
-        value={value}
-        onFocus={() => onInputFocusIn(name)}
-      />
-      <InputLine lineWidth={onFocus === name ? true : false} />
-      <Error>{error}</Error>
-    </InfoInput>
-  );
-}
+const ButtonContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+`;
 
-function handleIngredientsInputs(
-  name: string,
-  onChange: (e: any) => void,
-  value: string,
-  error: string,
-  onBlur: () => void,
-  onInputFocusIn: (e?: any) => void,
-  onInputFocusOut: () => void,
-  onFocus: string | null,
-) {
-  return (
-    <IngredientInput name={name}>
-      <Label>{name}</Label>
+const CreateRecipe = () => {
+  const [recipeName, setRecipeName] = useState("");
+  const [description, setDescription] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [instructions, setInstructions] = useState("");
+  const [category, setCategory] = useState("");
+  const [servings, setServings] = useState("");
+  const { uid } = useSelector((state: RootState) => state.userReducer);
 
-      {name === "INSTRUCTION" ? (
-        <TextArea
-          onChange={onChange}
-          value={value}
-          onBlur={() => {
-            onBlur();
-            onInputFocusOut();
-          }}
-          onFocus={() => onInputFocusIn(name)}
-        />
-      ) : (
-        <Input
-          type="text"
-          onChange={onChange}
-          value={value}
-          onBlur={() => {
-            onBlur();
-            onInputFocusOut();
-          }}
-          onFocus={() => onInputFocusIn(name)}
-        />
-      )}
-      <InputLine lineWidth={onFocus === name ? true : false} />
-      <Error>{error}</Error>
-    </IngredientInput>
-  );
-}
-
-function handleButton(cb: () => void, title: string) {
-  return (
-    <ButtonCont>
-      <AddIngButton onClick={cb}>{title}</AddIngButton>
-    </ButtonCont>
-  );
-}
-
-interface IProps {
-  uid: string;
-  displayName: string;
-  history: { push: any };
-}
-
-interface IState {
-  recipe: {
-    recipeId: number;
-    createdBy: string;
-    name: string;
-    category: string;
-    servings: number;
-    ingredients: { ingName: string; quantity: string; unit: string }[];
-    instructions: { instruction: string; number: number }[];
+  const changeRecipeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRecipeName(e.currentTarget.value);
   };
-  ingredientToAdd: {
-    ingName: string;
-    quantity: string;
-    unit: string;
+
+  const changeDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(e.currentTarget.value);
   };
-  instructionToAdd: { number: number; instruction: string };
-  onFocus: string | null;
-  ingNameToAddError: string;
-  quantityToAddError: string;
-  unitToAddError: string;
-  nameError: string;
-  servingsError: string;
-  categoryError: string;
-  instToAddError: string;
-  instructionsError: string;
-  ingredientsError: string;
-}
 
-class CreateRecipe extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      recipe: {
-        recipeId: 0,
-        createdBy: this.props.uid,
-        name: "",
-        category: "",
-        servings: 0,
-        ingredients: [],
-        instructions: [],
-      },
-      ingredientToAdd: {
-        ingName: "",
-        quantity: "",
-        unit: "",
-      },
-      instructionToAdd: { number: 1, instruction: "" },
-      onFocus: null,
-      ingNameToAddError: "",
-      quantityToAddError: "",
-      unitToAddError: "",
-      nameError: "",
-      servingsError: "",
-      categoryError: "",
-      instToAddError: "",
-      instructionsError: "",
-      ingredientsError: "",
-    };
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleServingsChange = this.handleServingsChange.bind(this);
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.handelIngredientChange = this.handelIngredientChange.bind(this);
-    this.handelQuantityChange = this.handelQuantityChange.bind(this);
-    this.handelUnitChange = this.handelUnitChange.bind(this);
-    this.validateName = this.validateName.bind(this);
-    this.validateServings = this.validateServings.bind(this);
-    this.validateCategory = this.validateCategory.bind(this);
-    this.validateIngToAdd = this.validateIngToAdd.bind(this);
-    this.validateQuantityToAdd = this.validateQuantityToAdd.bind(this);
-    this.validateUnitToAdd = this.validateUnitToAdd.bind(this);
-    this.addIngredient = this.addIngredient.bind(this);
-    this.onInputFocusIn = this.onInputFocusIn.bind(this);
-    this.onInputFocusOut = this.onInputFocusOut.bind(this);
-    this.handleInstChange = this.handleInstChange.bind(this);
-    this.validateInstToAdd = this.validateInstToAdd.bind(this);
-    this.addInstruction = this.addInstruction.bind(this);
-    this.addRecipe = this.addRecipe.bind(this);
-  }
+  const changeIngredients = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setIngredients(e.currentTarget.value);
+  };
 
-  onInputFocusIn(onFocus: any) {
-    this.setState({ onFocus });
-  }
+  const changeInstructions = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInstructions(e.currentTarget.value);
+  };
 
-  onInputFocusOut() {
-    this.setState({ onFocus: null });
-  }
+  const changeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategory(e.currentTarget.value);
+  };
 
-  handleStateIngredients() {
-    if (this.state.recipe.ingredients.length > 0) {
-      const ingredients = this.state.recipe.ingredients.map((r, index) => {
-        const { ingName, quantity, unit } = r;
-        return (
-          <React.Fragment key={index}>
-            <Icon
-              className="fas fa-times"
-              onClick={() => this.deleteIng(index)}
-            />
-            <Ing>
-              {quantity} {unit === "-" ? null : unit} {ingName}{" "}
-            </Ing>
-          </React.Fragment>
-        );
-      });
-      return ingredients;
-    } else {
-      return this.state.ingredientsError ? (
-        <Error>{this.state.ingredientsError}</Error>
-      ) : (
-        <div style={{ margin: "10px auto" }}>
-          Add an ingredient{" "}
-          <i style={{ color: primaryColorOne }} className="fas fa-arrow-down" />
-        </div>
-      );
-    }
-  }
+  const changeServings = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setServings(e.currentTarget.value);
+  };
 
-  handleStateInstructions() {
-    const { instructions } = this.state.recipe;
-    if (instructions.length > 0) {
-      const instList = instructions.map((i) => {
-        return (
-          <React.Fragment key={i.number}>
-            <Icon
-              className="fas fa-times"
-              onClick={() => this.deleteInst(i.number - 1)}
-            />
-            <Ing>
-              <strong>{i.number}.</strong> {i.instruction}
-            </Ing>
-          </React.Fragment>
-        );
-      });
-      return instList;
-    } else {
-      return this.state.instructionsError ? (
-        <Error>{this.state.instructionsError}</Error>
-      ) : (
-        <div style={{ margin: "10px auto" }}>
-          Add an Instruction
-          <i
-            style={{ color: primaryColorOne, marginLeft: "10px" }}
-            className="fas fa-arrow-down"
-          />
-        </div>
-      );
-    }
-  }
-
-  handleNameChange(e: any) {
-    e.preventDefault();
-    const recipe = { ...this.state.recipe };
-    recipe.name = e.target.value;
-    this.setState({ recipe }, () => this.validateName());
-  }
-
-  handleServingsChange(e: any) {
-    e.preventDefault();
-    const recipe = { ...this.state.recipe };
-    recipe.servings = e.target.value;
-    this.setState({ recipe }, () => this.validateServings());
-  }
-
-  handleCategoryChange(e: any) {
-    e.preventDefault();
-    const recipe = { ...this.state.recipe };
-    recipe.category = e.target.value;
-    this.setState({ recipe }, () => this.validateCategory());
-  }
-
-  handelIngredientChange(e: any) {
-    e.preventDefault();
-    const { ingredientToAdd } = { ...this.state };
-    ingredientToAdd.ingName = e.target.value;
-    this.setState({ ingredientToAdd }, () => this.validateIngToAdd());
-  }
-
-  handelQuantityChange(e: any) {
-    e.preventDefault();
-    const { ingredientToAdd } = { ...this.state };
-    ingredientToAdd.quantity = e.target.value;
-    this.setState({ ingredientToAdd }, () => this.validateQuantityToAdd());
-  }
-
-  handelUnitChange(e: any) {
-    e.preventDefault();
-    const { ingredientToAdd } = { ...this.state };
-    ingredientToAdd.unit = e.target.value;
-    this.setState({ ingredientToAdd }, () => this.validateUnitToAdd());
-  }
-
-  handleInstChange(e: any) {
-    e.preventDefault();
-    const { instructionToAdd } = this.state;
-    instructionToAdd.instruction = e.target.value;
-    this.setState({ instructionToAdd }, () => this.validateInstToAdd());
-  }
-
-  validateName() {
-    if (this.state.recipe.name.length < 2) {
-      this.setState({
-        nameError: "Not enough letters!",
-      });
-    } else {
-      this.setState({ nameError: "" });
-    }
-  }
-
-  validateServings() {
-    if (this.state.recipe.servings <= 0) {
-      this.setState({ servingsError: "Too low!" });
-    } else {
-      this.setState({ servingsError: "" });
-    }
-  }
-
-  validateCategory() {
-    if (this.state.recipe.category.length < 3) {
-      this.setState({
-        categoryError: "Not enough letters!",
-      });
-    } else {
-      this.setState({ categoryError: "" });
-    }
-  }
-
-  validateIngToAdd() {
-    if (this.state.ingredientToAdd.ingName.length < 2) {
-      this.setState({ ingNameToAddError: "Name is too short" });
-    } else {
-      this.setState({ ingNameToAddError: "" });
-    }
-  }
-
-  validateQuantityToAdd() {
-    if (this.state.ingredientToAdd.quantity.length < 1) {
-      this.setState({ quantityToAddError: "Quantity requred" });
-    } else {
-      this.setState({ quantityToAddError: "" });
-    }
-  }
-
-  validateUnitToAdd() {
-    if (this.state.ingredientToAdd.unit.length < 1) {
-      this.setState({ unitToAddError: `Unit required, if none use "-"` });
-    } else {
-      this.setState({ unitToAddError: "" });
-    }
-  }
-
-  validateInstToAdd() {
-    if (this.state.instructionToAdd.instruction.length < 3) {
-      this.setState({ instToAddError: "Instruction is too short" });
-    } else {
-      this.setState({ instToAddError: "" });
-    }
-  }
-
-  validateInstructions() {
-    let instructionsError = "";
-    if (this.state.recipe.instructions.length < 1) {
-      instructionsError = "Please add an instruction";
-    }
-    this.setState({ instructionsError });
-  }
-
-  validateIngredients() {
-    let ingredientsError = "";
-    if (this.state.recipe.ingredients.length < 1) {
-      ingredientsError = "Please add an ingredient";
-    }
-    this.setState({ ingredientsError });
-  }
-
-  addIngredient() {
-    const { ingName, quantity, unit } = this.state.ingredientToAdd;
-    if (ingName || quantity || unit) {
-      const { recipe } = { ...this.state };
-      recipe.ingredients.push(this.state.ingredientToAdd);
-      this.setState({
-        recipe,
-        ingredientToAdd: {
-          ingName: "",
-          quantity: "",
-          unit: "",
-        },
-      });
-    }
-    this.validateIngToAdd();
-    this.validateQuantityToAdd();
-    this.validateUnitToAdd();
-    this.validateIngredients();
-  }
-
-  addInstruction() {
-    const { instruction } = this.state.instructionToAdd;
-    if (instruction) {
-      const { recipe } = { ...this.state };
-      recipe.instructions.push(this.state.instructionToAdd);
-      const orderNumber = recipe.instructions.length + 1;
-      this.setState({
-        recipe,
-        instructionToAdd: {
-          instruction: "",
-          number: orderNumber,
-        },
-      });
-    }
-    this.validateInstToAdd();
-    this.validateInstructions();
-  }
-
-  deleteIng(index: number) {
-    const { recipe } = { ...this.state };
-    recipe.ingredients.splice(index, 1);
-    this.setState({ recipe });
-  }
-
-  deleteInst(index: number) {
-    const { recipe } = { ...this.state };
-    recipe.instructions.splice(index, 1);
-    for (let x = index; x < recipe.instructions.length; x++) {
-      recipe.instructions[x].number = x + 1;
-    }
-    this.setState({
-      recipe,
-      instructionToAdd: {
-        instruction: "",
-        number: recipe.instructions.length + 1,
-      },
-    });
-  }
-
-  async addRecipe() {
-    this.validateName();
-    this.validateServings();
-    this.validateCategory();
-    this.validateInstructions();
-    this.validateIngredients();
-    const {
-      name,
-      servings,
+  const handleSubmit = () => {
+    var key = firebase.database().ref().child("recipes").push().key;
+    const recipe = {
+      createdBy: uid,
+      name: recipeName,
+      description,
       category,
+      servings,
       ingredients,
       instructions,
-    } = this.state.recipe;
-    if (
-      name &&
-      servings &&
-      category &&
-      ingredients.length > 0 &&
-      instructions.length > 0
-    ) {
-      const key = firebase.database().ref().child("recipes").push().key;
-      console.log(key);
-      const {
-        createdBy,
-        name,
-        category,
-        servings,
-        ingredients,
-        instructions,
-      } = this.state.recipe;
-      const response = await firebase
-        .database()
-        .ref("recipes/" + key)
-        .set(
-          {
-            createdBy,
-            name,
-            category,
-            servings,
-            ingredients,
-            instructions,
-            favorites: [],
-          },
-          (error) => {
-            if (error) {
-              console.log(error);
-            }
-          },
-        );
+    };
+    firebase
+      .database()
+      .ref("recipes/" + key)
+      .set(recipe);
+  };
 
-      console.log("RECIPE ADDED", response);
-    }
-    this.setState({
-      recipe: {
-        recipeId: 0,
-        createdBy: this.props.uid,
-        name: "",
-        category: "",
-        servings: 0,
-        ingredients: [],
-        instructions: [],
-      },
-    });
-  }
-
-  componentDidMount() {
-    if (!this.props.uid) {
-      this.props.history.push("/");
-    }
-  }
-
-  render() {
+  const handleInputItem = (
+    name: string,
+    value: string,
+    cb: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    width: string,
+    type?: string,
+  ) => {
     return (
-      <CRCont id="create recipe cont">
-        <AddRInfoCont id="recipe info cont">
-          {HandleInputs(
-            "RECIPE NAME",
-            this.handleNameChange,
-            this.state.recipe.name,
-            this.validateName,
-            this.state.nameError,
-            this.onInputFocusIn,
-            this.onInputFocusOut,
-            this.state.onFocus,
-            "text",
+      <Item width={width}>
+        <label htmlFor={name}>{name}</label>
+        <input type={type} value={value} onChange={cb} />
+      </Item>
+    );
+  };
+
+  const handleTextItem = (
+    name: string,
+    value: string,
+    cb: (e: React.ChangeEvent<HTMLTextAreaElement>) => void,
+    placeholder: string,
+    height: string,
+  ) => {
+    return (
+      <Item height={height}>
+        <label htmlFor={name}>{name}</label>
+        <textarea value={value} onChange={cb} placeholder={placeholder} />
+      </Item>
+    );
+  };
+
+  return (
+    <>
+      <ContainerDiv>
+        <SubContainer width="60%" float="right">
+          {handleInputItem(
+            "Recipe Title",
+            recipeName,
+            changeRecipeName,
+            "100%",
           )}
-          {HandleInputs(
-            "SERVINGS",
-            this.handleServingsChange,
-            this.state.recipe.servings,
-            this.validateServings,
-            this.state.servingsError,
-            this.onInputFocusIn,
-            this.onInputFocusOut,
-            this.state.onFocus,
+          {handleTextItem(
+            "Description",
+            description,
+            changeDescription,
+            "",
+            "6rem",
+          )}
+          {handleTextItem(
+            "Ingredients",
+            ingredients,
+            changeIngredients,
+            "Write each ingredient on its own line",
+            "9rem",
+          )}
+          {handleTextItem(
+            "Instructions",
+            instructions,
+            changeInstructions,
+            "Write each instruction on its own line",
+            "9rem",
+          )}
+        </SubContainer>
+        <SubContainer width="40%" float="left">
+          <FileDiv
+            onClick={() => console.log("File upload feature coming soon")}>
+            <FileLabel>
+              <svg
+                height="125px"
+                viewBox="0 0 512 512"
+                width="125px"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M457 101H356.812l-9.743-29.23A44.946 44.946 0 00304.377 41h-96.754a44.943 44.943 0 00-42.691 30.77L155.188 101H131V76c0-19.299-15.701-35-35-35H76c-19.299 0-35 15.701-35 35v26.812C17.432 109.02 0 130.51 0 156v260c0 30.327 24.673 55 55 55h402c30.327 0 55-24.673 55-55V156c0-30.327-24.673-55-55-55zM71 76c0-2.757 2.243-5 5-5h20c2.757 0 5 2.243 5 5v25H71zm411 340c0 13.785-11.215 25-25 25H55c-13.785 0-25-11.215-25-25V156c0-13.785 11.215-25 25-25h111a15 15 0 0014.23-10.257l13.162-39.486A14.983 14.983 0 01207.623 71h96.754a14.98 14.98 0 0114.23 10.256l13.162 39.487A15.002 15.002 0 00346 131h111c13.785 0 25 11.215 25 25z" />
+                <circle cx={436} cy={176} r={15} />
+                <path d="M106 161H76c-8.284 0-15 6.716-15 15s6.716 15 15 15h30c8.284 0 15-6.716 15-15s-6.716-15-15-15zM256 411c-74.439 0-135-60.561-135-135s60.561-135 135-135 135 60.561 135 135-60.561 135-135 135zm0-240c-57.897 0-105 47.103-105 105s47.103 105 105 105 105-47.103 105-105-47.103-105-105-105z" />
+                <path d="M256 351c-41.355 0-75-33.645-75-75s33.645-75 75-75 75 33.645 75 75-33.645 75-75 75zm0-120c-24.813 0-45 20.187-45 45s20.187 45 45 45 45-20.187 45-45-20.187-45-45-45z" />
+              </svg>
+              <input />
+              Add Image Feature Coming Soon
+            </FileLabel>
+          </FileDiv>
+          {handleInputItem("Category", category, changeCategory, "100%")}
+          {handleInputItem(
+            "Servings",
+            servings,
+            changeServings,
+            "50%",
             "number",
           )}
-          {HandleInputs(
-            "CATEGORY",
-            this.handleCategoryChange,
-            this.state.recipe.category,
-            this.validateCategory,
-            this.state.categoryError,
-            this.onInputFocusIn,
-            this.onInputFocusOut,
-            this.state.onFocus,
-            "text",
-          )}
-        </AddRInfoCont>
-        <StateIngCont>{this.handleStateIngredients()}</StateIngCont>
-        <AddIngredientCont>
-          {handleIngredientsInputs(
-            "NAME",
-            this.handelIngredientChange,
-            this.state.ingredientToAdd.ingName,
-            this.state.ingNameToAddError,
-            this.validateIngToAdd,
-            this.onInputFocusIn,
-            this.onInputFocusOut,
-            this.state.onFocus,
-          )}
-          {handleIngredientsInputs(
-            "QUANTITY",
-            this.handelQuantityChange,
-            this.state.ingredientToAdd.quantity,
-            this.state.quantityToAddError,
-            this.validateQuantityToAdd,
-            this.onInputFocusIn,
-            this.onInputFocusOut,
-            this.state.onFocus,
-          )}
-          {handleIngredientsInputs(
-            "UNIT",
-            this.handelUnitChange,
-            this.state.ingredientToAdd.unit,
-            this.state.unitToAddError,
-            this.validateUnitToAdd,
-            this.onInputFocusIn,
-            this.onInputFocusOut,
-            this.state.onFocus,
-          )}
-        </AddIngredientCont>
-        {handleButton(this.addIngredient, "ADD INGREDIENT")}
-        <StateIngCont>{this.handleStateInstructions()}</StateIngCont>
-        <AddIngredientCont>
-          {handleIngredientsInputs(
-            "INSTRUCTION",
-            this.handleInstChange,
-            this.state.instructionToAdd.instruction,
-            this.state.instToAddError,
-            this.validateInstToAdd,
-            this.onInputFocusIn,
-            this.onInputFocusOut,
-            this.state.onFocus,
-          )}
-        </AddIngredientCont>
-        {handleButton(this.addInstruction, "ADD INSTRUCTION")}
-        {handleButton(this.addRecipe, "ADD RECIPE")}
-      </CRCont>
-    );
-  }
-}
-
-const mapStateToProps = (state: RootState) => {
-  return {
-    uid: state.userReducer.uid,
-    displayName: state.userReducer.displayName,
-  };
+        </SubContainer>
+        <ButtonContainer>
+          <button onClick={() => handleSubmit()}>Save Recipe</button>
+        </ButtonContainer>
+      </ContainerDiv>
+    </>
+  );
 };
 
-export default withRouter(connect(mapStateToProps)(CreateRecipe));
+export default CreateRecipe;
