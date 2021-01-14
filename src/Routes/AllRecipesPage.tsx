@@ -88,14 +88,14 @@ export const handleRecipeArrayLength = (allRecipes: JSX.Element[]) => {
 
 interface IRecipe {
   [name: string]: {
-    recipeId: string;
     createdBy: string;
     name: string;
     category: string;
     servings: number;
     favoritedBy: string[];
-    ingredients: { ingName: string; quantity: string; unit: string }[];
-    instructions: { number: number; instruction: string }[];
+    ingredients: string;
+    instructions: string;
+    description: string;
   };
 }
 
@@ -152,11 +152,11 @@ const AllRecipesPage = () => {
       let startingIndex: number = 0;
       let recipeCardsArr: JSX.Element[] = [];
       for (const recipeId in filterRecipesByCat()) {
-        const { name, createdBy } = filterRecipesByCat()[recipeId];
+        const { name, createdBy, description } = filterRecipesByCat()[recipeId];
         const index = startingIndex++;
         const RCProps = {
+          description,
           name,
-          uid: id,
           index,
           recipeId,
           createdBy,
@@ -176,13 +176,13 @@ const AllRecipesPage = () => {
     if (recipesToShow === "PERSONAL RECIPES") {
       for (const recipeId in recipesByCat) {
         if (recipesByCat[recipeId].createdBy === id) {
-          const { name, createdBy } = recipesByCat[recipeId];
+          const { name, createdBy, description } = recipesByCat[recipeId];
           const index = startingIndex++;
           const RCProps = {
+            description,
             name,
             recipeId,
             index,
-            uid: id,
             createdBy,
           };
           recipeCardsArr.push(<RecipeCard key={index} {...RCProps} />);
@@ -194,13 +194,13 @@ const AllRecipesPage = () => {
       for (const recipeId in recipesByCat) {
         const favsArray = recipesByCat[recipeId].favoritedBy;
         if (favsArray && favsArray.includes(id)) {
-          const { name, createdBy } = recipesByCat[recipeId];
+          const { name, createdBy, description } = recipesByCat[recipeId];
           const index = startingIndex++;
           const RCProps = {
             name,
             recipeId,
             index,
-            uid: id,
+            description,
             createdBy,
           };
           favsRecipesCardsArr.push(<RecipeCard key={index} {...RCProps} />);

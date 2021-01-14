@@ -44,7 +44,6 @@ const UserProfile = () => {
   );
   const users = useSelector((state: RootState) => state.usersReducer.users);
   const history = useHistory();
-  const { uid } = useSelector((state: RootState) => state.userReducer); // user that is logged in
   const { id } = useParams<{ id: string }>(); // user whose profile is being viewed
 
   const handleUserCreatedRecipes = () => {
@@ -53,13 +52,13 @@ const UserProfile = () => {
     for (const recipeId in recipes) {
       if (recipes[recipeId].createdBy === id) {
         const index = startingIndex++;
-        const { name, createdBy } = recipes[recipeId];
+        const { name, createdBy, description } = recipes[recipeId];
         const RCProps = {
           name,
           recipeId,
           index,
           view: "public",
-          uid,
+          description,
           createdBy,
         };
         userCreatedRecipes.push(<RecipeCard key={index + 1000} {...RCProps} />);
@@ -74,14 +73,14 @@ const UserProfile = () => {
     for (const recipeId in recipes) {
       const favedBy = recipes[recipeId].favoritedBy;
       if (favedBy && favedBy.includes(id)) {
-        const { name, createdBy } = recipes[recipeId];
+        const { name, createdBy, description } = recipes[recipeId];
         const index = startingIndex++;
         const RCProps = {
           name,
           recipeId,
           index,
           view: "public",
-          uid,
+          description,
           createdBy,
         };
         favoriteRecipes.push(<RecipeCard key={index + 10000} {...RCProps} />);

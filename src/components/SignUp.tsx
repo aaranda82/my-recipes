@@ -103,6 +103,25 @@ class SignUp extends Component<IProps, IState> {
     this.setState({ confirmPasswordError });
   }
 
+  clearUserState() {
+    this.setState({
+      userName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  }
+
+  addFirebaseUser(userName: string, email: string, uid: string) {
+    firebase
+      .database()
+      .ref("users/" + uid)
+      .set({
+        email,
+        userName,
+      });
+  }
+
   submitNewUser() {
     const {
       userName,
@@ -133,18 +152,15 @@ class SignUp extends Component<IProps, IState> {
               }
             });
             if (user.user && typeof user.user.email === "string") {
-              this.props.signIn(userName, user.user.email, user.user.uid);
-              this.setState({
-                userName: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-              });
+              const { email, uid } = user.user;
+              this.props.signIn(userName, email, uid);
+              this.clearUserState();
+              this.addFirebaseUser(userName, email, uid);
               this.props.clear();
             }
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log("Error creating user: ", error));
     }
   }
 
@@ -247,4 +263,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapDispatchToProps)(SignUp);
+export default connect(null, mapDispatchToProps)(SignUp);
