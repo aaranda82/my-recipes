@@ -9,7 +9,7 @@ import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
-const { gunmetal, primaryColorTwo, saveButton1, saveButton2 } = colorScheme;
+const { gunmetal, saveButton1, saveButton2 } = colorScheme;
 const { primaryFont } = styles;
 
 export const SVG = styled.svg<{ save: boolean }>`
@@ -30,10 +30,10 @@ export const ButtonContainer = styled.div`
 `;
 
 export const Button = styled.button`
+  background-color: white;
   padding: 5px 10px 5px 10px;
   border: none;
   border-radius: 20px;
-  background-color: ${primaryColorTwo};
   color: ${gunmetal};
   cursor: pointer;
   font-family: ${primaryFont};

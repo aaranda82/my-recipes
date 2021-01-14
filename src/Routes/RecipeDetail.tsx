@@ -117,7 +117,6 @@ const RecipeDetail = () => {
     users ? users[author].userName : null;
 
   const handleIngredients = (ing: string) => {
-    console.log(ing);
     const ingredientsList = ing.split("\n").map((i, index) => {
       return <div key={index}>{i}</div>;
     });
@@ -125,7 +124,6 @@ const RecipeDetail = () => {
   };
 
   const handleInstructions = (inst: string) => {
-    console.log(inst);
     const instructionsList = inst.split("\n").map((i, index) => {
       return (
         <Instruction key={index}>
@@ -134,16 +132,6 @@ const RecipeDetail = () => {
         </Instruction>
       );
     });
-    // const instructionsList = inst.map(
-    //   (i: { number: number; instruction: string }, key: number) => {
-    //     return (
-    //       <Instruction key={key}>
-    //         <OrderNumber>{i.number}</OrderNumber>
-    //         <div>{i.instruction}</div>
-    //       </Instruction>
-    //     );
-    //   },
-    // );
     return instructionsList;
   };
 
@@ -155,6 +143,7 @@ const RecipeDetail = () => {
       servings,
       ingredients,
       instructions,
+      description,
     } = foundRecipe;
 
     return (
@@ -174,6 +163,7 @@ const RecipeDetail = () => {
               </Link>
             </div>
             <SaveButton recipeId={id} />
+            <div>{description}</div>
           </RecipeHeading>
           <Exit id="Exit">
             <Link

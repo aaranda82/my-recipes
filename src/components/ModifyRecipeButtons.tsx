@@ -3,7 +3,7 @@ import React from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { RootState } from "../reducers/rootReducer";
 import { Button, ButtonContainer, SVG } from "./SaveButton";
 
@@ -11,6 +11,7 @@ const ModifyRecipeButtons = ({ recipeId }: { recipeId: string }) => {
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const location = useLocation();
+  const history = useHistory();
 
   const confirmDelete = () => {
     confirmAlert({
@@ -48,7 +49,7 @@ const ModifyRecipeButtons = ({ recipeId }: { recipeId: string }) => {
           <path d="M256 448c8.836 0 16-7.164 16-16V224c0-8.836-7.164-16-16-16s-16 7.164-16 16v208c0 8.836 7.163 16 16 16zM336 448c8.836 0 16-7.164 16-16V224c0-8.836-7.164-16-16-16s-16 7.164-16 16v208c0 8.836 7.163 16 16 16zM176 448c8.836 0 16-7.164 16-16V224c0-8.836-7.164-16-16-16s-16 7.164-16 16v208c0 8.836 7.163 16 16 16z" />
         </SVG>
       </Button>
-      <Button onClick={() => console.log("update")}>
+      <Button onClick={() => history.push(`/editrecipe/${recipeId}`)}>
         <SVG
           save={false}
           height="25px"

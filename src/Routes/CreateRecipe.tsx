@@ -1,6 +1,7 @@
 import firebase from "firebase";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
@@ -98,8 +99,12 @@ const CreateRecipe = () => {
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
   const [category, setCategory] = useState("");
-  const [servings, setServings] = useState("");
+  const [servings, setServings] = useState(0);
   const { uid } = useSelector((state: RootState) => state.userReducer);
+  const { recipes } = useSelector((state: RootState) => state.recipeReducer);
+  const location = useLocation();
+  const { id } = useParams<{ id: string }>();
+  const history = useHistory();
 
   const changeRecipeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecipeName(e.currentTarget.value);
@@ -122,10 +127,11 @@ const CreateRecipe = () => {
   };
 
   const changeServings = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setServings(e.currentTarget.value);
+    const num = parseInt(e.currentTarget.value);
+    setServings(num);
   };
 
-  const handleSubmit = () => {
+  const submitNewRecipe = () => {
     var key = firebase.database().ref().child("recipes").push().key;
     const recipe = {
       createdBy: uid,
@@ -140,11 +146,34 @@ const CreateRecipe = () => {
       .database()
       .ref("recipes/" + key)
       .set(recipe);
+    history.push(`/user/${uid}`);
+  };
+
+  const editRecipe = () => {
+    const recipe = {
+      createdBy: uid,
+      name: recipeName,
+      description,
+      category,
+      servings,
+      ingredients,
+      instructions,
+    };
+    firebase.database().ref("recipes/").child(id).update(recipe);
+    history.push(`/recipedetail/${id}`);
+  };
+
+  const handleSubmitOrEditButtons = () => {
+    return recipes && location.pathname === `/editrecipe/${id}` ? (
+      <button onClick={() => editRecipe()}>Edit Recipe</button>
+    ) : (
+      <button onClick={() => submitNewRecipe()}>Save Recipe</button>
+    );
   };
 
   const handleInputItem = (
     name: string,
-    value: string,
+    value: string | number,
     cb: (e: React.ChangeEvent<HTMLInputElement>) => void,
     width: string,
     type?: string,
@@ -171,6 +200,25 @@ const CreateRecipe = () => {
       </Item>
     );
   };
+
+  useEffect(() => {
+    if (recipes && location.pathname === `/editrecipe/${id}`) {
+      const {
+        name,
+        description,
+        ingredients,
+        instructions,
+        servings,
+        category,
+      } = recipes[id];
+      setRecipeName(name);
+      setDescription(description);
+      setIngredients(ingredients);
+      setInstructions(instructions);
+      setServings(servings);
+      setCategory(category);
+    }
+  }, [id, location.pathname, recipes]);
 
   return (
     <>
@@ -231,9 +279,7 @@ const CreateRecipe = () => {
             "number",
           )}
         </SubContainer>
-        <ButtonContainer>
-          <button onClick={() => handleSubmit()}>Save Recipe</button>
-        </ButtonContainer>
+        <ButtonContainer>{handleSubmitOrEditButtons()}</ButtonContainer>
       </ContainerDiv>
     </>
   );

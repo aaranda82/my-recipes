@@ -9,16 +9,17 @@ import { styles } from "../styles";
 import ModifyRecipeButtons from "./ModifyRecipeButtons";
 import SaveButton from "./SaveButton";
 
-const { primaryColorTwo, accentColorOne } = colorScheme;
+const { accentColorOne } = colorScheme;
 const { mobileMaxWidth, primaryFont } = styles;
 
-const RecipeContainerDiv = styled.div`
+const RecipeContainerDiv = styled.div<{ vis?: string; tran?: string }>`
   width: 22%;
   margin: 10px;
-  background-color: ${primaryColorTwo};
   height: auto;
   border: 1px solid lightgrey;
   padding-bottom: 5px;
+  visibility: ${(props) => props.vis};
+  transition: ${(props) => props.tran};
   @media screen and (max-width: 875px) {
     flex: 1 1 20%;
   }
@@ -53,8 +54,15 @@ const RecipeInfoContainerDiv = styled.div`
   }
 `;
 
+const Description = styled.div`
+  height: 40px;
+  padding: 0 10px;
+  font-size: 15px;
+  text-align: center;
+`;
+
 const RecipeNameDiv = styled.div`
-  height: 37px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,16 +86,26 @@ interface IProps {
   recipeId: string;
   index: number;
   createdBy: string;
+  description: string;
 }
 
 const RecipeCard = (props: IProps) => {
-  const { name, recipeId, index, createdBy } = props;
+  const { name, recipeId, index, createdBy, description } = props;
   const { users }: any = useSelector((state: RootState) => state.usersReducer);
 
   let userName = "";
   if (users) {
     userName = users[createdBy].userName;
   }
+
+  const handleDescription = () => {
+    if (description.length > 40) {
+      let desc = description.slice(0, 40);
+      desc += "...";
+      return desc;
+    }
+    return description;
+  };
 
   return (
     <>
@@ -104,19 +122,19 @@ const RecipeCard = (props: IProps) => {
               <strong>{name}</strong>
             </RecipeNameDiv>
           </Link>
+          <Description>{handleDescription()}</Description>
           <Link
             to={`/user/${createdBy}`}
             style={{
               textDecoration: "none",
               width: "65%",
-              height: "45px",
+              height: "40px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}>
             <RecipeNameDiv>{userName}</RecipeNameDiv>
           </Link>
-
           <MoreInfoDiv width="35%">
             <SaveButton recipeId={recipeId} />
           </MoreInfoDiv>
@@ -129,12 +147,7 @@ const RecipeCard = (props: IProps) => {
 
 export const BlankRecipeCard = (index: number) => {
   return (
-    <RecipeContainerDiv
-      key={index}
-      style={{
-        visibility: "hidden",
-        transition: "none",
-      }}>
+    <RecipeContainerDiv vis="hidden" tran="none" key={index}>
       <RecipeImageImg src={Lunch} alt="Lunch" />
       <RecipeNameDiv></RecipeNameDiv>
     </RecipeContainerDiv>

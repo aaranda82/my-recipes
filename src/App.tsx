@@ -25,6 +25,13 @@ import UserProfile from "./Routes/UserProfile";
 const Main = styled.main`
   max-width: 1000px;
   margin: auto;
+  background: white;
+  padding-bottom: 20px;
+`;
+
+const Container = styled.div`
+  overflow: hidden;
+  position: relative;
 `;
 
 function App() {
@@ -44,11 +51,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div
-      style={{
-        overflow: "hidden",
-        position: "relative",
-      }}>
+    <Container>
       <Router>
         <ScrollToTop />
         <Header />
@@ -62,6 +65,7 @@ function App() {
             <Route path="/recipedetail/:id" component={RecipeDetail} />
             <Route path="/userpage/:id" component={AllRecipesPage} />
             <Route path="/createrecipe" component={CreateRecipe} />
+            <Route path="/editrecipe/:id" component={CreateRecipe} />
             <Route path="/user/:id" component={UserProfile} />
           </Switch>
           {showLogIn || showSignUp || showMenu ? <AuthModal /> : false}
@@ -69,7 +73,7 @@ function App() {
         </Main>
         <Footer />
       </Router>
-    </div>
+    </Container>
   );
 }
 
