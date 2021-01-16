@@ -1,10 +1,11 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Lunch from "../assets/Lunch.jpg";
 import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
+import { UsersState } from "../reducers/usersReducer";
 import { styles } from "../styles";
 import ModifyRecipeButtons from "./ModifyRecipeButtons";
 import SaveButton from "./SaveButton";
@@ -89,9 +90,11 @@ interface IProps {
   description: string;
 }
 
-const RecipeCard = (props: IProps) => {
+const RecipeCard = (props: IProps): ReactElement => {
   const { name, recipeId, index, createdBy, description } = props;
-  const { users }: any = useSelector((state: RootState) => state.usersReducer);
+  const { users }: UsersState = useSelector(
+    (state: RootState) => state.usersReducer,
+  );
 
   let userName = "";
   if (users) {
@@ -145,7 +148,7 @@ const RecipeCard = (props: IProps) => {
   );
 };
 
-export const BlankRecipeCard = (index: number) => {
+export const BlankRecipeCard = (index: number): ReactElement => {
   return (
     <RecipeContainerDiv vis="hidden" tran="none" key={index}>
       <RecipeImageImg src={Lunch} alt="Lunch" />

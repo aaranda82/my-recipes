@@ -3,6 +3,7 @@ import "firebase/auth";
 import React, { ChangeEvent, Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 import { clearAction } from "../actions/authActions";
 import { signInAction, signOutAction } from "../actions/userActions";
@@ -92,10 +93,9 @@ export const Button = styled.button`
   }
 `;
 
-interface AuthProps {
+interface AuthProps extends RouteComponentProps {
   displayName: string;
   uid: string;
-  history: { push: any };
   signIn: (d: string, e: string, u: string) => void;
   signOut: () => void;
   clear: () => void;
@@ -128,7 +128,7 @@ class LogIn extends Component<AuthProps, IState> {
     this.setState({ password: e.target.value });
   }
 
-  handleSubmit(e: any) {
+  handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     firebase
       .auth()
@@ -199,6 +199,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: any) => {
   return {
     signIn: (displayName: string, email: string, uid: string) => {

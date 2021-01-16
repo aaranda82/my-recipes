@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
@@ -25,7 +25,7 @@ const Email = styled.p`
   margin: auto;
 `;
 
-const AccountPage = () => {
+const AccountPage = (): ReactElement => {
   const { displayName, email } = useSelector(
     (state: RootState) => state.userReducer,
   );

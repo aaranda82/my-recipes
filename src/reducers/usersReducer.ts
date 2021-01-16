@@ -8,12 +8,12 @@ export interface UsersState {
 }
 
 const usersReducer = (
-  state: UsersState[] = [],
-  action: { type: string; payload: UsersState[] },
-) => {
+  state: UsersState = { users: {} },
+  action: { type: string; payload: UsersState },
+): UsersState => {
   switch (action.type) {
     case "GET_USERS":
-      return { users: action.payload };
+      return action.payload;
     default:
       return state;
   }

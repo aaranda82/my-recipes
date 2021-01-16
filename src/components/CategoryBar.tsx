@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 import { styles } from "../styles";
@@ -94,41 +94,45 @@ class CategoryBar extends Component<IProps, IState> {
     this.state = { categoryPage: 0 };
   }
 
-  category(index: number, selected: boolean, cat: string) {
+  category(index: number, selected: boolean, cat: string): ReactElement {
+    const { changeCategoryToShow } = this.props;
     return (
       <Button
         key={index}
         className="category"
-        onClick={() => this.props.changeCategoryToShow(cat)}
+        onClick={() => changeCategoryToShow(cat)}
         selected={selected}>
         <div>{cat}</div>
       </Button>
     );
   }
 
-  renderCategories() {
-    const catElements = this.props.categories.map((cat, index) => {
-      let selected = this.props.categoryToShow === cat ? true : false;
+  decrimentCategoryPage(): void {
+    const { categoryPage } = this.state;
+    const catPage = categoryPage <= 0 ? 0 : categoryPage - 1;
+    this.setState({ categoryPage: catPage });
+  }
+
+  incrementCategoryPage(): void {
+    const { categoryPage } = this.state;
+    const { categories } = this.props;
+    if (categoryPage + 1 >= categories.length / 8) {
+      return;
+    }
+    this.setState({ categoryPage: categoryPage + 1 });
+  }
+
+  renderCategories(): ReactElement[] {
+    const { categories, categoryToShow } = this.props;
+    const catElements = categories.map((cat, index) => {
+      const selected = categoryToShow === cat;
       return this.category(index, selected, cat);
     });
     return catElements;
   }
 
-  decrimentCategoryPage() {
-    const categoryPage =
-      this.state.categoryPage <= 0 ? 0 : this.state.categoryPage - 1;
-    this.setState({ categoryPage });
-  }
-
-  incrementCategoryPage() {
-    if (this.state.categoryPage + 1 >= this.props.categories.length / 8) {
-      return false;
-    } else {
-      this.setState({ categoryPage: this.state.categoryPage + 1 });
-    }
-  }
-
-  render() {
+  render(): ReactElement {
+    const { categoryPage } = this.state;
     return (
       <CategoryBarDiv>
         <CategoriesContent>
@@ -137,7 +141,7 @@ class CategoryBar extends Component<IProps, IState> {
               onClick={() => {
                 this.decrimentCategoryPage();
               }}>
-              <i className="fas fa-arrow-left"></i>
+              <i className="fas fa-arrow-left" />
             </CatButton>
           </CatButtonCont>
           <CatTitle>Categories</CatTitle>
@@ -146,13 +150,11 @@ class CategoryBar extends Component<IProps, IState> {
               onClick={() => {
                 this.incrementCategoryPage();
               }}>
-              <i className="fas fa-arrow-right"></i>
+              <i className="fas fa-arrow-right" />
             </CatButton>
           </CatButtonCont>
           <SlideContainer id="Categories">
-            <Slide catPage={this.state.categoryPage}>
-              {this.renderCategories()}
-            </Slide>
+            <Slide catPage={categoryPage}>{this.renderCategories()}</Slide>
           </SlideContainer>
         </CategoriesContent>
       </CategoryBarDiv>

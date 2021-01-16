@@ -1,25 +1,25 @@
+interface Recipe {
+  createdBy: string;
+  name: string;
+  category: string;
+  description: string;
+  servings: number;
+  favoritedBy: string[];
+  ingredients: string;
+  instructions: string;
+}
+
 export interface RecipeState {
-  recipes: {
-    [name: string]: {
-      createdBy: string;
-      name: string;
-      category: string;
-      description: string;
-      servings: number;
-      favoritedBy: string[];
-      ingredients: string;
-      instructions: string;
-    };
-  };
+  recipes: { [name: string]: Recipe };
 }
 
 const recipeReducer = (
-  state: RecipeState[] = [],
-  action: { type: string; payload: RecipeState[] },
-) => {
+  state: RecipeState = { recipes: {} },
+  action: { type: string; payload: RecipeState },
+): RecipeState => {
   switch (action.type) {
     case "GET_RECIPES":
-      return { recipes: action.payload };
+      return action.payload;
     default:
       return state;
   }

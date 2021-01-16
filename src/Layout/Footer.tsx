@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 
@@ -15,7 +15,7 @@ const Anchor = styled.a`
   color: ${colorScheme.accentColorOne};
 `;
 
-const Footer = () => {
+const Footer = (): ReactElement => {
   return (
     <Nav>
       Created by

@@ -1,23 +1,23 @@
-export const showMenuAction = () => {
+export const showMenuAction = (): { type: string } => {
   return {
-    type: "SHOW_MENU"
-  }
-}
+    type: "SHOW_MENU",
+  };
+};
 
-export const showLogInAction = () => {
+export const showLogInAction = (): { type: string } => {
   return {
-    type: "SHOW_LOG_IN"
-  }
-}
+    type: "SHOW_LOG_IN",
+  };
+};
 
-export const showSignUpAction = () => {
+export const showSignUpAction = (): { type: string } => {
   return {
-    type: "SHOW_SIGN_UP"
-  }
-}
+    type: "SHOW_SIGN_UP",
+  };
+};
 
-export const clearAction = () => {
+export const clearAction = (): { type: string } => {
   return {
-    type: "CLEAR"
-  }
-}
+    type: "CLEAR",
+  };
+};

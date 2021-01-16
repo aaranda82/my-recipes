@@ -1,9 +1,9 @@
 import firebase from "firebase";
-import React, { Component } from "react";
+import React, { Component, FormEvent } from "react";
+import { connect } from "react-redux";
 import { clearAction } from "../actions/authActions";
 import { signInAction } from "../actions/userActions";
 import { Button, Container, Form, FormGroup, Input, Label } from "./LogIn";
-import { connect } from "react-redux";
 
 interface IState {
   userName: string;
@@ -47,7 +47,7 @@ class SignUp extends Component<IProps, IState> {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleUserNameChange(e: any) {
+  handleUserNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     this.setState({ userName: e.target.value }, () => this.validateUserName());
   }
@@ -60,7 +60,7 @@ class SignUp extends Component<IProps, IState> {
     this.setState({ userNameError });
   }
 
-  handleEmailChange(e: any) {
+  handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     this.setState({ email: e.target.value }, () => this.validateEmail());
   }
@@ -74,7 +74,7 @@ class SignUp extends Component<IProps, IState> {
     this.setState({ emailError });
   }
 
-  handlePasswordChange(e: any) {
+  handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     this.setState({ password: e.target.value }, () => this.validatePassword());
   }
@@ -88,7 +88,7 @@ class SignUp extends Component<IProps, IState> {
     this.setState({ passwordError });
   }
 
-  handleConfirmPasswordChange(e: any) {
+  handleConfirmPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     this.setState({ confirmPassword: e.target.value }, () =>
       this.validateConfirmPassword(),
@@ -164,7 +164,7 @@ class SignUp extends Component<IProps, IState> {
     }
   }
 
-  async handleSubmit(e: any) {
+  async handleSubmit(e: FormEvent) {
     e.preventDefault();
     await this.validateUserName();
     await this.validatePassword();
@@ -178,7 +178,7 @@ class SignUp extends Component<IProps, IState> {
     type: string,
     value: string,
     error: string,
-    onChange: (e: any) => void,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     onBlur: () => void,
   ) {
     return (
@@ -252,6 +252,7 @@ class SignUp extends Component<IProps, IState> {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: any) => {
   return {
     signIn: (displayName: string, email: string, uid: string) => {

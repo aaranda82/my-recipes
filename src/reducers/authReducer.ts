@@ -15,7 +15,7 @@ const authReducer = (
   action: {
     type: string;
   },
-) => {
+): AuthState => {
   switch (action.type) {
     case "SHOW_MENU":
       return {

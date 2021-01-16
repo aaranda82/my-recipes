@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -101,7 +101,7 @@ interface IRecipe {
   instructions: string;
 }
 
-const RecipeDetail = () => {
+const RecipeDetail = (): ReactElement => {
   const { uid, displayName } = useSelector(
     (state: RootState) => state.userReducer,
   );
@@ -177,9 +177,8 @@ const RecipeDetail = () => {
         </RecipeDetailDiv>
       </>
     );
-  } else {
-    return <SpinnerLoader />;
   }
+  return <SpinnerLoader />;
 };
 
 export default RecipeDetail;

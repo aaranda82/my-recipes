@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { clearAction } from "../actions/authActions";
@@ -26,7 +26,7 @@ export const Shadow = styled.div<LIProps>`
   }
 `;
 
-const AuthModal = () => {
+const AuthModal = (): ReactElement => {
   const dispatch = useDispatch();
   const { showLogIn, showSignUp } = useSelector(
     (state: RootState) => state.authReducer,
@@ -40,7 +40,7 @@ const AuthModal = () => {
   }
   return (
     <>
-      <Shadow loggedIn={uid} onClick={() => dispatch(clearAction())}></Shadow>
+      <Shadow loggedIn={uid} onClick={() => dispatch(clearAction())} />
       {auth}
     </>
   );
