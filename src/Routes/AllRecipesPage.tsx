@@ -107,8 +107,6 @@ const AllRecipesPage = (): ReactElement => {
   const [recipesToShow, setRecipesToShow] = useState("ALL RECIPES");
   const { id } = useParams<{ id: string }>();
 
-  console.log(recipes);
-
   const getCategories = () => {
     if (recipes) {
       const allCategories = [];

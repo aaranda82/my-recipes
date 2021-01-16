@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Lunch from "../assets/Lunch.jpg";
 import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
-import { UsersState } from "../reducers/usersReducer";
 import { styles } from "../styles";
 import ModifyRecipeButtons from "./ModifyRecipeButtons";
 import SaveButton from "./SaveButton";
@@ -92,9 +91,7 @@ interface IProps {
 
 const RecipeCard = (props: IProps): ReactElement => {
   const { name, recipeId, index, createdBy, description } = props;
-  const { users }: UsersState = useSelector(
-    (state: RootState) => state.usersReducer,
-  );
+  const { users } = useSelector((state: RootState) => state.usersReducer);
 
   let userName = "";
   if (users) {

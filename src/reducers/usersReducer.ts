@@ -1,19 +1,19 @@
-interface Info {
+export interface User {
   userName: string;
   email: string;
 }
 
 export interface UsersState {
-  users: { [name: string]: Info };
+  users: { [name: string]: User };
 }
 
 const usersReducer = (
   state: UsersState = { users: {} },
-  action: { type: string; payload: UsersState },
+  action: { type: string; payload: { [name: string]: User } },
 ): UsersState => {
   switch (action.type) {
-    case "GET_USERS":
-      return action.payload;
+    case "SET_USERS":
+      return { users: action.payload };
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-interface Recipe {
+export interface Recipe {
   createdBy: string;
   name: string;
   category: string;
@@ -15,11 +15,11 @@ export interface RecipeState {
 
 const recipeReducer = (
   state: RecipeState = { recipes: {} },
-  action: { type: string; payload: RecipeState },
+  action: { type: string; payload: { [name: string]: Recipe } },
 ): RecipeState => {
   switch (action.type) {
-    case "GET_RECIPES":
-      return action.payload;
+    case "SET_RECIPES":
+      return { recipes: action.payload };
     default:
       return state;
   }
