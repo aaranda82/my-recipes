@@ -1,8 +1,10 @@
-import { UsersState } from "../reducers/usersReducer";
+import { User } from "../reducers/usersReducer";
 
-export const usersAction = (users: UsersState[]) => {
+export const usersAction = (users: {
+  [name: string]: User;
+}): { type: string; payload: { [name: string]: User } } => {
   return {
-    type: "GET_USERS",
+    type: "SET_USERS",
     payload: users,
   };
 };

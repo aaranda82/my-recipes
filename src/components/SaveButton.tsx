@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React from "react";
+import React, { ReactElement } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { useDispatch, useSelector } from "react-redux";
@@ -41,7 +41,7 @@ export const Button = styled.button`
   outline: none;
 `;
 
-const SaveButton = ({ recipeId }: { recipeId: string }) => {
+const SaveButton = ({ recipeId }: { recipeId: string }): ReactElement => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
@@ -73,12 +73,9 @@ const SaveButton = ({ recipeId }: { recipeId: string }) => {
       if (recipe && recipe.favoritedBy) {
         const isInFavs = recipe.favoritedBy.find((x) => x === uid);
         return !!isInFavs;
-      } else {
-        return false;
       }
-    } else {
-      return false;
     }
+    return false;
   };
 
   const isInFavs = recipeId ? isRecipeInFavs() : false;
@@ -109,7 +106,7 @@ const SaveButton = ({ recipeId }: { recipeId: string }) => {
             uid ? () => addToFavorites() : () => dispatch(showLogInAction())
           }>
           <SVG
-            save={true}
+            save
             xmlns="http://www.w3.org/2000/svg"
             width="25px"
             height="25px"
@@ -119,25 +116,24 @@ const SaveButton = ({ recipeId }: { recipeId: string }) => {
         </Button>
       </ButtonContainer>
     );
-  } else {
-    return (
-      <ButtonContainer>
-        <Button onClick={() => confirmRemove()}>
-          <SVG
-            save={true}
-            height="15px"
-            viewBox="0 0 511.992 511.992"
-            width="15px"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M415.402 495.422l-159.406-159.41L96.59 495.422c-22.098 22.094-57.922 22.094-80.02 0-22.093-22.098-22.093-57.922 0-80.02l159.41-159.406L16.57 96.59c-22.093-22.098-22.093-57.922 0-80.02 22.098-22.093 57.922-22.093 80.02 0l159.406 159.41L415.402 16.57c22.098-22.093 57.922-22.093 80.02 0 22.094 22.098 22.094 57.922 0 80.02l-159.41 159.406 159.41 159.406c22.094 22.098 22.094 57.922 0 80.02-22.098 22.094-57.922 22.094-80.02 0zm0 0"
-              fill="#e76e54"
-            />
-          </SVG>
-        </Button>
-      </ButtonContainer>
-    );
   }
+  return (
+    <ButtonContainer>
+      <Button onClick={() => confirmRemove()}>
+        <SVG
+          save
+          height="15px"
+          viewBox="0 0 511.992 511.992"
+          width="15px"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M415.402 495.422l-159.406-159.41L96.59 495.422c-22.098 22.094-57.922 22.094-80.02 0-22.093-22.098-22.093-57.922 0-80.02l159.41-159.406L16.57 96.59c-22.093-22.098-22.093-57.922 0-80.02 22.098-22.093 57.922-22.093 80.02 0l159.406 159.41L415.402 16.57c22.098-22.093 57.922-22.093 80.02 0 22.094 22.098 22.094 57.922 0 80.02l-159.41 159.406 159.41 159.406c22.094 22.098 22.094 57.922 0 80.02-22.098 22.094-57.922 22.094-80.02 0zm0 0"
+            fill="#e76e54"
+          />
+        </SVG>
+      </Button>
+    </ButtonContainer>
+  );
 };
 
 export default SaveButton;

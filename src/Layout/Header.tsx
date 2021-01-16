@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -54,7 +54,7 @@ const LogoSpacer = styled.div`
   } ;
 `;
 
-const Header = () => {
+const Header = (): ReactElement => {
   const displayName = useSelector(
     (state: RootState) => state.userReducer.displayName,
   );

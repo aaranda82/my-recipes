@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
@@ -31,12 +31,12 @@ interface BCProps {
 }
 
 const ButtonContainer = styled.div<BCProps>`
-  width: ${(props) => props.w};
+  width: ${(props): string => props.w};
   display: flex;
   justify-content: space-around;
   align-items: center;
   @media (max-width: ${mobileMaxWidth}) {
-    width: ${(props) => props.mobileWidth};
+    width: ${(props): string => props.mobileWidth};
   } ;
 `;
 
@@ -77,7 +77,7 @@ const AddRecipeButton = styled.button`
   }
 `;
 
-const HeaderButtons = () => {
+const HeaderButtons = (): ReactElement => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { showMenu, showLogIn, showSignUp } = useSelector(
@@ -88,7 +88,7 @@ const HeaderButtons = () => {
     <>
       <ButtonContainer id="add recipe button" w="20%" mobileWidth="25%">
         {history.location.pathname === "/createrecipe" ? null : (
-          <Link to={"/createrecipe"}>
+          <Link to="/createrecipe">
             <AddRecipeButton onClick={() => dispatch(clearAction())}>
               ADD RECIPE
             </AddRecipeButton>
@@ -100,7 +100,8 @@ const HeaderButtons = () => {
           className={showMenu ? "fas fa-times" : "fas fa-bars"}
           onClick={() =>
             showMenu ? dispatch(clearAction()) : dispatch(showMenuAction())
-          }></NavMenuButton>
+          }
+        />
       </ButtonContainer>
     </>
   ) : (

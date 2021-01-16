@@ -1,9 +1,9 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 //other logic
-const SpinnerLoader = () => {
+const SpinnerLoader = (): ReactElement => {
   return (
     <>
       <div

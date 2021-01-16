@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -34,7 +34,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-function App() {
+function App(): ReactElement {
   const { showLogIn, showSignUp, showMenu } = useSelector(
     (state: RootState) => state.authReducer,
   );
@@ -44,8 +44,8 @@ function App() {
   useEffect(() => {
     const ref = firebase.database().ref("/");
     ref.on("value", (snapshot) => {
-      dispatch(recipeAction(snapshot.val().recipes));
       dispatch(usersAction(snapshot.val().users));
+      dispatch(recipeAction(snapshot.val().recipes));
     });
     return () => ref.off();
   }, [dispatch]);

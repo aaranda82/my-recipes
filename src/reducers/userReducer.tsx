@@ -15,8 +15,8 @@ const userReducer = (
   action: {
     type: string;
     payload: { displayName: string; email: string; uid: string };
-  }
-) => {
+  },
+): UserState => {
   switch (action.type) {
     case "SIGN_IN":
       const { displayName, email, uid } = action.payload;

@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import userReducer, { UserState } from "./userReducer";
 import authReducer, { AuthState } from "./authReducer";
 import recipeReducer, { RecipeState } from "./recipeReducer";
+import userReducer, { UserState } from "./userReducer";
 import usersReducer, { UsersState } from "./usersReducer";
 
 export default combineReducers({

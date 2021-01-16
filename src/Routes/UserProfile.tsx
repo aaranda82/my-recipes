@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
@@ -38,7 +38,7 @@ const RecipeContainer = styled.div`
   margin-top: 10px;
 `;
 
-const UserProfile = () => {
+const UserProfile = (): ReactElement => {
   const recipes = useSelector(
     (state: RootState) => state.recipeReducer.recipes,
   );
@@ -90,7 +90,9 @@ const UserProfile = () => {
   };
 
   const userName = () => {
-    return users[id].userName;
+    if (users) {
+      return users[id].userName;
+    }
   };
 
   return recipes && users ? (

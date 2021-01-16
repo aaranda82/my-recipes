@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React from "react";
+import React, { ReactElement } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { useSelector } from "react-redux";
@@ -7,27 +7,34 @@ import { useHistory, useLocation } from "react-router-dom";
 import { RootState } from "../reducers/rootReducer";
 import { Button, ButtonContainer, SVG } from "./SaveButton";
 
-const ModifyRecipeButtons = ({ recipeId }: { recipeId: string }) => {
+const ModifyRecipeButtons = ({
+  recipeId,
+}: {
+  recipeId: string;
+}): ReactElement | null => {
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const location = useLocation();
   const history = useHistory();
 
   const confirmDelete = () => {
-    confirmAlert({
-      title: "Delete Recipe?",
-      message: `Are you sure you want to permanently delete ${recipes[recipeId].name}?`,
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => deleteRecipe(),
-        },
-        {
-          label: "No",
-          onClick: () => null,
-        },
-      ],
-    });
+    if (recipes) {
+      console.log(recipes);
+      confirmAlert({
+        title: "Delete Recipe?",
+        message: `Are you sure you want to permanently delete ${recipes[recipeId].name}?`,
+        buttons: [
+          {
+            label: "Yes",
+            onClick: () => deleteRecipe(),
+          },
+          {
+            label: "No",
+            onClick: () => null,
+          },
+        ],
+      });
+    }
   };
 
   const deleteRecipe = () => {

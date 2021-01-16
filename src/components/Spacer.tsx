@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
 
@@ -9,4 +9,4 @@ const SpacerDiv = styled.div`
   width: 100%;
 `;
 
-export const Spacer = () => <SpacerDiv />;
+export const Spacer = (): ReactElement => <SpacerDiv />;

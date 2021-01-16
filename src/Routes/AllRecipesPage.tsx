@@ -1,5 +1,5 @@
 import { uniq } from "lodash";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -67,18 +67,20 @@ const Recipes = styled.div`
   }
 `;
 
-export const handleRecipeArrayLength = (allRecipes: JSX.Element[]) => {
+export const handleRecipeArrayLength = (
+  allRecipes: JSX.Element[],
+): JSX.Element[] => {
   if (window.screen.width < 500) {
     return allRecipes;
   } else {
     if (allRecipes.length > 4 && allRecipes.length % 4 !== 0) {
       do {
-        let key = allRecipes.length;
+        const key = allRecipes.length;
         allRecipes.push(BlankRecipeCard(key));
       } while (allRecipes.length % 4 !== 0);
     } else if (allRecipes.length < 4) {
       do {
-        let key = allRecipes.length;
+        const key = allRecipes.length;
         allRecipes.push(BlankRecipeCard(key));
       } while (allRecipes.length <= 3);
     }
@@ -99,7 +101,7 @@ interface IRecipe {
   };
 }
 
-const AllRecipesPage = () => {
+const AllRecipesPage = (): ReactElement => {
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const [categoryToShow, setCategoryToShow] = useState("ALL");
   const [recipesToShow, setRecipesToShow] = useState("ALL RECIPES");
@@ -149,8 +151,8 @@ const AllRecipesPage = () => {
 
   const renderPublicRecipes = () => {
     if (filterRecipesByCat()) {
-      let startingIndex: number = 0;
-      let recipeCardsArr: JSX.Element[] = [];
+      let startingIndex = 0;
+      const recipeCardsArr = [];
       for (const recipeId in filterRecipesByCat()) {
         const { name, createdBy, description } = filterRecipesByCat()[recipeId];
         const index = startingIndex++;
@@ -171,7 +173,7 @@ const AllRecipesPage = () => {
   const renderUserRecipes = (recipesToShow: string) => {
     const recipesByCat = filterRecipesByCat();
     let recipeCardsArr: JSX.Element[] = [];
-    let startingIndex: number = 0;
+    let startingIndex = 0;
 
     if (recipesToShow === "PERSONAL RECIPES") {
       for (const recipeId in recipesByCat) {

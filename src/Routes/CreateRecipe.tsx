@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -93,7 +93,7 @@ const ButtonContainer = styled.div`
   padding: 10px;
 `;
 
-const CreateRecipe = () => {
+const CreateRecipe = (): ReactElement => {
   const [recipeName, setRecipeName] = useState("");
   const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState("");
@@ -132,7 +132,7 @@ const CreateRecipe = () => {
   };
 
   const submitNewRecipe = () => {
-    var key = firebase.database().ref().child("recipes").push().key;
+    const key = firebase.database().ref().child("recipes").push().key;
     const recipe = {
       createdBy: uid,
       name: recipeName,

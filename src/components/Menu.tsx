@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React from "react";
+import React, { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -42,7 +42,7 @@ const MContainer = styled.div<MProps>`
   }
 `;
 
-const Menu = () => {
+const Menu = (): ReactElement => {
   const dispatch = useDispatch();
   const { showMenu } = useSelector((state: RootState) => state.authReducer);
   const { uid, displayName } = useSelector(

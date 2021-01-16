@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import { Provider } from "react-redux";
+import { createGlobalStyle } from "styled-components";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createGlobalStyle } from "styled-components";
 import { store } from "./store";
-const { Provider } = require("react-redux");
 
 const GlobalStyle = createGlobalStyle`
   body {
