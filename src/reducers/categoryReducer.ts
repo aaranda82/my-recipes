@@ -1,10 +1,10 @@
 const categoryReducer = (
-  state: string = "ALL",
+  state = "ALL",
   action: { type: string; payload: string },
-) => {
+): string => {
   switch (action.type) {
     case "SET_CATEGORY":
-      return { categoryToShow: action.payload };
+      return action.payload;
     default:
       return state;
   }

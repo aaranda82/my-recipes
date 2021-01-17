@@ -25,7 +25,7 @@ const HeaderContainer = styled.header<LIProps>`
 `;
 
 const LogoContainer = styled.div<LIProps>`
-  width: 60%;
+  width: 35%;
   display: flex;
   justify-content: ${(props) => (props.loggedIn ? "left" : "center")};
 `;

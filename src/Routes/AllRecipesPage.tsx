@@ -103,7 +103,9 @@ interface IRecipe {
 
 const AllRecipesPage = (): ReactElement => {
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
-  const [categoryToShow, setCategoryToShow] = useState("ALL");
+  const categoryToShow = useSelector(
+    (state: RootState) => state.categoryReducer,
+  );
   const [recipesToShow, setRecipesToShow] = useState("ALL RECIPES");
   const { id } = useParams<{ id: string }>();
 
@@ -118,10 +120,6 @@ const AllRecipesPage = (): ReactElement => {
     } else {
       return ["ALL"];
     }
-  };
-
-  const changeCategoryToShow = (categoryToShow: string) => {
-    setCategoryToShow(categoryToShow);
   };
 
   const handleRViewSelector = (type: string) => {
@@ -227,10 +225,7 @@ const AllRecipesPage = (): ReactElement => {
 
   return recipes ? (
     <div id="AllRecipesPage">
-      <CategoryBar
-        categories={getCategories()}
-        categoryToShow={categoryToShow}
-        changeCategoryToShow={changeCategoryToShow}></CategoryBar>
+      <CategoryBar categories={getCategories()}></CategoryBar>
       <Recipes id="Recipes">
         {id ? (
           <>

@@ -12,6 +12,7 @@ import {
 import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
+import SearchFilter from "./SearchFilter";
 import { Spacer } from "./Spacer";
 
 const { primaryColorOne, primaryColorTwo, accentColorOne } = colorScheme;
@@ -86,6 +87,9 @@ const HeaderButtons = (): ReactElement => {
   const { displayName } = useSelector((state: RootState) => state.userReducer);
   return displayName ? (
     <>
+      <ButtonContainer w="20%" mobileWidth="25%">
+        <SearchFilter />
+      </ButtonContainer>
       <ButtonContainer id="add recipe button" w="20%" mobileWidth="25%">
         {history.location.pathname === "/createrecipe" ? null : (
           <Link to="/createrecipe">
@@ -106,6 +110,9 @@ const HeaderButtons = (): ReactElement => {
     </>
   ) : (
     <>
+      <ButtonContainer w="20%" mobileWidth="25%">
+        <SearchFilter />
+      </ButtonContainer>
       <ButtonContainer w="20%" mobileWidth="40%">
         <LogInButton
           onClick={() =>
