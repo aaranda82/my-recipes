@@ -1,6 +1,9 @@
-import React, { Component, ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { categoryAction } from "../actions/categoryAction";
 import { colorScheme } from "../colorScheme";
+import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
 
 const { gunmetal, accentColorOne } = colorScheme;
@@ -78,88 +81,74 @@ const Button = styled.div<{ selected: boolean }>`
   }
 `;
 
-interface IProps {
+const CategoryBar = ({
+  categories,
+}: {
   categories: string[];
-  categoryToShow: string;
-  changeCategoryToShow: (categoryToShow: string) => void;
-}
+}): ReactElement => {
+  const [categoryPage, setCategoryPage] = useState(0);
+  const categoryToShow = useSelector(
+    (state: RootState) => state.categoryReducer,
+  );
+  const dispatch = useDispatch();
 
-interface IState {
-  categoryPage: number;
-}
-
-class CategoryBar extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = { categoryPage: 0 };
-  }
-
-  category(index: number, selected: boolean, cat: string): ReactElement {
-    const { changeCategoryToShow } = this.props;
+  const category = (index: number, selected: boolean, cat: string) => {
     return (
       <Button
         key={index}
         className="category"
-        onClick={() => changeCategoryToShow(cat)}
+        onClick={() => dispatch(categoryAction(cat))}
         selected={selected}>
         <div>{cat}</div>
       </Button>
     );
-  }
+  };
 
-  decrimentCategoryPage(): void {
-    const { categoryPage } = this.state;
+  const decrimentCategoryPage = () => {
     const catPage = categoryPage <= 0 ? 0 : categoryPage - 1;
-    this.setState({ categoryPage: catPage });
-  }
+    setCategoryPage(catPage);
+  };
 
-  incrementCategoryPage(): void {
-    const { categoryPage } = this.state;
-    const { categories } = this.props;
+  const incrementCategoryPage = () => {
     if (categoryPage + 1 >= categories.length / 8) {
       return;
     }
-    this.setState({ categoryPage: categoryPage + 1 });
-  }
+    setCategoryPage(categoryPage + 1);
+  };
 
-  renderCategories(): ReactElement[] {
-    const { categories, categoryToShow } = this.props;
+  const renderCategories = () => {
     const catElements = categories.map((cat, index) => {
       const selected = categoryToShow === cat;
-      return this.category(index, selected, cat);
+      return category(index, selected, cat);
     });
     return catElements;
-  }
+  };
 
-  render(): ReactElement {
-    const { categoryPage } = this.state;
+  const handleCatArrowButton = (cb: () => void, icon: string) => {
     return (
-      <CategoryBarDiv>
-        <CategoriesContent>
-          <CatButtonCont>
-            <CatButton
-              onClick={() => {
-                this.decrimentCategoryPage();
-              }}>
-              <i className="fas fa-arrow-left" />
-            </CatButton>
-          </CatButtonCont>
-          <CatTitle>Categories</CatTitle>
-          <CatButtonCont>
-            <CatButton
-              onClick={() => {
-                this.incrementCategoryPage();
-              }}>
-              <i className="fas fa-arrow-right" />
-            </CatButton>
-          </CatButtonCont>
-          <SlideContainer id="Categories">
-            <Slide catPage={categoryPage}>{this.renderCategories()}</Slide>
-          </SlideContainer>
-        </CategoriesContent>
-      </CategoryBarDiv>
+      <CatButtonCont>
+        <CatButton
+          onClick={() => {
+            cb();
+          }}>
+          <i className={icon} />
+        </CatButton>
+      </CatButtonCont>
     );
-  }
-}
+  };
+
+  return (
+    <CategoryBarDiv>
+      <CategoriesContent>
+        {handleCatArrowButton(decrimentCategoryPage, "fas fa-arrow-left")}
+        <CatTitle>Categories</CatTitle>
+        {handleCatArrowButton(incrementCategoryPage, "fas fa-arrow-right")}
+        <SlideContainer id="Categories">
+          <Slide catPage={categoryPage}>{renderCategories()}</Slide>
+        </SlideContainer>
+      </CategoriesContent>
+    </CategoryBarDiv>
+  );
+};
 
 export default CategoryBar;
