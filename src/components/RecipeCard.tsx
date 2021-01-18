@@ -92,6 +92,7 @@ interface IProps {
 const RecipeCard = (props: IProps): ReactElement => {
   const { name, recipeId, index, createdBy, description } = props;
   const { users } = useSelector((state: RootState) => state.usersReducer);
+  const { recipes } = useSelector((state: RootState) => state.recipeReducer);
 
   let userName = "";
   if (users) {
@@ -110,7 +111,7 @@ const RecipeCard = (props: IProps): ReactElement => {
   return (
     <>
       <RecipeContainerDiv id="RecipeCard" key={index}>
-        <RecipeImageImg src={Lunch} alt="Lunch" />
+        <RecipeImageImg src={recipes[recipeId].image} alt={name} />
         <RecipeInfoContainerDiv>
           <Link
             to={`/recipedetail/${recipeId}`}

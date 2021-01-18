@@ -25,6 +25,7 @@ const config = {
   authDomain: "my-recipes-da233.firebaseapp.com",
   databaseURL: "https://my-recipes-da233.firebaseio.com",
   projectId: "my-recipes-da233",
+  storageBucket: "my-recipes-da233.appspot.com",
   appId: "1:1062905305210:web:e81f2b5d293bedc736c3c3",
   measurementId: "G-BJ3YHDCKZV",
 };

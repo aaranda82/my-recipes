@@ -38,7 +38,7 @@ const Icon = styled.i`
   }
 `;
 
-const Image = styled.div`
+const Image = styled.img`
   min-height: 200px;
   width: 40%;
   background-color: ${brownSugar};
@@ -95,6 +95,7 @@ interface IRecipe {
   name: string;
   category: string;
   description: string;
+  image: string;
   servings: number;
   favoritedBy: string[];
   ingredients: string;
@@ -144,12 +145,13 @@ const RecipeDetail = (): ReactElement => {
       ingredients,
       instructions,
       description,
+      image,
     } = foundRecipe;
 
     return (
       <>
         <RecipeDetailDiv>
-          <Image />
+          <Image src={image} alt={name} />
           <RecipeHeading>
             <h1>{name}</h1>
             <div>{category}</div>
