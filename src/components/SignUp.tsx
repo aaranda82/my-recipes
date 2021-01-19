@@ -3,6 +3,8 @@ import React, { Component, FormEvent } from "react";
 import { connect } from "react-redux";
 import { clearAction } from "../actions/authActions";
 import { signInAction } from "../actions/userActions";
+import { RootState } from "../reducers/rootReducer";
+import { User } from "../reducers/usersReducer";
 import { Button, Container, Form, FormGroup, Input, Label } from "./LogIn";
 
 interface IState {
@@ -19,6 +21,7 @@ interface IState {
 interface IProps {
   clear: () => void;
   signIn: (displayName: string, email: string, uid: string) => void;
+  users: { [name: string]: User };
 }
 
 class SignUp extends Component<IProps, IState> {
@@ -53,9 +56,17 @@ class SignUp extends Component<IProps, IState> {
   }
 
   validateUserName() {
+    const { users } = this.props;
     let userNameError = "";
     if (this.state.userName.length < 3) {
       userNameError = "Must be at least 3 letters";
+    }
+    if (users) {
+      for (const u in users) {
+        if (this.state.userName === users[u].userName) {
+          userNameError = "That user name is taken";
+        }
+      }
     }
     this.setState({ userNameError });
   }
@@ -183,7 +194,9 @@ class SignUp extends Component<IProps, IState> {
   ) {
     return (
       <FormGroup error={error}>
-        <Label htmlFor={name}>{name}</Label>
+        <Label htmlFor={name} error={error}>
+          {name}
+        </Label>
         <Input
           type={type}
           placeholder={
@@ -193,7 +206,7 @@ class SignUp extends Component<IProps, IState> {
           onChange={onChange}
           onBlur={onBlur}
         />
-        <div style={{ width: "100%" }}>{error}</div>
+        <div style={{ width: "100%", color: "white" }}>{error}</div>
       </FormGroup>
     );
   }
@@ -252,6 +265,11 @@ class SignUp extends Component<IProps, IState> {
   }
 }
 
+const mapStateToProps = (state: RootState) => {
+  return {
+    users: state.usersReducer.users,
+  };
+};
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: any) => {
   return {
@@ -264,4 +282,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
