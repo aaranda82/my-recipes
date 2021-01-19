@@ -100,8 +100,10 @@ const CreateRecipe = (): ReactElement => {
   const [instructions, setInstructions] = useState("");
   const [category, setCategory] = useState("");
   const [servings, setServings] = useState(0);
-  const [image, setImage] = useState<any>(null);
-  const [imagePreview, setImagePreview] = useState<any>(null);
+  const [image, setImage] = useState<Blob | Uint8Array | ArrayBuffer | null>(
+    null,
+  );
+  const [imagePreview, setImagePreview] = useState("");
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const location = useLocation();
@@ -142,36 +144,38 @@ const CreateRecipe = (): ReactElement => {
       .storage()
       .ref()
       .child(`${uid}-${recipeName}-${Date.now()}`);
-    const task = storageRef.put(image);
-    task.on(
-      "state_changed",
-      (snapshot) => {
-        console.log(snapshot);
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          const key = firebase.database().ref().child("recipes").push().key;
-          const recipe = {
-            createdBy: uid,
-            name: recipeName,
-            description,
-            category,
-            servings,
-            ingredients,
-            instructions,
-            image: downloadURL,
-          };
-          firebase
-            .database()
-            .ref("recipes/" + key)
-            .set(recipe);
-          history.push(`/user/${uid}`);
-        });
-      },
-    );
+    if (image) {
+      const task = storageRef.put(image);
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          console.log(snapshot);
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            const key = firebase.database().ref().child("recipes").push().key;
+            const recipe = {
+              createdBy: uid,
+              name: recipeName,
+              description,
+              category,
+              servings,
+              ingredients,
+              instructions,
+              image: downloadURL,
+            };
+            firebase
+              .database()
+              .ref("recipes/" + key)
+              .set(recipe);
+            history.push(`/user/${uid}`);
+          });
+        },
+      );
+    }
   };
 
   const editRecipe = () => {
@@ -245,9 +249,10 @@ const CreateRecipe = (): ReactElement => {
     }
   }, [id, location.pathname, recipes]);
 
-  const changeImage = (e: any): void => {
+  const changeImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { files } = e.target;
     if (files && files.length) {
+      console.log(files[0]);
       setImagePreview(URL.createObjectURL(files[0]));
       setImage(files[0]);
     }
