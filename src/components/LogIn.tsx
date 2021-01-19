@@ -69,8 +69,9 @@ export const FormGroup = styled.div<IProps>`
   padding: 10px 0;
 `;
 
-export const Label = styled.label`
+export const Label = styled.label<{ error?: string }>`
   width: 40%;
+  color: ${(props) => (props.error ? "white" : "black")};
 `;
 
 export const Input = styled.input`
