@@ -161,7 +161,6 @@ const AllRecipesPage = (): ReactElement => {
           recipeId,
           createdBy,
         };
-
         recipeCardsArr.push(<RecipeCard key={index} {...RCProps} />);
       }
       return handleRecipeArrayLength(recipeCardsArr);

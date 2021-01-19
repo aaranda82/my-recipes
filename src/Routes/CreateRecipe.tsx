@@ -100,6 +100,10 @@ const CreateRecipe = (): ReactElement => {
   const [instructions, setInstructions] = useState("");
   const [category, setCategory] = useState("");
   const [servings, setServings] = useState(0);
+  const [image, setImage] = useState<Blob | Uint8Array | ArrayBuffer | null>(
+    null,
+  );
+  const [imagePreview, setImagePreview] = useState("");
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const location = useLocation();
@@ -131,22 +135,47 @@ const CreateRecipe = (): ReactElement => {
     setServings(num);
   };
 
+  // const setRecipeTofirebase = (image) =>{
+
+  // }
+
   const submitNewRecipe = () => {
-    const key = firebase.database().ref().child("recipes").push().key;
-    const recipe = {
-      createdBy: uid,
-      name: recipeName,
-      description,
-      category,
-      servings,
-      ingredients,
-      instructions,
-    };
-    firebase
-      .database()
-      .ref("recipes/" + key)
-      .set(recipe);
-    history.push(`/user/${uid}`);
+    const storageRef = firebase
+      .storage()
+      .ref()
+      .child(`${uid}-${recipeName}-${Date.now()}`);
+    if (image) {
+      const task = storageRef.put(image);
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          console.log(snapshot);
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            const key = firebase.database().ref().child("recipes").push().key;
+            const recipe = {
+              createdBy: uid,
+              name: recipeName,
+              description,
+              category,
+              servings,
+              ingredients,
+              instructions,
+              image: downloadURL,
+            };
+            firebase
+              .database()
+              .ref("recipes/" + key)
+              .set(recipe);
+            history.push(`/user/${uid}`);
+          });
+        },
+      );
+    }
   };
 
   const editRecipe = () => {
@@ -220,6 +249,38 @@ const CreateRecipe = (): ReactElement => {
     }
   }, [id, location.pathname, recipes]);
 
+  const changeImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { files } = e.target;
+    if (files && files.length) {
+      console.log(files[0]);
+      setImagePreview(URL.createObjectURL(files[0]));
+      setImage(files[0]);
+    }
+  };
+
+  const renderImage = () => {
+    if (image === null) {
+      return (
+        <>
+          <svg
+            height="125px"
+            viewBox="0 0 512 512"
+            width="125px"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M457 101H356.812l-9.743-29.23A44.946 44.946 0 00304.377 41h-96.754a44.943 44.943 0 00-42.691 30.77L155.188 101H131V76c0-19.299-15.701-35-35-35H76c-19.299 0-35 15.701-35 35v26.812C17.432 109.02 0 130.51 0 156v260c0 30.327 24.673 55 55 55h402c30.327 0 55-24.673 55-55V156c0-30.327-24.673-55-55-55zM71 76c0-2.757 2.243-5 5-5h20c2.757 0 5 2.243 5 5v25H71zm411 340c0 13.785-11.215 25-25 25H55c-13.785 0-25-11.215-25-25V156c0-13.785 11.215-25 25-25h111a15 15 0 0014.23-10.257l13.162-39.486A14.983 14.983 0 01207.623 71h96.754a14.98 14.98 0 0114.23 10.256l13.162 39.487A15.002 15.002 0 00346 131h111c13.785 0 25 11.215 25 25z" />
+            <circle cx={436} cy={176} r={15} />
+            <path d="M106 161H76c-8.284 0-15 6.716-15 15s6.716 15 15 15h30c8.284 0 15-6.716 15-15s-6.716-15-15-15zM256 411c-74.439 0-135-60.561-135-135s60.561-135 135-135 135 60.561 135 135-60.561 135-135 135zm0-240c-57.897 0-105 47.103-105 105s47.103 105 105 105 105-47.103 105-105-47.103-105-105-105z" />
+            <path d="M256 351c-41.355 0-75-33.645-75-75s33.645-75 75-75 75 33.645 75 75-33.645 75-75 75zm0-120c-24.813 0-45 20.187-45 45s20.187 45 45 45 45-20.187 45-45-20.187-45-45-45z" />
+          </svg>
+          <div>Add Image</div>
+        </>
+      );
+    }
+    return (
+      <img style={{ height: "175px", width: "175px" }} src={imagePreview} />
+    );
+  };
+
   return (
     <>
       <ContainerDiv>
@@ -253,21 +314,10 @@ const CreateRecipe = (): ReactElement => {
           )}
         </SubContainer>
         <SubContainer width="40%" float="left">
-          <FileDiv
-            onClick={() => console.log("File upload feature coming soon")}>
+          <FileDiv>
             <FileLabel>
-              <svg
-                height="125px"
-                viewBox="0 0 512 512"
-                width="125px"
-                xmlns="http://www.w3.org/2000/svg">
-                <path d="M457 101H356.812l-9.743-29.23A44.946 44.946 0 00304.377 41h-96.754a44.943 44.943 0 00-42.691 30.77L155.188 101H131V76c0-19.299-15.701-35-35-35H76c-19.299 0-35 15.701-35 35v26.812C17.432 109.02 0 130.51 0 156v260c0 30.327 24.673 55 55 55h402c30.327 0 55-24.673 55-55V156c0-30.327-24.673-55-55-55zM71 76c0-2.757 2.243-5 5-5h20c2.757 0 5 2.243 5 5v25H71zm411 340c0 13.785-11.215 25-25 25H55c-13.785 0-25-11.215-25-25V156c0-13.785 11.215-25 25-25h111a15 15 0 0014.23-10.257l13.162-39.486A14.983 14.983 0 01207.623 71h96.754a14.98 14.98 0 0114.23 10.256l13.162 39.487A15.002 15.002 0 00346 131h111c13.785 0 25 11.215 25 25z" />
-                <circle cx={436} cy={176} r={15} />
-                <path d="M106 161H76c-8.284 0-15 6.716-15 15s6.716 15 15 15h30c8.284 0 15-6.716 15-15s-6.716-15-15-15zM256 411c-74.439 0-135-60.561-135-135s60.561-135 135-135 135 60.561 135 135-60.561 135-135 135zm0-240c-57.897 0-105 47.103-105 105s47.103 105 105 105 105-47.103 105-105-47.103-105-105-105z" />
-                <path d="M256 351c-41.355 0-75-33.645-75-75s33.645-75 75-75 75 33.645 75 75-33.645 75-75 75zm0-120c-24.813 0-45 20.187-45 45s20.187 45 45 45 45-20.187 45-45-20.187-45-45-45z" />
-              </svg>
-              <input />
-              Add Image Feature Coming Soon
+              {renderImage()}
+              <input type="file" onChange={changeImage} />
             </FileLabel>
           </FileDiv>
           {handleInputItem("Category", category, changeCategory, "100%")}

@@ -7,6 +7,7 @@ export interface Recipe {
   favoritedBy: string[];
   ingredients: string;
   instructions: string;
+  image: string;
 }
 
 export interface RecipeState {
