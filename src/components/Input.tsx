@@ -32,7 +32,6 @@ interface IProps {
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Input = ({
@@ -42,7 +41,6 @@ export const Input = ({
   placeholder,
   value,
   onChange,
-  onBlur,
 }: IProps) => {
   return (
     <FormGroup error={!!error}>
@@ -54,7 +52,6 @@ export const Input = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onBlur={onBlur}
       />
       <div style={{ width: "100%", color: "white" }}>{error}</div>
     </FormGroup>
