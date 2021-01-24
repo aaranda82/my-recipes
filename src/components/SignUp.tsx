@@ -5,7 +5,8 @@ import { clearAction } from "../actions/authActions";
 import { signInAction } from "../actions/userActions";
 import { RootState } from "../reducers/rootReducer";
 import { User } from "../reducers/usersReducer";
-import { Button, Container, Form, FormGroup, Input, Label } from "./LogIn";
+import { Input } from "./Input";
+import { Button, Container, Form } from "./LogIn";
 
 interface IState {
   userName: string;
@@ -184,33 +185,6 @@ class SignUp extends Component<IProps, IState> {
     this.submitNewUser();
   }
 
-  renderInput(
-    name: string,
-    type: string,
-    value: string,
-    error: string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    onBlur: () => void,
-  ) {
-    return (
-      <FormGroup error={error}>
-        <Label htmlFor={name} error={error}>
-          {name}
-        </Label>
-        <Input
-          type={type}
-          placeholder={
-            name === "Confirm Password" ? "Confirm Password" : `Enter ${name}`
-          }
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-        />
-        <div style={{ width: "100%", color: "white" }}>{error}</div>
-      </FormGroup>
-    );
-  }
-
   render() {
     const {
       userName,
@@ -226,38 +200,42 @@ class SignUp extends Component<IProps, IState> {
       <Container>
         <h3>CREATE ACCOUNT</h3>
         <Form onSubmit={this.handleSubmit}>
-          {this.renderInput(
-            "User Name",
-            "text",
-            userName,
-            userNameError,
-            this.handleUserNameChange,
-            this.validateUserName,
-          )}
-          {this.renderInput(
-            "Email",
-            "text",
-            email,
-            emailError,
-            this.handleEmailChange,
-            this.validateEmail,
-          )}
-          {this.renderInput(
-            "Password",
-            "password",
-            password,
-            passwordError,
-            this.handlePasswordChange,
-            this.validatePassword,
-          )}
-          {this.renderInput(
-            "Confirm Password",
-            "password",
-            confirmPassword,
-            confirmPasswordError,
-            this.handleConfirmPasswordChange,
-            this.validateConfirmPassword,
-          )}
+          <Input
+            error={userNameError}
+            name={"User Name"}
+            type={"text"}
+            placeholder={"Enter UserName"}
+            value={userName}
+            onChange={this.handleUserNameChange}
+            onBlur={this.validateUserName}
+          />
+          <Input
+            error={emailError}
+            name={"Email"}
+            type={"text"}
+            placeholder={"Enter Email"}
+            value={email}
+            onChange={this.handleEmailChange}
+            onBlur={this.validateEmail}
+          />
+          <Input
+            error={passwordError}
+            name={"Passwrod"}
+            type={"password"}
+            placeholder={"Enter Password"}
+            value={password}
+            onChange={this.handlePasswordChange}
+            onBlur={this.validatePassword}
+          />
+          <Input
+            error={confirmPasswordError}
+            name={"Confirm Password"}
+            type={"password"}
+            placeholder={"Confirm Password"}
+            value={confirmPassword}
+            onChange={this.handleConfirmPasswordChange}
+            onBlur={this.validateConfirmPassword}
+          />
           <Button type="submit">SUBMIT</Button>
         </Form>
       </Container>
