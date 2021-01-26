@@ -135,10 +135,6 @@ const CreateRecipe = (): ReactElement => {
     setServings(num);
   };
 
-  // const setRecipeTofirebase = (image) =>{
-
-  // }
-
   const submitNewRecipe = () => {
     const storageRef = firebase
       .storage()
