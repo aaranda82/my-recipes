@@ -1,24 +1,11 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import React, { ChangeEvent, Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { RouteComponentProps } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { clearAction } from "../actions/authActions";
-import { signInAction, signOutAction } from "../actions/userActions";
-import { colorScheme } from "../colorScheme";
-import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
-
-const { mobileMaxWidth, primaryFont } = styles;
-const {
-  gunmetal,
-  redOrange,
-  primaryColorTwo,
-  primaryColorOne,
-  accentColorOne,
-} = colorScheme;
+import { signInAction } from "../actions/userActions";
+import { Button, Container, Form, Input } from "./Input";
 
 const config = {
   apiKey: "AIzaSyCvl1CTEcEWYM1681gUWSaawnHAV-PEgWo",
@@ -32,188 +19,56 @@ const config = {
 firebase.initializeApp(config);
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
-export const Container = styled.div`
-  border-radius: 20px;
-  box-shadow: 5px 5px ${primaryColorOne};
-  position: fixed;
-  top: 25vh;
-  left: 50%;
-  transform: translatex(-50%);
-  background-color: ${primaryColorTwo};
-  color: ${gunmetal};
-  text-align: center;
-  font-family: "Raleway", sans-serif;
-  padding: 50px;
-  & h3 {
-    padding-top: 0;
-  }
-  @media screen and (max-width: ${mobileMaxWidth}) {
-    width: 80%;
-    padding: 20px;
-  }
-`;
+const Login = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-interface IProps {
-  error: string;
-}
-
-export const Form = styled.form`
-  width: 300px;
-`;
-
-export const FormGroup = styled.div<IProps>`
-  margin: 10px 0;
-  background-color: ${(props) => (props.error ? redOrange : accentColorOne)};
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px 0;
-`;
-
-export const Label = styled.label<{ error?: string }>`
-  width: 40%;
-  color: ${(props) => (props.error ? "white" : "black")};
-`;
-
-export const Input = styled.input`
-  width: 55%;
-  border: none;
-  background-color: transparent;
-  outline: none;
-`;
-
-export const Button = styled.button`
-  cursor: pointer;
-  background-color: orange;
-  border: none;
-  padding: 5px;
-  border-raius: 3px;
-  font-family: ${primaryFont};
-  min-width: 150px;
-  color: ${primaryColorTwo};
-  &:hover {
-    background-color: black;
-  }
-`;
-
-interface AuthProps extends RouteComponentProps {
-  displayName: string;
-  uid: string;
-  signIn: (d: string, e: string, u: string) => void;
-  signOut: () => void;
-  clear: () => void;
-}
-
-interface IState {
-  email: string;
-  password: string;
-  error: string;
-}
-
-class LogIn extends Component<AuthProps, IState> {
-  constructor(props: AuthProps) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      error: "",
-    };
-    this.handleUserNameChange = this.handleUserNameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleUserNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ email: e.target.value });
-  }
-
-  handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ password: e.target.value });
-  }
-
-  handleSubmit(e: React.FormEvent) {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     firebase
       .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .signInWithEmailAndPassword(email, password)
       .then((user) => {
         if (user?.user?.displayName && user?.user?.email && user?.user?.uid) {
           const { displayName, email, uid } = user?.user;
-          this.props.signIn(displayName, email, uid);
-          this.props.clear();
-          this.props.history.push("/");
+          dispatch(signInAction(displayName, email, uid));
+          dispatch(clearAction());
+          history.push("/");
         }
       })
-      .catch((error) => {
-        this.setState({ error: error.message });
+      .catch(() => {
+        setError("Email or Password not valid");
       });
-  }
+  };
 
-  handleFormGroups(
-    name: string,
-    value: string,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void,
-    type: string,
-  ) {
-    return (
-      <FormGroup error="">
-        <Label htmlFor="name">{name}</Label>
+  return (
+    <Container id="Auth">
+      <h3>LOG IN</h3>
+      <Form onSubmit={handleSubmit}>
         <Input
-          autoComplete="name"
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={`Your ${name}`}
+          error=""
+          name="Email"
+          type="text"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-      </FormGroup>
-    );
-  }
-
-  render() {
-    return (
-      <Container id="Auth">
-        <h3>LOG IN</h3>
-        <Form onSubmit={this.handleSubmit}>
-          {this.handleFormGroups(
-            "Email",
-            this.state.email,
-            this.handleUserNameChange,
-            "text",
-          )}
-          {this.handleFormGroups(
-            "Password",
-            this.state.password,
-            this.handlePasswordChange,
-            "password",
-          )}
-          <div style={{ color: "red" }}>{this.state.error}</div>
-          <Button type="submit">Submit</Button>
-        </Form>
-      </Container>
-    );
-  }
-}
-
-const mapStateToProps = (state: RootState) => {
-  return {
-    displayName: state.userReducer.displayName,
-    email: state.userReducer.email,
-    uid: state.userReducer.uid,
-  };
+        <Input
+          error=""
+          name="Password"
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <div style={{ color: "red" }}>{error}</div>
+        <Button type="submit">Submit</Button>
+      </Form>
+    </Container>
+  );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    signIn: (displayName: string, email: string, uid: string) => {
-      dispatch(signInAction(displayName, email, uid));
-    },
-    signOut: () => {
-      dispatch(signOutAction());
-    },
-    clear: () => {
-      dispatch(clearAction());
-    },
-  };
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LogIn));
+export default Login;
