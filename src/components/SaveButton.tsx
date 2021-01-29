@@ -45,25 +45,25 @@ const SaveButton = ({ recipeId }: { recipeId: string }): ReactElement => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
-
+  const db = firebase.database();
   const addToFavorites = () => {
     if (recipes) {
+      const recipe = recipes[recipeId];
       if (!recipes[recipeId].favoritedBy) {
-        recipes[recipeId].favoritedBy = [uid];
+        recipe["favoritedBy"] = [uid];
       } else {
-        recipes[recipeId].favoritedBy.push(uid);
+        recipe.favoritedBy.push(uid);
       }
-      firebase.database().ref("recipes/").set(recipes);
+      db.ref(`recipes/${recipeId}`).update(recipe);
     }
   };
 
   const removeFromFavorites = () => {
     if (recipes) {
-      const uidIndex = recipes[recipeId].favoritedBy.findIndex(
-        (f) => f === uid,
-      );
-      recipes[recipeId].favoritedBy.splice(uidIndex, 1);
-      firebase.database().ref("recipes/").set(recipes);
+      const recipe = recipes[recipeId];
+      const uidIndex = recipe.favoritedBy.findIndex((f) => f === uid);
+      recipe.favoritedBy.splice(uidIndex, 1);
+      db.ref(`recipes/${recipeId}`).update(recipe);
     }
   };
 
