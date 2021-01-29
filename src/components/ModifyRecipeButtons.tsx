@@ -19,7 +19,6 @@ const ModifyRecipeButtons = ({
 
   const confirmDelete = () => {
     if (recipes) {
-      console.log(recipes);
       confirmAlert({
         title: "Delete Recipe?",
         message: `Are you sure you want to permanently delete ${recipes[recipeId].name}?`,
@@ -38,8 +37,7 @@ const ModifyRecipeButtons = ({
   };
 
   const deleteRecipe = () => {
-    delete recipes[recipeId];
-    firebase.database().ref("recipes/").set(recipes);
+    firebase.database().ref(`recipes/${recipeId}`).remove();
   };
 
   return location.pathname === `/user/${uid}` &&
