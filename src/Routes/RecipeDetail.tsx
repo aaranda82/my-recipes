@@ -1,4 +1,5 @@
-import React, { ReactElement } from "react";
+import firebase from "firebase";
+import React, { ReactElement, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -103,19 +104,17 @@ interface IRecipe {
 }
 
 const RecipeDetail = (): ReactElement => {
+  const [author, setAuthor] = useState("");
   const { uid, displayName } = useSelector(
     (state: RootState) => state.userReducer,
   );
-  const { users } = useSelector((state: RootState) => state.usersReducer);
+  // const { users } = useSelector((state: RootState) => state.usersReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const { id } = useParams<{ id: string }>();
   let foundRecipe: IRecipe | undefined;
   if (recipes) {
     foundRecipe = recipes[id];
   }
-
-  const handleAuthor = (author: string) =>
-    users ? users[author].userName : null;
 
   const handleIngredients = (ing: string) => {
     const ingredientsList = ing.split("\n").map((i, index) => {
@@ -147,7 +146,11 @@ const RecipeDetail = (): ReactElement => {
       description,
       image,
     } = foundRecipe;
-
+    firebase
+      .database()
+      .ref(`users/${createdBy}/userName`)
+      .once("value")
+      .then((snapshot) => setAuthor(snapshot.val()));
     return (
       <>
         <RecipeDetailDiv>
@@ -161,7 +164,7 @@ const RecipeDetail = (): ReactElement => {
               <Link
                 to={`/user/${createdBy}`}
                 style={{ textDecoration: "none", color: "black" }}>
-                <Author>{handleAuthor(createdBy)}</Author>
+                <Author>{author}</Author>
               </Link>
             </div>
             <SaveButton recipeId={id} />
