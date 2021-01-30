@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import { recipeAction } from "./actions/recipeActions";
-import { usersAction } from "./actions/usersAction";
 import AuthModal from "./components/AuthModal";
 import Menu from "./components/Menu";
 import ScrollToTop from "./components/ScrollToTop";
@@ -44,7 +43,7 @@ function App(): ReactElement {
   useEffect(() => {
     const ref = firebase.database().ref("/");
     ref.on("value", (snapshot) => {
-      dispatch(usersAction(snapshot.val().users));
+      // dispatch(usersAction(snapshot.val().users));
       dispatch(recipeAction(snapshot.val().recipes));
     });
     return () => ref.off();
