@@ -104,11 +104,17 @@ const CreateRecipe = (): ReactElement => {
     null,
   );
   const [imagePreview, setImagePreview] = useState("");
+  const [imageToUpdate, setImageToUpdate] = useState("");
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
+  const db = firebase.database();
+  const storageRef = firebase
+    .storage()
+    .ref()
+    .child(`${uid}/${recipeName}-${Date.now()}`);
 
   const changeRecipeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecipeName(e.currentTarget.value);
@@ -136,10 +142,6 @@ const CreateRecipe = (): ReactElement => {
   };
 
   const submitNewRecipe = () => {
-    const storageRef = firebase
-      .storage()
-      .ref()
-      .child(`${uid}-${recipeName}-${Date.now()}`);
     if (image) {
       const task = storageRef.put(image);
       task.on(
@@ -152,7 +154,7 @@ const CreateRecipe = (): ReactElement => {
         },
         () => {
           task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            const key = firebase.database().ref().child("recipes").push().key;
+            const key = db.ref().child("recipes").push().key;
             const recipe = {
               createdBy: uid,
               name: recipeName,
@@ -163,10 +165,7 @@ const CreateRecipe = (): ReactElement => {
               instructions,
               image: downloadURL,
             };
-            firebase
-              .database()
-              .ref("recipes/" + key)
-              .set(recipe);
+            db.ref(`recipes/${key}`).set(recipe);
             history.push(`/user/${uid}`);
           });
         },
@@ -175,6 +174,37 @@ const CreateRecipe = (): ReactElement => {
   };
 
   const editRecipe = () => {
+    if (image) {
+      const task = storageRef.put(image);
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            const recipe = {
+              createdBy: uid,
+              name: recipeName,
+              description,
+              category,
+              servings,
+              ingredients,
+              instructions,
+              image: downloadURL,
+            };
+            db.ref(`recipes/${id}`).set(recipe);
+            history.push(`/recipedetail/${id}`);
+          });
+        },
+      );
+      return null;
+    }
     const recipe = {
       createdBy: uid,
       name: recipeName,
@@ -184,7 +214,7 @@ const CreateRecipe = (): ReactElement => {
       ingredients,
       instructions,
     };
-    firebase.database().ref("recipes/").child(id).update(recipe);
+    db.ref("recipes/").child(id).update(recipe);
     history.push(`/recipedetail/${id}`);
   };
 
@@ -235,6 +265,7 @@ const CreateRecipe = (): ReactElement => {
         instructions,
         servings,
         category,
+        image,
       } = recipes[id];
       setRecipeName(name);
       setDescription(description);
@@ -242,20 +273,21 @@ const CreateRecipe = (): ReactElement => {
       setInstructions(instructions);
       setServings(servings);
       setCategory(category);
+      setImageToUpdate(image);
     }
   }, [id, location.pathname, recipes]);
 
   const changeImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { files } = e.target;
     if (files && files.length) {
-      console.log(files[0]);
       setImagePreview(URL.createObjectURL(files[0]));
       setImage(files[0]);
+      setImageToUpdate("");
     }
   };
 
   const renderImage = () => {
-    if (image === null) {
+    if (image === null && imageToUpdate === "") {
       return (
         <>
           <svg
@@ -273,7 +305,10 @@ const CreateRecipe = (): ReactElement => {
       );
     }
     return (
-      <img style={{ height: "175px", width: "175px" }} src={imagePreview} />
+      <img
+        style={{ height: "175px", width: "175px" }}
+        src={imageToUpdate ? imageToUpdate : imagePreview}
+      />
     );
   };
 

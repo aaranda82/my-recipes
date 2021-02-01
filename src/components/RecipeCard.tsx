@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -94,13 +94,14 @@ const RecipeCard = (props: IProps): ReactElement => {
   const { name, recipeId, index, createdBy, description } = props;
   const [userName, setUserName] = useState("");
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
-  firebase
-    .database()
-    .ref(`users/${createdBy}/userName`)
-    .once("value")
-    .then((snapshot) => {
+
+  useEffect(() => {
+    const ref = firebase.database().ref(`users/${createdBy}/userName`);
+    ref.once("value").then((snapshot) => {
       setUserName(snapshot.val());
     });
+    return ref.off();
+  }, [setUserName, createdBy]);
 
   const handleDescription = () => {
     if (description.length > 40) {

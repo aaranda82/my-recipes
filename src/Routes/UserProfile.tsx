@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
@@ -46,13 +46,16 @@ const UserProfile = (): ReactElement => {
   );
   const history = useHistory();
   const { id } = useParams<{ id: string }>(); // user whose profile is being viewed
-  firebase
-    .database()
-    .ref(`users/${id}/userName`)
-    .once("value")
-    .then((snapshot) => {
-      setUserName(snapshot.val());
-    });
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`users/${id}/userName`)
+      .once("value")
+      .then((snapshot) => {
+        setUserName(snapshot.val());
+      });
+  }, [id]);
 
   const handleUserCreatedRecipes = () => {
     const userCreatedRecipes: JSX.Element[] = [];

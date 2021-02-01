@@ -41,10 +41,9 @@ function App(): ReactElement {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const ref = firebase.database().ref("/");
+    const ref = firebase.database().ref("recipes/");
     ref.on("value", (snapshot) => {
-      // dispatch(usersAction(snapshot.val().users));
-      dispatch(recipeAction(snapshot.val().recipes));
+      dispatch(recipeAction(snapshot.val()));
     });
     return () => ref.off();
   }, [dispatch]);
