@@ -1,4 +1,5 @@
-import React, { ReactElement } from "react";
+import firebase from "firebase";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -66,6 +67,7 @@ const Author = styled.div`
 
 const Ingredients = styled.div`
   width: 100%;
+  margin: 20px 0 0 20px;
   @media (max-width: 400px) {
     width: 100%;
     margin: 20px;
@@ -81,7 +83,7 @@ const Instructions = styled.div`
 `;
 
 const Instruction = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 20px 0 10px 20px;
 `;
 
 const OrderNumber = styled.div`
@@ -103,10 +105,10 @@ interface IRecipe {
 }
 
 const RecipeDetail = (): ReactElement => {
+  const [author, setAuthor] = useState("");
   const { uid, displayName } = useSelector(
     (state: RootState) => state.userReducer,
   );
-  const { users } = useSelector((state: RootState) => state.usersReducer);
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
   const { id } = useParams<{ id: string }>();
   let foundRecipe: IRecipe | undefined;
@@ -114,12 +116,13 @@ const RecipeDetail = (): ReactElement => {
     foundRecipe = recipes[id];
   }
 
-  const handleAuthor = (author: string) =>
-    users ? users[author].userName : null;
-
   const handleIngredients = (ing: string) => {
     const ingredientsList = ing.split("\n").map((i, index) => {
-      return <div key={index}>{i}</div>;
+      return (
+        <div key={index} style={{ marginTop: "15px" }}>
+          {i}
+        </div>
+      );
     });
     return ingredientsList;
   };
@@ -129,7 +132,7 @@ const RecipeDetail = (): ReactElement => {
       return (
         <Instruction key={index}>
           <OrderNumber>{index + 1}</OrderNumber>
-          <div>{i}</div>
+          <div style={{ marginLeft: "20px" }}>{i}</div>
         </Instruction>
       );
     });
@@ -148,6 +151,13 @@ const RecipeDetail = (): ReactElement => {
       image,
     } = foundRecipe;
 
+    useEffect(() => {
+      firebase
+        .database()
+        .ref(`users/${createdBy}/userName`)
+        .once("value")
+        .then((snapshot) => setAuthor(snapshot.val()));
+    }, [createdBy]);
     return (
       <>
         <RecipeDetailDiv>
@@ -161,7 +171,7 @@ const RecipeDetail = (): ReactElement => {
               <Link
                 to={`/user/${createdBy}`}
                 style={{ textDecoration: "none", color: "black" }}>
-                <Author>{handleAuthor(createdBy)}</Author>
+                <Author>{author}</Author>
               </Link>
             </div>
             <SaveButton recipeId={id} />

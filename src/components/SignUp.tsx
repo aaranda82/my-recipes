@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import { useSignUp } from "../hooks/useSignUp";
-import { Input } from "./Input";
-import { Button, Container, Form } from "./LogIn";
+import { Button, Container, Form, Input } from "./Input";
 
 const SignUp = () => {
   const { inputs, errors, setInputs, submit } = useSignUp();
@@ -33,7 +32,7 @@ const SignUp = () => {
         />
         <Input
           error={errors.passwordError}
-          name={"Passwrod"}
+          name={"Password"}
           type={"password"}
           placeholder={"Enter Password"}
           value={inputs.password}

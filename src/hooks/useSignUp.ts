@@ -19,6 +19,7 @@ export const useSignUp = () => {
 
   const validateInputs = () => {
     let isValid = true;
+
     if (userName.length < 3) {
       setUserNameError("Must be at least 3 letters");
       isValid = false;
@@ -30,14 +31,14 @@ export const useSignUp = () => {
       setUserNameError("User Name Taken");
       isValid = false;
     }
-    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailRegex.test(email)) {
       setEmailError("Invalid Email");
       isValid = false;
     }
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
 
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
     if (!passwordRegex.test(password)) {
       setPasswordError("Invlaid Password");
       isValid = false;
@@ -49,6 +50,7 @@ export const useSignUp = () => {
     }
     return isValid;
   };
+
   useEffect(() => {
     setUserNameError("");
   }, [userName, setUserNameError]);
@@ -67,7 +69,6 @@ export const useSignUp = () => {
 
   const submitNewUser = () => {
     const isValid = validateInputs();
-
     if (isValid) {
       firebase
         .auth()

@@ -1,4 +1,5 @@
-import React, { ReactElement } from "react";
+import firebase from "firebase";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
@@ -39,12 +40,22 @@ const RecipeContainer = styled.div`
 `;
 
 const UserProfile = (): ReactElement => {
+  const [userName, setUserName] = useState("");
   const recipes = useSelector(
     (state: RootState) => state.recipeReducer.recipes,
   );
-  const users = useSelector((state: RootState) => state.usersReducer.users);
   const history = useHistory();
   const { id } = useParams<{ id: string }>(); // user whose profile is being viewed
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`users/${id}/userName`)
+      .once("value")
+      .then((snapshot) => {
+        setUserName(snapshot.val());
+      });
+  }, [id]);
 
   const handleUserCreatedRecipes = () => {
     const userCreatedRecipes: JSX.Element[] = [];
@@ -89,13 +100,7 @@ const UserProfile = (): ReactElement => {
     return handleRecipeArrayLength(favoriteRecipes);
   };
 
-  const userName = () => {
-    if (users) {
-      return users[id].userName;
-    }
-  };
-
-  return recipes && users ? (
+  return recipes ? (
     <>
       <Return
         onClick={() => {
@@ -103,9 +108,9 @@ const UserProfile = (): ReactElement => {
         }}>
         <i className={"fas fa-reply"} /> RETURN
       </Return>
-      <Title>{`${userName()}'s Favorites`}</Title>
+      <Title>{`${userName}'s Favorites`}</Title>
       <RecipeContainer>{handleFavorites()}</RecipeContainer>
-      <Title>{`${userName()}'s Recipes  `}</Title>
+      <Title>{`${userName}'s Recipes  `}</Title>
       <RecipeContainer>{handleUserCreatedRecipes()}</RecipeContainer>
     </>
   ) : (

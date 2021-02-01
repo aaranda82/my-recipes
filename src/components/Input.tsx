@@ -1,6 +1,49 @@
 import React from "react";
 import styled from "styled-components";
 import { colorScheme } from "../colorScheme";
+import { styles } from "../styles";
+
+const { mobileMaxWidth, primaryFont } = styles;
+const { gunmetal, primaryColorTwo, primaryColorOne } = colorScheme;
+
+export const Container = styled.div`
+  border-radius: 20px;
+  box-shadow: 5px 5px ${primaryColorOne};
+  position: fixed;
+  top: 25vh;
+  left: 50%;
+  transform: translatex(-50%);
+  background-color: ${primaryColorTwo};
+  color: ${gunmetal};
+  text-align: center;
+  font-family: "Raleway", sans-serif;
+  padding: 50px;
+  & h3 {
+    padding-top: 0;
+  }
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 80%;
+    padding: 20px;
+  }
+`;
+
+export const Form = styled.form`
+  width: 300px;
+`;
+
+export const Button = styled.button`
+  cursor: pointer;
+  background-color: orange;
+  border: none;
+  padding: 5px;
+  border-raius: 3px;
+  font-family: ${primaryFont};
+  min-width: 150px;
+  color: ${primaryColorTwo};
+  &:hover {
+    background-color: black;
+  }
+`;
 
 const FormGroup = styled.div<{
   error: boolean;
