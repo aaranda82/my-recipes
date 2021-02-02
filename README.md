@@ -1,5 +1,13 @@
 # My Recipes
 
+A React web app for users to manage a personal recipe library and explore community
+created content
+
+## Tools
+Built with __React__ and  __TypeScript__.
+__React Redux__ for state management.
+Styled using __Styled-Components__.
+
 ## Live link
 
 [My-Recipes](https://pedantic-kepler-e2ec23.netlify.app)
@@ -10,9 +18,6 @@
 
 [Figma](https://www.figma.com/file/MPH82uPpG6ow3Sjlc55zdl/Untitled?node-id=0%3A1)
 
-## DB design
-
-![DB design](public/DbDesign.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
