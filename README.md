@@ -1,12 +1,6 @@
 # My Recipes
 
-A React web app for users to manage a personal recipe library and explore community
-created content
-
-## Tools
-Built with __React__ and  __TypeScript__.
-__React Redux__ for state management.
-Styled using __Styled-Components__.
+A React web app for users to manage a personal recipe library and explore community created content. Built with __React__ and  __TypeScript__. __React Redux__ for state management. Styled using __Styled-Components__.
 
 ## Live link
 
