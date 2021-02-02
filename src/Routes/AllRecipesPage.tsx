@@ -163,7 +163,8 @@ const AllRecipesPage = (): ReactElement => {
         };
         recipeCardsArr.push(<RecipeCard key={index} {...RCProps} />);
       }
-      return handleRecipeArrayLength(recipeCardsArr);
+      // return handleRecipeArrayLength(recipeCardsArr);
+      return recipeCardsArr;
     }
   };
 
@@ -211,7 +212,8 @@ const AllRecipesPage = (): ReactElement => {
         return "NO FAVORITE RECIPES YET";
       }
     }
-    return handleRecipeArrayLength(recipeCardsArr);
+    // return handleRecipeArrayLength(recipeCardsArr);
+    return recipeCardsArr;
   };
 
   const handleRecipes = () => {

@@ -3,7 +3,6 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Lunch from "../assets/Lunch.jpg";
 import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
 import { styles } from "../styles";
@@ -13,37 +12,33 @@ import SaveButton from "./SaveButton";
 const { accentColorOne } = colorScheme;
 const { mobileMaxWidth, primaryFont } = styles;
 
-const RecipeContainerDiv = styled.div<{ vis?: string; tran?: string }>`
-  width: 22%;
+const Container = styled.div<{ vis?: string; tran?: string }>`
+  max-width: 220px;
   margin: 10px;
   height: auto;
   border: 1px solid lightgrey;
   padding-bottom: 5px;
   visibility: ${(props) => props.vis};
   transition: ${(props) => props.tran};
-  @media screen and (max-width: 875px) {
-    flex: 1 1 20%;
-  }
   @media screen and (max-width: ${mobileMaxWidth}) {
     display: flex;
     width: 90%;
-    flex: none;
     margin: 0 0 10px 0;
+    max-width: unset;
+    padding: 0;
   }
 `;
 
-const RecipeImageImg = styled.img`
-  height: auto;
-  width: 100%;
-  background-image: url(${Lunch});
-  background-size: cover;
-  background-position: center;
+const Image = styled.img`
+  height: 220px;
+  width: 220px;
   @media screen and (max-width: ${mobileMaxWidth}) {
-    width: 40%;
+    height: 140px;
+    width: 140px;
   }
 `;
 
-const RecipeInfoContainerDiv = styled.div`
+const Info = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -62,7 +57,7 @@ const Description = styled.div`
   text-align: center;
 `;
 
-const RecipeNameDiv = styled.div`
+const Name = styled.div`
   height: 40px;
   display: flex;
   justify-content: center;
@@ -96,12 +91,14 @@ const RecipeCard = (props: IProps): ReactElement => {
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
 
   useEffect(() => {
-    const ref = firebase.database().ref(`users/${createdBy}/userName`);
-    ref.once("value").then((snapshot) => {
-      setUserName(snapshot.val());
-    });
-    return ref.off();
-  }, [setUserName, createdBy]);
+    firebase
+      .database()
+      .ref(`users/${createdBy}/userName`)
+      .once("value")
+      .then((snapshot) => {
+        setUserName(snapshot.val());
+      });
+  }, [createdBy, setUserName]);
 
   const handleDescription = () => {
     if (description.length > 40) {
@@ -114,18 +111,18 @@ const RecipeCard = (props: IProps): ReactElement => {
 
   return (
     <>
-      <RecipeContainerDiv id="RecipeCard" key={index}>
-        <RecipeImageImg src={recipes[recipeId].image} alt={name} />
-        <RecipeInfoContainerDiv>
+      <Container id="RecipeCard" key={index}>
+        <Image src={recipes[recipeId].image} alt={name} />
+        <Info>
           <Link
             to={`/recipedetail/${recipeId}`}
             style={{
               textDecoration: "none",
               width: "100%",
             }}>
-            <RecipeNameDiv>
+            <Name>
               <strong>{name}</strong>
-            </RecipeNameDiv>
+            </Name>
           </Link>
           <Description>{handleDescription()}</Description>
           <Link
@@ -138,24 +135,27 @@ const RecipeCard = (props: IProps): ReactElement => {
               justifyContent: "center",
               alignItems: "center",
             }}>
-            <RecipeNameDiv>{userName}</RecipeNameDiv>
+            <Name>{userName}</Name>
           </Link>
           <MoreInfoDiv width="35%">
             <SaveButton recipeId={recipeId} />
           </MoreInfoDiv>
           <ModifyRecipeButtons recipeId={recipeId} />
-        </RecipeInfoContainerDiv>
-      </RecipeContainerDiv>
+        </Info>
+      </Container>
     </>
   );
 };
 
 export const BlankRecipeCard = (index: number): ReactElement => {
   return (
-    <RecipeContainerDiv vis="hidden" tran="none" key={index}>
-      <RecipeImageImg src={Lunch} alt="Lunch" />
-      <RecipeNameDiv></RecipeNameDiv>
-    </RecipeContainerDiv>
+    <Container vis="hidden" tran="none" key={index}>
+      <Image
+        src="https://firebasestorage.googleapis.com/v0/b/my-recipes-da233.appspot.com/o/SW1T9FNUxecYoDBv7IWqGil9lAW2%2FScrammbled%20Eggs-1612210399523?alt=media&token=ba4cb282-2b6d-481d-a5c2-5587ebf705e8"
+        alt="Lunch"
+      />
+      <Name />
+    </Container>
   );
 };
 
