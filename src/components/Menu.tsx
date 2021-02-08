@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { clearAction } from "../actions/authActions";
 import { signOutAction } from "../actions/userActions";
-import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
+import AddRecipeButton from "./AddRecipeButton";
+import { LogInButton, SignUpButton } from "./AuthButtons";
 
 const {
   primaryColorTwo,
@@ -33,12 +35,19 @@ const MContainer = styled.div<MProps>`
   border: 1px solid ${gunmetal};
   transition: all ease 0.5s;
   & > div {
-    margin: 40px;
     cursor: pointer;
     transition: all 1s ease;
   }
   & > div:hover {
     color: ${accentColorOne};
+  }
+`;
+
+const AddRecipeContainer = styled.div`
+  display: none;
+  @media screen and (max-width: ${styles.mobileMaxWidth}) {
+    display: block;
+    width: 100%;
   }
 `;
 
@@ -68,15 +77,23 @@ const Menu = (): ReactElement => {
     );
   };
 
-  return (
+  return displayName ? (
     <>
       <MContainer showMenu={showMenu}>
+        <AddRecipeContainer>
+          <AddRecipeButton />
+        </AddRecipeContainer>
         {handleMenuItems(`/user/${uid}`, displayName)}
         {handleMenuItems(`/userpage/${uid}`, "HOME")}
         {handleMenuItems("/account", "ACCOUNT")}
         {handleMenuItems("/", "SIGN OUT")}
       </MContainer>
     </>
+  ) : (
+    <MContainer showMenu={showMenu}>
+      <LogInButton />
+      <SignUpButton />
+    </MContainer>
   );
 };
 

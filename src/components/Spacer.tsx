@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
+import { colorScheme } from "../styles/colorScheme";
 
 const { primaryColorOne } = colorScheme;
 const SpacerDiv = styled.div`

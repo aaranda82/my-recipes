@@ -2,8 +2,8 @@ import React, { FormEvent, ReactElement, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
+import { colorScheme } from "../styles/colorScheme";
 
 const { accentColorOne } = colorScheme;
 
