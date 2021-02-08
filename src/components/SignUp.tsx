@@ -5,6 +5,16 @@ import { Button, Container, Form, Input } from "./Input";
 const SignUp = () => {
   const { inputs, errors, setInputs, submit } = useSignUp();
 
+  const isActive =
+    !errors.userNameError &&
+    !errors.emailError &&
+    !errors.confirmPasswordError &&
+    !errors.passwordError &&
+    !!inputs.confirmPassword &&
+    !!inputs.email &&
+    !!inputs.password &&
+    !!inputs.userName;
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     submit();
@@ -46,7 +56,9 @@ const SignUp = () => {
           value={inputs.confirmPassword}
           onChange={(e) => setInputs.setConfirmPassword(e.target.value)}
         />
-        <Button type="submit">SUBMIT</Button>
+        <Button type="submit" isActive={isActive}>
+          SUBMIT
+        </Button>
       </Form>
     </Container>
   );

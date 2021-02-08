@@ -31,12 +31,6 @@ const SVG = styled.svg`
   fill: white;
 `;
 
-const SuggestionsContainer = styled.div`
-  position: absolute;
-  background: white;
-  z-index: 1;
-`;
-
 const SearchFilter = (): ReactElement => {
   const [searchInput, setSearchInput] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
@@ -75,7 +69,11 @@ const SearchFilter = (): ReactElement => {
 
   const renderSearchOptions = () => {
     return searchSuggestions.map((r, index) => (
-      <option value={recipes[r].name} key={index} />
+      <option
+        value={recipes[r].name}
+        key={index}
+        onClick={() => console.log("hi")}
+      />
     ));
   };
 
@@ -96,7 +94,6 @@ const SearchFilter = (): ReactElement => {
           </SVG>
         </Button>
       </Form>
-      <SuggestionsContainer></SuggestionsContainer>
     </div>
   );
 };

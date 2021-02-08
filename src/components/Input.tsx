@@ -31,17 +31,17 @@ export const Form = styled.form`
   width: 300px;
 `;
 
-export const Button = styled.button`
-  cursor: pointer;
-  background-color: orange;
+export const Button = styled.button<{ isActive: boolean }>`
+  cursor: ${(props) => (props.isActive ? "pointer" : "default")};
+  background-color: ${(props) => (props.isActive ? "orange" : "grey")};
   border: none;
   padding: 5px;
-  border-raius: 3px;
+  border-radius: 3px;
   font-family: ${primaryFont};
   min-width: 150px;
   color: ${primaryColorTwo};
   &:hover {
-    background-color: black;
+    background-color: ${(props) => (props.isActive ? "black" : "grey")};
   }
 `;
 

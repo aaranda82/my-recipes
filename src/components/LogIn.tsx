@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { clearAction } from "../actions/authActions";
@@ -25,6 +25,12 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const isActive = !error && !!email && !!password;
+
+  useEffect(() => {
+    setError("");
+  }, [email, password, setError]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +71,9 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div style={{ color: "red" }}>{error}</div>
-        <Button type="submit">Submit</Button>
+        <Button type="submit" isActive={isActive}>
+          Submit
+        </Button>
       </Form>
     </Container>
   );

@@ -18,22 +18,35 @@ const {
   gunmetal,
 } = colorScheme;
 
+const { mobileMaxWidth, secondaryFont } = styles;
+
 interface MProps {
   showMenu: boolean;
+  loggedIn: boolean;
 }
 
 const MContainer = styled.div<MProps>`
+  width: 25vw;
+  height: 100vh;
   font-size: 2em;
-  font-family: ${styles.secondaryFont};
+  font-family: ${secondaryFont};
   font-weight: 600;
   color: ${primaryColorOne};
   position: absolute;
-  top: 55px;
-  right: ${(props) => (props.showMenu ? "0" : "-315px")};
-  padding: 20px 70px 20px 70px;
+  top: ${(props) => (props.loggedIn ? "55px" : "64px")};
+  left: ${(props) => (props.showMenu ? "75vw" : "100vw")};
+  padding-top: 20px;
   background: ${primaryColorTwo};
   border: 1px solid ${gunmetal};
   transition: all ease 0.5s;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 50vw;
+    left: ${(props) => (props.showMenu ? "50vw" : "100vw")};
+    top: ${(props) => (props.loggedIn ? "44px" : "64px")};
+  }
   & > div {
     cursor: pointer;
     transition: all 1s ease;
@@ -45,8 +58,10 @@ const MContainer = styled.div<MProps>`
 
 const AddRecipeContainer = styled.div`
   display: none;
-  @media screen and (max-width: ${styles.mobileMaxWidth}) {
-    display: block;
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    display: flex;
+    justify-content: center;
+
     width: 100%;
   }
 `;
@@ -66,7 +81,14 @@ const Menu = (): ReactElement => {
 
   const handleMenuItems = (to: string, name: string) => {
     return (
-      <Link to={to} style={{ textDecoration: "none", color: primaryColorOne }}>
+      <Link
+        to={to}
+        style={{
+          textDecoration: "none",
+          color: primaryColorOne,
+          width: "100%",
+          textAlign: "center",
+        }}>
         <div
           onClick={() =>
             name === "SIGN OUT" ? handleSignOut() : dispatch(clearAction())
@@ -79,7 +101,7 @@ const Menu = (): ReactElement => {
 
   return displayName ? (
     <>
-      <MContainer showMenu={showMenu}>
+      <MContainer showMenu={showMenu} loggedIn={!!displayName}>
         <AddRecipeContainer>
           <AddRecipeButton />
         </AddRecipeContainer>
@@ -90,7 +112,7 @@ const Menu = (): ReactElement => {
       </MContainer>
     </>
   ) : (
-    <MContainer showMenu={showMenu}>
+    <MContainer showMenu={showMenu} loggedIn={!!displayName}>
       <LogInButton />
       <SignUpButton />
     </MContainer>
