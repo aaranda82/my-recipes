@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { clearAction } from "../actions/authActions";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { styles } from "../styles/styles";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 

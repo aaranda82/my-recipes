@@ -2,9 +2,9 @@ import React, { ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { categoryAction } from "../actions/categoryAction";
-import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 
 const { gunmetal, accentColorOne } = colorScheme;
 const { secondaryFont, mobileMaxWidth, tabletMaxWidth } = styles;

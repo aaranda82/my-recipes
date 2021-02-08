@@ -3,11 +3,11 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import RecipeCard from "../components/RecipeCard";
 import SpinnerLoader from "../components/SpinnerLoader";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 import { handleRecipeArrayLength } from "./AllRecipesPage";
 
 const { primaryFont, secondaryFont, mobileMaxWidth } = styles;

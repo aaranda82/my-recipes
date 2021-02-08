@@ -3,12 +3,13 @@ import React, { ReactElement, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import CategoryBar from "../components/CategoryBar";
 import RecipeCard, { BlankRecipeCard } from "../components/RecipeCard";
+import SearchFilter from "../components/SearchFilter";
 import SpinnerLoader from "../components/SpinnerLoader";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 
 const { accentColorOne, primaryColorTwo, primaryColorOne } = colorScheme;
 const { secondaryFont, mobileMaxWidth } = styles;
@@ -64,6 +65,14 @@ const Recipes = styled.div`
   justify-content: center;
   @media (max-width: ${mobileMaxWidth}) {
     width: 100%;
+  }
+`;
+
+const SearchContainer = styled.div`
+  display: none;
+  padding: 10px 0;
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    display: block;
   }
 `;
 
@@ -163,7 +172,6 @@ const AllRecipesPage = (): ReactElement => {
         };
         recipeCardsArr.push(<RecipeCard key={index} {...RCProps} />);
       }
-      // return handleRecipeArrayLength(recipeCardsArr);
       return recipeCardsArr;
     }
   };
@@ -212,7 +220,6 @@ const AllRecipesPage = (): ReactElement => {
         return "NO FAVORITE RECIPES YET";
       }
     }
-    // return handleRecipeArrayLength(recipeCardsArr);
     return recipeCardsArr;
   };
 
@@ -226,6 +233,9 @@ const AllRecipesPage = (): ReactElement => {
 
   return recipes ? (
     <div id="AllRecipesPage">
+      <SearchContainer>
+        <SearchFilter />
+      </SearchContainer>
       <CategoryBar categories={getCategories()}></CategoryBar>
       <Recipes id="Recipes">
         {id ? (

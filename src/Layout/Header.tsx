@@ -2,10 +2,10 @@ import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import HeaderButtons from "../components/HeaderButtons";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 
 const { primaryColorOne, primaryColorTwo } = colorScheme;
 const { mobileMaxWidth, primaryFont } = styles;
@@ -28,6 +28,9 @@ const LogoContainer = styled.div<LIProps>`
   width: 35%;
   display: flex;
   justify-content: ${(props) => (props.loggedIn ? "left" : "center")};
+  @media screen and (max-width: ${mobileMaxWidth}) {
+    width: 75%;
+  }
 `;
 
 const Logo = styled.div<LIProps>`

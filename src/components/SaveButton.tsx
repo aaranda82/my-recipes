@@ -5,9 +5,9 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { showLogInAction } from "../actions/authActions";
-import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 
 const { gunmetal, saveButton1, saveButton2 } = colorScheme;
 const { primaryFont } = styles;

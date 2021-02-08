@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 
 const { mobileMaxWidth, primaryFont } = styles;
 const { gunmetal, primaryColorTwo, primaryColorOne } = colorScheme;

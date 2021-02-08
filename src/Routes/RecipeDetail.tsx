@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import SaveButton from "../components/SaveButton";
 import SpinnerLoader from "../components/SpinnerLoader";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 
 const { brownSugar, accentColorOne } = colorScheme;
 const { primaryFont, secondaryFont } = styles;

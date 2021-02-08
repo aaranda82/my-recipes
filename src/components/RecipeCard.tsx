@@ -3,9 +3,9 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { colorScheme } from "../styles/colorScheme";
+import { styles } from "../styles/styles";
 import ModifyRecipeButtons from "./ModifyRecipeButtons";
 import SaveButton from "./SaveButton";
 

@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { colorScheme } from "../colorScheme";
 import { RootState } from "../reducers/rootReducer";
+import { colorScheme } from "../styles/colorScheme";
 
 const AccountContainer = styled.div`
   color: ${colorScheme.gunmetal};

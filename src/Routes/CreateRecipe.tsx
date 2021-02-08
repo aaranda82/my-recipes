@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { RootState } from "../reducers/rootReducer";
-import { styles } from "../styles";
+import { styles } from "../styles/styles";
 
 const { primaryFont, mobileMaxWidth } = styles;
 
