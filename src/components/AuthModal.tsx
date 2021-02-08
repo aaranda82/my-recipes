@@ -22,7 +22,7 @@ export const Shadow = styled.div<LIProps>`
   background-color: black;
   opacity: 0.6;
   @media screen and (max-width: ${mobileMaxWidth}) {
-    top: ${(props) => (props.loggedIn ? "55px" : "67px")};
+    top: ${(props) => (props.loggedIn ? "44px" : "67px")};
   }
 `;
 

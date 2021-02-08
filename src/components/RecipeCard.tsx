@@ -52,6 +52,7 @@ const Info = styled.div`
 
 const Description = styled.div`
   height: 40px;
+  width: 100%;
   padding: 0 10px;
   font-size: 15px;
   text-align: center;
