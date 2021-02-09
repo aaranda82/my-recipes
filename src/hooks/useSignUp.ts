@@ -1,13 +1,11 @@
 import firebase from "firebase";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { clearAction } from "../actions/authActions";
 import { signInAction } from "../actions/userActions";
-import { RootState } from "../reducers/rootReducer";
 
 export const useSignUp = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state: RootState) => state.usersReducer.users);
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -22,13 +20,6 @@ export const useSignUp = () => {
 
     if (userName.length < 3) {
       setUserNameError("Must be at least 3 letters");
-      isValid = false;
-    } else if (
-      Object.values(users)
-        .map((u) => u.userName)
-        .includes(userName)
-    ) {
-      setUserNameError("User Name Taken");
       isValid = false;
     }
 
@@ -71,32 +62,43 @@ export const useSignUp = () => {
     const isValid = validateInputs();
     if (isValid) {
       firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then((user) => {
-          if (user) {
-            firebase.auth().onAuthStateChanged((user) => {
-              if (user) {
-                user.updateProfile({
-                  displayName: userName,
-                });
-              }
-            });
-            if (user.user && typeof user.user.email === "string") {
-              const { email, uid } = user.user;
-              dispatch(signInAction(userName, email, uid));
-              firebase
-                .database()
-                .ref("users/" + uid)
-                .set({
-                  email,
-                  userName,
-                });
-              dispatch(clearAction());
-            }
+        .database()
+        .ref("users")
+        .orderByChild("userName")
+        .equalTo(userName)
+        .on("value", (snap) => {
+          if (snap.exists()) {
+            setUserNameError("User Name Taken");
+          } else {
+            firebase
+              .auth()
+              .createUserWithEmailAndPassword(email, password)
+              .then((user) => {
+                if (user) {
+                  firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                      user.updateProfile({
+                        displayName: userName,
+                      });
+                    }
+                  });
+                  if (user.user && typeof user.user.email === "string") {
+                    const { email, uid } = user.user;
+                    dispatch(signInAction(userName, email, uid));
+                    firebase
+                      .database()
+                      .ref("users/" + uid)
+                      .set({
+                        email,
+                        userName,
+                      });
+                    dispatch(clearAction());
+                  }
+                }
+              })
+              .catch((error) => console.log("Error creating user: ", error));
           }
-        })
-        .catch((error) => console.log("Error creating user: ", error));
+        });
     }
   };
   return {

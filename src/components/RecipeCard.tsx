@@ -92,13 +92,19 @@ const RecipeCard = (props: IProps): ReactElement => {
   const { recipes } = useSelector((state: RootState) => state.recipeReducer);
 
   useEffect(() => {
+    let mounted = true;
     firebase
       .database()
       .ref(`users/${createdBy}/userName`)
       .once("value")
       .then((snapshot) => {
-        setUserName(snapshot.val());
+        if (mounted) {
+          setUserName(snapshot.val());
+        }
       });
+    return () => {
+      mounted = false;
+    };
   }, [createdBy, setUserName]);
 
   const handleDescription = () => {

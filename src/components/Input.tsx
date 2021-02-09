@@ -4,7 +4,13 @@ import { colorScheme } from "../styles/colorScheme";
 import { styles } from "../styles/styles";
 
 const { mobileMaxWidth, primaryFont } = styles;
-const { gunmetal, primaryColorTwo, primaryColorOne } = colorScheme;
+const {
+  gunmetal,
+  primaryColorTwo,
+  primaryColorOne,
+  accentColorOne,
+  redOrange,
+} = colorScheme;
 
 export const Container = styled.div`
   border-radius: 20px;
@@ -49,8 +55,8 @@ const FormGroup = styled.div<{
   error: boolean;
 }>`
   margin: 10px 0;
-  background-color: ${(props) =>
-    props.error ? colorScheme.redOrange : colorScheme.accentColorOne};
+  border-radius: 10px;
+  border: 1px solid ${(props) => (props.error ? redOrange : accentColorOne)};
   display: flex;
   flex-wrap: wrap;
   padding: 10px 0;
@@ -58,7 +64,7 @@ const FormGroup = styled.div<{
 
 const Label = styled.label<{ error?: string }>`
   width: 40%;
-  color: ${(props) => (props.error ? "white" : "black")};
+  color: ${accentColorOne};
 `;
 
 const InputDiv = styled.input`
@@ -67,14 +73,59 @@ const InputDiv = styled.input`
   background-color: transparent;
   outline: none;
 `;
+const Item = styled.div<{ height?: string; width?: string }>`
+  width: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  margin-bottom: 20px;
+  & > textarea {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    height: ${(props) => props.height};
+    width: 100%;
+    font-family: ${primaryFont};
+    font-weight: 600;
+    outline: none;
+  }
+  & > input {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    height: 2.5rem;
+    width: ${(props) => props.width};
+    outline: none;
+  }
+  & > label {
+    margin: 5px 0;
+    width: 100%;
+  }
+`;
+
+const Error = styled.div`
+  width: 100%;
+  color: ${redOrange};
+`;
 
 interface IProps {
   error: string;
   name: string;
-  type: "text" | "password";
+  type: "text" | "password" | "number";
   placeholder: string;
-  value: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+interface IPropsInput extends IProps {
+  width: string;
+}
+
+interface IPropsTextArea {
+  error: string;
+  name: string;
+  placeholder: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  height: string;
 }
 
 export const Input = ({
@@ -96,7 +147,47 @@ export const Input = ({
         value={value}
         onChange={onChange}
       />
-      <div style={{ width: "100%", color: "white" }}>{error}</div>
+      <Error>{error}</Error>
     </FormGroup>
+  );
+};
+
+export const AddRecipeInput = ({
+  error,
+  name,
+  type,
+  placeholder,
+  value,
+  onChange,
+  width,
+}: IPropsInput) => {
+  return (
+    <Item width={width}>
+      <label htmlFor={name}>{name}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
+      <Error>{error}</Error>
+    </Item>
+  );
+};
+
+export const AddRecipeTextArea = ({
+  error,
+  name,
+  placeholder,
+  value,
+  onChange,
+  height,
+}: IPropsTextArea) => {
+  return (
+    <Item height={height}>
+      <label htmlFor={name}>{name}</label>
+      <textarea value={value} onChange={onChange} placeholder={placeholder} />
+      <Error>{error}</Error>
+    </Item>
   );
 };
