@@ -142,6 +142,12 @@ export const useCreateRecipe = () => {
     }
   }, [id, location.pathname, recipes]);
 
+  useEffect(() => {
+    if (!uid) {
+      history.push("/");
+    }
+  }, [uid]);
+
   const changeImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { files } = e.target;
     if (files && files.length) {

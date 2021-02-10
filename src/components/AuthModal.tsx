@@ -9,20 +9,16 @@ import SignUp from "./SignUp";
 
 const { mobileMaxWidth } = styles;
 
-interface LIProps {
-  loggedIn: string | null;
-}
-
-export const Shadow = styled.div<LIProps>`
+export const Shadow = styled.div<{ loggedIn: boolean }>`
   position: fixed;
   width: 100vw;
   height: 100vh;
-  top: ${(props) => (props.loggedIn ? "55px" : "78px")};
+  top: ${(props) => (props.loggedIn ? "55px" : "75px")};
   left: 0;
   background-color: black;
   opacity: 0.6;
   @media screen and (max-width: ${mobileMaxWidth}) {
-    top: ${(props) => (props.loggedIn ? "44px" : "67px")};
+    top: ${(props) => (props.loggedIn ? "44px" : "64px")};
   }
 `;
 
@@ -40,7 +36,7 @@ const AuthModal = (): ReactElement => {
   }
   return (
     <>
-      <Shadow loggedIn={uid} onClick={() => dispatch(clearAction())} />
+      <Shadow loggedIn={!!uid} onClick={() => dispatch(clearAction())} />
       {auth}
     </>
   );

@@ -8,7 +8,6 @@ import { styles } from "../styles/styles";
 import AddRecipeButton from "./AddRecipeButton";
 import { LogInButton, SignUpButton } from "./AuthButtons";
 import SearchFilter from "./SearchFilter";
-import { Spacer } from "./Spacer";
 
 const { primaryColorOne, primaryColorTwo } = colorScheme;
 const { mobileMaxWidth } = styles;
@@ -85,7 +84,6 @@ const HeaderButtons = (): ReactElement => {
         <LogInButton />
       </DesktopContainer>
       <MobileContainer>{handleNavMenuButton()}</MobileContainer>
-      <Spacer />
     </>
   );
 };

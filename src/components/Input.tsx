@@ -39,7 +39,7 @@ export const Form = styled.form`
 
 export const Button = styled.button<{ isActive: boolean }>`
   cursor: ${(props) => (props.isActive ? "pointer" : "default")};
-  background-color: ${(props) => (props.isActive ? "orange" : "grey")};
+  background-color: ${(props) => (props.isActive ? accentColorOne : "grey")};
   border: none;
   padding: 5px;
   border-radius: 3px;

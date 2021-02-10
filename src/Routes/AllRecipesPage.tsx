@@ -115,6 +115,7 @@ const AllRecipesPage = (): ReactElement => {
   const categoryToShow = useSelector(
     (state: RootState) => state.categoryReducer,
   );
+  const { uid } = useSelector((state: RootState) => state.userReducer);
   const [recipesToShow, setRecipesToShow] = useState("ALL RECIPES");
   const { id } = useParams<{ id: string }>();
 
@@ -238,7 +239,7 @@ const AllRecipesPage = (): ReactElement => {
       </SearchContainer>
       <CategoryBar categories={getCategories()}></CategoryBar>
       <Recipes id="Recipes">
-        {id ? (
+        {uid ? (
           <>
             <RVSCont>
               {handleRViewSelector("ALL RECIPES")}
