@@ -33,7 +33,7 @@ const MContainer = styled.div<MProps>`
   font-weight: 600;
   color: ${primaryColorOne};
   position: absolute;
-  top: ${(props) => (props.loggedIn ? "55px" : "64px")};
+  top: 55px;
   left: ${(props) => (props.showMenu ? "75vw" : "100vw")};
   padding-top: 20px;
   background: ${primaryColorTwo};

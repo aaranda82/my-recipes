@@ -32,7 +32,7 @@ const SlideContainer = styled.div`
   height: 30px;
   overflow: hidden;
   white-space: nowrap;
-  @media (max-width: ${mobileMaxWidth}) {
+  @media (max-width: ${tabletMaxWidth}) {
     overflow: auto;
   }
 `;

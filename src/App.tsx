@@ -9,8 +9,6 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import { recipeAction } from "./actions/recipeActions";
-import AuthModal from "./components/AuthModal";
-import Menu from "./components/Menu";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./Layout/Footer";
 import Header from "./Layout/Header";
@@ -20,12 +18,18 @@ import AllRecipesPage from "./Routes/AllRecipesPage";
 import CreateRecipe from "./Routes/CreateRecipe";
 import RecipeDetail from "./Routes/RecipeDetail";
 import UserProfile from "./Routes/UserProfile";
+import { styles } from "./styles/styles";
 
-const Main = styled.main`
+const Main = styled.main<{ loggedIn: boolean }>`
+  position: relative;
+  top: ${(props) => (props.loggedIn ? "57px" : "75px")};
   max-width: 1000px;
   margin: auto;
   background: white;
   padding-bottom: 20px;
+  @media screen and (max-width: ${styles.mobileMaxWidth}) {
+    top: ${(props) => (props.loggedIn ? "44px" : "65px")};
+  }
 `;
 
 const Container = styled.div`
@@ -34,9 +38,6 @@ const Container = styled.div`
 `;
 
 function App(): ReactElement {
-  const { showLogIn, showSignUp, showMenu } = useSelector(
-    (state: RootState) => state.authReducer,
-  );
   const { uid } = useSelector((state: RootState) => state.userReducer);
   const dispatch = useDispatch();
 
@@ -53,7 +54,7 @@ function App(): ReactElement {
       <Router>
         <ScrollToTop />
         <Header />
-        <Main>
+        <Main loggedIn={!!uid}>
           <Switch>
             <Route exact path="/">
               {uid ? <Redirect to={`/userpage/${uid}`} /> : <AllRecipesPage />}
@@ -66,8 +67,6 @@ function App(): ReactElement {
             <Route path="/editrecipe/:id" component={CreateRecipe} />
             <Route path="/user/:id" component={UserProfile} />
           </Switch>
-          {showLogIn || showSignUp || showMenu ? <AuthModal /> : false}
-          <Menu />
         </Main>
         <Footer />
       </Router>

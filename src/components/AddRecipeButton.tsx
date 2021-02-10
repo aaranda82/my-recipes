@@ -15,6 +15,7 @@ const AddRecipeBtn = styled.button`
   outline: none;
   color: ${primaryColorOne};
   border: 1px solid;
+  border-radius: 10px;
   &:hover {
     opacity: 0.6;
   }

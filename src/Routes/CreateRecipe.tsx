@@ -14,7 +14,6 @@ const ContainerDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row-reverse;
-  background: lightblue;
   @media screen and (max-width: ${mobileMaxWidth}) {
     flex-direction: unset;
   }
@@ -44,7 +43,6 @@ const FileDiv = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  border: 1px solid grey;
   margin: 10px 0;
 `;
 

@@ -2,7 +2,9 @@ import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import AuthModal from "../components/AuthModal";
 import HeaderButtons from "../components/HeaderButtons";
+import Menu from "../components/Menu";
 import { RootState } from "../reducers/rootReducer";
 import { colorScheme } from "../styles/colorScheme";
 import { styles } from "../styles/styles";
@@ -10,10 +12,8 @@ import { styles } from "../styles/styles";
 const { primaryColorOne, primaryColorTwo } = colorScheme;
 const { mobileMaxWidth, primaryFont } = styles;
 
-interface LIProps {
-  loggedIn: string | null;
-}
-const HeaderContainer = styled.header<LIProps>`
+const HeaderContainer = styled.header<{ loggedIn: boolean }>`
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@ const HeaderContainer = styled.header<LIProps>`
   z-index: 5;
 `;
 
-const LogoContainer = styled.div<LIProps>`
+const LogoContainer = styled.div<{ loggedIn: boolean }>`
   width: 35%;
   display: flex;
   justify-content: ${(props) => (props.loggedIn ? "left" : "center")};
@@ -33,7 +33,7 @@ const LogoContainer = styled.div<LIProps>`
   }
 `;
 
-const Logo = styled.div<LIProps>`
+const Logo = styled.div<{ loggedIn: boolean }>`
   margin: ${(props) => (props.loggedIn ? "10px 0" : "20px 0")};
   font-family: ${primaryFont};
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -58,6 +58,9 @@ const LogoSpacer = styled.div`
 `;
 
 const Header = (): ReactElement => {
+  const { showLogIn, showSignUp, showMenu } = useSelector(
+    (state: RootState) => state.authReducer,
+  );
   const displayName = useSelector(
     (state: RootState) => state.userReducer.displayName,
   );
@@ -65,8 +68,8 @@ const Header = (): ReactElement => {
     return (
       <>
         {displayName ? null : <LogoSpacer />}
-        <LogoContainer loggedIn={displayName} id="logo cont">
-          <Logo loggedIn={displayName}>
+        <LogoContainer loggedIn={!!displayName} id="logo cont">
+          <Logo loggedIn={!!displayName}>
             {displayName ? <Link to={"/"}>My Recipes</Link> : "My Recipes"}
           </Logo>
         </LogoContainer>
@@ -75,9 +78,11 @@ const Header = (): ReactElement => {
   };
 
   return (
-    <HeaderContainer id="Header" loggedIn={displayName ? "loggedIn" : null}>
+    <HeaderContainer id="Header" loggedIn={!!displayName}>
       <HandleLogo />
       <HeaderButtons />
+      {showLogIn || showSignUp || showMenu ? <AuthModal /> : false}
+      <Menu />
     </HeaderContainer>
   );
 };
