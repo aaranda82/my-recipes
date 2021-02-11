@@ -23,17 +23,33 @@ const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
 
   const isActive = !error && !!email && !!password;
 
   useEffect(() => {
     setError("");
-  }, [email, password, setError]);
+    setEmailError("");
+    setPasswordError("");
+  }, [email, password, setError, setEmailError, setPasswordError]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) {
+      setEmailError("Email Required");
+    }
+    if (!password) {
+      setPasswordError("Password Required");
+    }
+    if (email && password) {
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -53,9 +69,9 @@ const Login = () => {
   return (
     <Container id="Auth">
       <h3>LOG IN</h3>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={validate}>
         <Input
-          error=""
+          error={emailError}
           name="Email"
           type="text"
           placeholder="Enter Email"
@@ -63,7 +79,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
-          error=""
+          error={passwordError}
           name="Password"
           type="password"
           placeholder="Enter Password"
