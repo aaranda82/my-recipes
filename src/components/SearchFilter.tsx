@@ -1,8 +1,6 @@
 import React, { FormEvent, ReactElement, useState } from "react";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { RootState } from "../reducers/rootReducer";
 import { colorScheme } from "../styles/colorScheme";
 
 const { accentColorOne } = colorScheme;
@@ -32,49 +30,13 @@ const SVG = styled.svg`
 `;
 
 const SearchFilter = (): ReactElement => {
-  const [searchInput, setSearchInput] = useState("");
-  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
-  const { recipes } = useSelector((state: RootState) => state.recipeReducer);
+  const [search, setSearch] = useState("");
   const history = useHistory();
-
-  const changeSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const search = e.currentTarget.value.toLowerCase();
-    setSearchInput(search.toUpperCase());
-
-    if (search.length > 2) {
-      for (const r in recipes) {
-        const name = recipes[r].name.toLowerCase();
-
-        if (name.includes(search) && !searchSuggestions.includes(r)) {
-          setSearchSuggestions((searchSuggestions) => [
-            ...searchSuggestions,
-            r,
-          ]);
-        }
-      }
-    } else if (search.length < 3) {
-      setSearchSuggestions([]);
-    }
-  };
 
   const submitSearch = (e: FormEvent) => {
     e.preventDefault();
-    for (const r in recipes) {
-      if (recipes[r].name.toLowerCase() === searchInput.toLowerCase()) {
-        history.push(`/recipedetail/${r}`);
-      }
-    }
-    setSearchInput("");
-  };
-
-  const renderSearchOptions = () => {
-    return searchSuggestions.map((r, index) => (
-      <option
-        value={recipes[r].name}
-        key={index}
-        onClick={() => console.log("hi")}
-      />
-    ));
+    history.push(`/search/${search.toLowerCase()}`);
+    setSearch("");
   };
 
   return (
@@ -83,10 +45,9 @@ const SearchFilter = (): ReactElement => {
         <label>
           <Input
             list="recipes"
-            value={searchInput}
-            onChange={changeSearchInput}
+            value={search}
+            onChange={(e) => setSearch(e.currentTarget.value)}
           />
-          <datalist id="recipes">{renderSearchOptions()}</datalist>
         </label>
         <Button type="submit" style={{ height: "27px" }}>
           <SVG xmlns="http://www.w3.org/2000/svg" viewBox="-1 0 136 136.219">
