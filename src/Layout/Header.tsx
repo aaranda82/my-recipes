@@ -70,7 +70,7 @@ const Header = (): ReactElement => {
         {displayName ? null : <LogoSpacer />}
         <LogoContainer loggedIn={!!displayName} id="logo cont">
           <Logo loggedIn={!!displayName}>
-            {displayName ? <Link to={"/"}>My Recipes</Link> : "My Recipes"}
+            <Link to={"/"}>My Recipes</Link>
           </Logo>
         </LogoContainer>
       </>

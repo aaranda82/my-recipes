@@ -17,6 +17,7 @@ import AccountPage from "./Routes/AccountPage";
 import AllRecipesPage from "./Routes/AllRecipesPage";
 import CreateRecipe from "./Routes/CreateRecipe";
 import RecipeDetail from "./Routes/RecipeDetail";
+import SearchResults from "./Routes/SearchResults";
 import UserProfile from "./Routes/UserProfile";
 import { styles } from "./styles/styles";
 
@@ -66,6 +67,7 @@ function App(): ReactElement {
             <Route path="/createrecipe" component={CreateRecipe} />
             <Route path="/editrecipe/:id" component={CreateRecipe} />
             <Route path="/user/:id" component={UserProfile} />
+            <Route path="/search/:search" component={SearchResults} />
           </Switch>
         </Main>
         <Footer />

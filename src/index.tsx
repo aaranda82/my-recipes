@@ -9,7 +9,12 @@ import { colorScheme } from "./styles/colorScheme";
 
 const GlobalStyle = createGlobalStyle`
   body {
+    font-family: 'Alegreya', serif;
+    font-weight: 400;
+    line-height: 1.75;
+    color: #000000;
     margin: 0;
+    padding: 0;
     background-color: ${colorScheme.primaryColorOne};
   }
 `;
